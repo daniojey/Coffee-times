@@ -11,3 +11,5 @@ class Reservation(models.Model):
     reservation_time = models.TimeField(verbose_name="Час бронювання")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания заказа")
 
+    def __str__(self) -> str:
+        return f"Кав'ярня:{self.coffeehouse} - Ім'я кліента:{self.customer_name} - Номер Телефону:{self.customer_phone} - Дата та час бронювання:{self.reservation_date}|{self.reservation_time}"

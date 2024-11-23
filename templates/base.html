@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    <head>
+        <link rel="stylesheet" href="{% static "css/base.css" %}">
+        <title>Домашня сторінка</title>
+    </head>
+    
+    <header>
+        <div class='base-links'>
+            <ul>
+                <li><a href="#">Мої бронювання</a></li>
+                <li><a href="#">Мапа кав'ярень</a></li>
+                <li><a href="#">Профіль</a></li>
+            </ul>
+        </div>
+    </header>
+    <body>
+        {% block content %}
+        {% endblock %}
+    </body>
+
+    <footer>
+        <!-- Your footer content -->
+    </footer>
+</html>

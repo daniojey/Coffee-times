@@ -1,0 +1,20 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(134, 134, 134);
+    color: #fff;
+    margin: 0;
+}
+
+.base-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 30vw;
+}
+
+.base-links ul{
+    display: flex;
+    gap: 25px;
+    list-style: none;
+}

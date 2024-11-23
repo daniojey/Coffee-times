@@ -1,3 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
 
 
-<a href="{% url "orders:index" %}">Стартовая страничка заказов</a>
+{% block content %}
+<body>
+    <link rel="stylesheet" href="{% static "css/homepage.css" %}">
+    
+    <a href="{% url "orders:index" %}">Стартовая страничка заказов</a>
+</body>
+
+{% endblock %}
