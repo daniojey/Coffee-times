@@ -1,7 +1,9 @@
+from datetime import datetime, timedelta
 import json
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import CreateView, View, TemplateView, FormView
+from django.db.models import F, DurationField, ExpressionWrapper, DateTimeField, TimeField
 
 from coffeehouses.forms import CreateReservationForm
 from coffeehouses.models import CoffeeHouse, Table
@@ -35,18 +37,49 @@ def get_available_tables(request):
             coffeehouse_id = data.get('coffeehouse')
             reservation_date = data.get('reservation_date')
             reservation_time = data.get('reservation_time')
-            table_capacity = data.get('table_capacity')
             booking_duration = data.get('booking_duration')
 
-            # Логирование полученных данных
-            print(coffeehouse_id, reservation_date, reservation_time, table_capacity, booking_duration)
+            # Конвертируем строковые данные в datetime
+            start_time_str = f"{reservation_date} {reservation_time}"
+            start_time = datetime.strptime(start_time_str, "%Y-%m-%d %H:%M")
 
-            # Получаем объект кофейни
-            coffeehouse = get_object_or_404(CoffeeHouse, id=coffeehouse_id)
+            # Обработка длительности бронирования
+            try:
+                duration_parts = booking_duration.split(":")
+                hours = int(duration_parts[0])
+                minutes = int(duration_parts[1])
+                duration = timedelta(hours=hours, minutes=minutes)
+            except (IndexError, ValueError):
+                return JsonResponse({'error': 'Invalid booking_duration format. Expected "HH:MM".'}, status=400)
 
-            # Получаем доступные столики
-            available_tables = Table.objects.filter(coffeehouse=coffeehouse)
-            print(available_tables)
+            end_time = start_time + duration
+
+            # 1. Рассчитываем `start_datetime` и `end_datetime` для всех бронирований с учётом даты и времени
+            reservations_with_end_time = Reservation.objects.annotate(
+                start_datetime=ExpressionWrapper(
+                    F('reservation_date') + F('reservation_time'),
+                    output_field=DateTimeField()
+                ),
+                end_datetime=ExpressionWrapper(
+                    F('reservation_date') + F('reservation_time') + F('booking_duration'),
+                    output_field=DateTimeField()
+                )
+            )
+
+            # 2. Фильтруем бронирования с пересечением времени
+            overlapping_reservations = reservations_with_end_time.filter(
+                table__coffeehouse_id=coffeehouse_id,  # Учитываем кофейню
+                reservation_date=reservation_date,
+                # Бронирование должно пересекаться с новым (начинается до конца нового и заканчивается после начала нового)
+                start_datetime__lt=end_time,        # Бронирование начинается до окончания нового
+                end_datetime__gt=start_time         # Бронирование заканчивается после начала нового
+            )
+
+            # 3. Находим ID занятых столиков
+            reserved_tables = overlapping_reservations.values_list('table_id', flat=True)
+
+            # 4. Получаем доступные столики
+            available_tables = Table.objects.filter(coffeehouse_id=coffeehouse_id).exclude(id__in=reserved_tables)
 
             # Формируем данные для ответа
             tables_data = [{"id": table.id, 'name': table.table_number} for table in available_tables]
