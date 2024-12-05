@@ -35,6 +35,7 @@ class CreateReservationForm(forms.ModelForm):
             'customer_name': "Ваше ім'я",
             'customer_phone': 'Номер телефону',
             'reservation_time': 'Час бронювання',
+            'table': 'Оберіть столик'
         }
         widgets = {
             'coffeehouse': forms.Select(attrs={'id': 'coffeehouse'}),
