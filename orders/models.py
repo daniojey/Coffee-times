@@ -1,10 +1,11 @@
 from django.db import models
 
-from coffeehouses.models import CoffeeHouse
+from coffeehouses.models import CoffeeHouse, Table
 
 # Create your models here.
 class Reservation(models.Model):
     coffeehouse = models.ForeignKey(CoffeeHouse, on_delete=models.CASCADE, related_name='reservations', verbose_name='Столик')
+    table = models.ForeignKey(Table, on_delete=models.CASCADE, related_name='tables')
     customer_name = models.CharField(max_length=255, verbose_name="Ім'я кліета")
     customer_phone = models.CharField(max_length=15, verbose_name="Телефон")
     reservation_date = models.DateField(verbose_name="Дата бронювання")
