@@ -42,5 +42,6 @@ class CreateReservationForm(forms.ModelForm):
             'reservation_date': forms.DateInput(attrs={'type': 'date', 'id': 'reservation_date'}),
             'reservation_time': forms.TimeInput(attrs={'type': 'time', 'id': 'reservation_time'}),
             'booking_duration': forms.TimeInput(attrs={'type': 'time', 'id': 'booking_duration'}),
+            'table': forms.Select(attrs={'id': 'available_tables'})
         }
 
