@@ -10,6 +10,7 @@ class Reservation(models.Model):
     customer_phone = models.CharField(max_length=15, verbose_name="Телефон")
     reservation_date = models.DateField(verbose_name="Дата бронювання")
     reservation_time = models.TimeField(verbose_name="Час бронювання")
+    booking_duration = models.TimeField(verbose_name='Продовжуваність бронювання')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания заказа")
 
     def __str__(self) -> str:

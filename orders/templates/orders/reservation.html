@@ -2,8 +2,10 @@
 {% load static %}
 
 {% block content %}
-<form methon='post'>{% csrf_token %}
+<form methon='post' id='reservation-form'>{% csrf_token %}
     {{ form.as_p }}
     <button type='submit'>Зберегти</button>
 </form>
+
+<script src="{% static "js/get_available_tables.js" %}"></script>
 {% endblock %}

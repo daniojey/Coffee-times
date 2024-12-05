@@ -8,4 +8,5 @@ app_name = 'orders'
 urlpatterns = [
     path('', views.HomePageOrders.as_view(), name='index'),
     path('reservation/', views.CreateReservation.as_view(), name='reservation'),
+    path('reservation/get_tables/', views.get_available_tables, name='get_tables'),
 ]

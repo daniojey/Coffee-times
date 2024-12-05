@@ -6,33 +6,41 @@ from orders.models import Reservation
 
 
 class CreateReservationForm(forms.ModelForm):
-    reservation_date = forms.DateField(label='Data', widget=forms.DateInput(attrs={'type': 'date'}))
+    reservation_date = forms.DateField(
+        label='Дата',
+        widget=forms.DateInput(attrs={'type': 'date', 'id': 'reservation_date'})
+    )
+    reservation_time = forms.TimeField(
+        label='Час бронювання',
+        widget=forms.TimeInput(attrs={'type': 'time', 'placeholder': 'Години:хвилини (наприклад, 14:30)', 'id': 'reservation_time'})
+    )
+    booking_duration = forms.TimeField(
+        label='Продовжуваність бронювання',
+        widget=forms.TimeInput(attrs={'type': 'time', 'id': 'booking_duration'})
+    )
+
     class Meta:
         model = Reservation
-        fields= [ 
+        fields = [
             'coffeehouse',
-            'table',
             'customer_name',
             'customer_phone',
             'reservation_date',
-            'reservation_time',]
-        
+            'reservation_time',
+            'booking_duration',
+            'table',
+        ]
         labels = {
             'coffeehouse': "Кав'ярня",
             'customer_name': "Ваше ім'я",
             'customer_phone': 'Номер телефону',
-            'reservation_time': 'Час бронювання години|хвилини',
+            'reservation_time': 'Час бронювання',
         }
-        
-        widgets= {
-            'customer_phone': forms.TextInput(attrs={'type': 'text', 'placeholder': '380xxxxxxxxx'}),
-            'reservation_date' : forms.DateInput(attrs={'type': 'date', 'label':'Дата'}),
-            'reservation_time': forms.TimeInput(attrs={'type': 'time', 'placeholder': 'Часы:Минуты (например, 14:30)'}),
+        widgets = {
+            'coffeehouse': forms.Select(attrs={'id': 'coffeehouse'}),
+            'customer_phone': forms.TextInput(attrs={'type': 'text', 'placeholder': '380xxxxxxxxx', 'id': 'customer_phone'}),
+            'reservation_date': forms.DateInput(attrs={'type': 'date', 'id': 'reservation_date'}),
+            'reservation_time': forms.TimeInput(attrs={'type': 'time', 'id': 'reservation_time'}),
+            'booking_duration': forms.TimeInput(attrs={'type': 'time', 'id': 'booking_duration'}),
         }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Фильтрация столиков по выбранной кофейне
-        if 'coffeehouse' in self.initial:
-            self.fields['table'].queryset = Table.objects.filter(coffeehouse=self.initial['coffeehouse'])
 
