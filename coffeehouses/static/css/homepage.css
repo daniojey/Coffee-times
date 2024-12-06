@@ -1,0 +1,37 @@
+.base-container {
+    display: flex;
+    overflow-y: auto;
+    flex-direction: column;
+    color: #FFFF;
+    background-color: #4E3629;
+    max-width: 1000px;
+    width: 100%;
+    margin: 40px auto;
+    border-radius: 15px;
+    padding: 24px;
+    gap: 20px;
+
+}
+
+.base-container a{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    max-width: 200px;
+    width: 100%;
+    padding: 8px 16px;
+    background-color: #2c1c0d;
+    color: #FFFF;
+    text-decoration: none;
+    border: 1.5px solid #D5C2A1;
+    border-radius: 15px;
+    transition: color 1s ease;
+}
+
+.base-container a:hover{
+    color: #2c1c0d;
+    background-color: #FFFF;
+    border-color: #2c1c0d;
+
+}

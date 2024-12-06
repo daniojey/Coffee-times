@@ -5,10 +5,12 @@
 {% block content %}
 <body>
     <link rel="stylesheet" href="{% static "css/homepage.css" %}">
-    
-    <a href="{% url "orders:index" %}">Стартовая страничка заказов</a>
 
-    <a href="{% url "orders:reservation" %}">Оставить резервацию</a>
+    <div class='base-container'>
+        <a href="{% url "orders:index" %}">Стартовая страничка заказов</a>
+        
+        <a href="{% url "orders:reservation" %}">Оставить резервацию</a>
+    </div>
 </body>
 
 {% endblock %}

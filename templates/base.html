@@ -7,12 +7,18 @@
     </head>
     
     <header>
-        <div class='base-links'>
-            <ul>
-                <li><a href="#">Мої бронювання</a></li>
-                <li><a href="#">Мапа кав'ярень</a></li>
-                <li><a href="#">Профіль</a></li>
-            </ul>
+        <div class='base-links-container'>
+            <div class='home-page-container'>
+                <a href="{% url "coffeehouses:index" %}">Hello</a>
+            </div>
+            
+            <div class='base-links'>
+                <ul>
+                    <li><a href="#">Мої бронювання</a></li>
+                    <li><a href="#">Мапа кав'ярень</a></li>
+                    <li><a href="#">Профіль</a></li>
+                </ul>
+            </div>
         </div>
     </header>
     <body>

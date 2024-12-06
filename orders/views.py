@@ -39,7 +39,7 @@ def get_available_tables(request):
             reservation_time = data.get('reservation_time')
             booking_duration = data.get('booking_duration')
 
-            reservations_today = Reservation.objects.filter(coffeehouse_id=coffeehouse_id ,reservation_date=reservation_date)
+            reservations_today = Reservation.objects.filter(coffeehouse_id=coffeehouse_id ,reservation_date=reservation_date).select_related('table')
             for item in reservations_today:
                 print(item.table)
 
