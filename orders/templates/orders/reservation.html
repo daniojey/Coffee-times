@@ -3,7 +3,16 @@
 
 {% block content %}
 <form methon='post' id='reservation-form'>{% csrf_token %}
-    {{ form.as_p }}
+    {% for field in form %}
+        {% if field.name == "table" %}
+            <div id="available-tables-container" class="hidden">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+            </div>
+        {% else %}
+            <p>{{ field.label }}|{{ field }}</p>
+        {% endif %}
+    {% endfor %}
     <button type='submit'>Зберегти</button>
 </form>
 

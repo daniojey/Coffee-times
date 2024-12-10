@@ -53,13 +53,35 @@ def get_available_tables(request):
             for reservation in annotations_reservation:
                 print(reservation.end_time)
 
+
+            # Преобразуем reservation_time в объект времени
+            reservation_time_obj = datetime.strptime(reservation_time, "%H:%M").time()
+
+            # Преобразуем booking_duration в timedelta
+            hours, minutes = map(int, booking_duration.split(":"))
+            booking_duration_td = timedelta(hours=hours, minutes=minutes)
+
+            # Объединяем reservation_date и reservation_time для получения datetime
+            reservation_datetime = datetime.combine(datetime.strptime(reservation_date, "%Y-%m-%d"), reservation_time_obj)
+
+            # Добавляем продолжительность
+            end_datetime = reservation_datetime + booking_duration_td
+
+            # Извлекаем только время окончания
+            end_time = end_datetime.time()
+
+            print(end_datetime)
+            print(end_time)
+
+
              # Фильтруем пересекающиеся брони
-            overlapping_reservations = annotations_reservation.filter(end_time__gt=reservation_time).values_list('table_id', flat=True)
+            overlapping_reservations = annotations_reservation.filter(end_time__gt=reservation_time).filter(reservation_time__lt=end_time).values_list('table_id', flat=True)
             # # Преобразуем в объект времени
             # formatted_time = datetime.strptime(reservation_time, "%H:%M").time()
             # TODO Добавить также позже фильтрацию по пересечению времени окончания резервациии что выбрал пользователь с существующей резервацией другого пользователя,
             #  если есть резервация которая начинается раньше чем заканчивается резервация которую выбрал пользователей также исключаем тот столик
 
+            print(overlapping_reservations)
 
             # Формируем данные для ответа
             tables_data = [{"id": table.id, 'name': table.table_number} for table in Table.objects.filter(coffeehouse_id=coffeehouse_id).exclude(id__in=overlapping_reservations)]

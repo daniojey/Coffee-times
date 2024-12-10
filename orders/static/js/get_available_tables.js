@@ -15,6 +15,12 @@ document.getElementById('reservation-form').addEventListener('change', function 
     const reservation_time = document.getElementById('reservation_time').value;
     const booking_duration = document.getElementById('booking_duration').value;
 
+    const tableSelections = document.getElementById('available-tables-container');
+
+    console.log('Before hiding:', tableSelections.classList);
+    tableSelections.classList.add('hidden');
+    console.log('After hiding:', tableSelections.classList);
+
     // Логируем данные формы
     console.log("Form data:", {
         coffeehouse: coffeehouse,
@@ -82,6 +88,11 @@ document.getElementById('reservation-form').addEventListener('change', function 
                     option.textContent = table.name;
                     tableSelect.appendChild(option);
                 });
+
+                // Показываем поле, если столики доступны
+                console.log('Before hiding:', tableSelections.classList);
+                tableSelections.classList.remove('hidden');
+                console.log('Before hiding:', tableSelections.classList);
             })
             .catch(error => {
                 // Логируем ошибку

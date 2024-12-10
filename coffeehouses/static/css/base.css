@@ -55,3 +55,8 @@ header {
 .base-links a:hover{
     color: #F1E0C6;
 }
+
+
+.hidden {
+    display: none;
+}
