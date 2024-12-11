@@ -1,5 +1,5 @@
 body {
-    background-color: #F1E0C6;
+    background-color: #ffffff;
     margin: 0;
 }
 
@@ -7,7 +7,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #4E3629;
+    background-color: black;
 
 }
 
@@ -32,7 +32,7 @@ header {
 }
 
 .home-page-container a:hover{
-    color: #F1E0C6;
+    color: #ffffff;
 }
 
 
@@ -53,7 +53,7 @@ header {
     transition: color 0.6s ease;
 }
 .base-links a:hover{
-    color: #F1E0C6;
+    color: #ffffff;
 }
 
 

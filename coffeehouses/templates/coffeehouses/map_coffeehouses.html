@@ -6,17 +6,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Карта кофеен</title>
+    <link rel="stylesheet" href="{% static "css/map_coffeehouses.css" %}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <style>
+    {% comment %} <style>
         #map {
             height: 500px; /* Высота карты */
             width: 80%;   /* Ширина карты */
         }
-    </style>
+    </style> {% endcomment %}
 </head>
 <body>
-    <h1>Карта кофеен</h1>
+    <div class='information-container'>
+        <h2>Мапа кав'ярень</h2>
+        <p>1. Знайди найближчу кав'ярню до тебе на мапі</p>
+        <p>2. Тицни по маркеру та обери Забронировать</p>
+    </div>
     <div id="map"></div>
     <script>
         // Инициализация карты
@@ -36,10 +41,10 @@
 
              // Создание всплывающего окна с кнопкой
             const popupContent = `
-            <div>
+            <div class='mark-content'>
                 <h3>${shop.name}</h3>
                 <p>${shop.address}</p>
-                <a href="{% url 'orders:reservation'%}?coffeehouse=${shop.id}" class="btn btn-primary">
+                <a href="{% url 'orders:reservation'%}?coffeehouse=${shop.id}" class="btn-primary">
                     Забронировать место
                 </a>
             </div>
