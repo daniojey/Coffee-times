@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import widgets
 
-from coffeehouses.models import Table
+from coffeehouses.models import CoffeeHouse, Table
 from orders.models import Reservation
 
 
@@ -45,4 +45,7 @@ class CreateReservationForm(forms.ModelForm):
             'booking_duration': forms.TimeInput(attrs={'type': 'time', 'id': 'booking_duration'}),
             'table': forms.Select(attrs={'id': 'available_tables'})
         }
-
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        

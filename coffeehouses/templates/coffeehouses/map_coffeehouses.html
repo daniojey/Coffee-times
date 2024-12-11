@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карта кофеен</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        #map {
+            height: 500px; /* Высота карты */
+            width: 80%;   /* Ширина карты */
+        }
+    </style>
+</head>
+<body>
+    <h1>Карта кофеен</h1>
+    <div id="map"></div>
+    <script>
+        // Инициализация карты
+        const map = L.map('map').setView([50.4501, 30.5234], 12); // Киев
+        
+        // Добавляем слой карты (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        // Данные кофеен из Django
+        const coffeeShops = JSON.parse('{{ coffee_shops|safe }}');
+
+        // Добавление точек на карту
+        coffeeShops.forEach(shop => {
+            const marker = L.marker([shop.location.lat, shop.location.lng]).addTo(map);
+
+             // Создание всплывающего окна с кнопкой
+            const popupContent = `
+            <div>
+                <h3>${shop.name}</h3>
+                <p>${shop.address}</p>
+                <a href="{% url 'orders:reservation'%}?coffeehouse=${shop.id}" class="btn btn-primary">
+                    Забронировать место
+                </a>
+            </div>
+            `;
+
+            marker.bindPopup(popupContent);
+        });
+    </script>
+</body>
+{% endblock %}

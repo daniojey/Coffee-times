@@ -18,12 +18,21 @@ class HomePageOrders(TemplateView):
 class CreateReservation(FormView):
     template_name = 'orders/reservation.html'
     form_class= CreateReservationForm
-    
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        if 'coffeehouse' in self.request.GET:
-            kwargs['initial'] = {'coffeehouse': self.request.GET['coffeehouse']}
+
+        coffeehouse_id = self.request.GET.get('coffeehouse', None)
+        
+        if coffeehouse_id:
+            try:
+                # Ищем кофейню по id
+                coffeehouse = CoffeeHouse.objects.get(id=coffeehouse_id)
+                # Передаем кофейню в initial
+                kwargs['initial'] = kwargs.get('initial', {})
+                kwargs['initial']['coffeehouse'] = coffeehouse
+            except CoffeeHouse.DoesNotExist:
+                pass  # Можно обработать исключение, если кофейня не найдена
         return kwargs
     
 
@@ -76,10 +85,6 @@ def get_available_tables(request):
 
              # Фильтруем пересекающиеся брони
             overlapping_reservations = annotations_reservation.filter(end_time__gt=reservation_time).filter(reservation_time__lt=end_time).values_list('table_id', flat=True)
-            # # Преобразуем в объект времени
-            # formatted_time = datetime.strptime(reservation_time, "%H:%M").time()
-            # TODO Добавить также позже фильтрацию по пересечению времени окончания резервациии что выбрал пользователь с существующей резервацией другого пользователя,
-            #  если есть резервация которая начинается раньше чем заканчивается резервация которую выбрал пользователей также исключаем тот столик
 
             print(overlapping_reservations)
 

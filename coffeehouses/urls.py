@@ -6,5 +6,6 @@ from . import views
 app_name = 'coffeehouses'
 
 urlpatterns = [
-    path('', views.HomePageView.as_view(), name='index')
+    path('', views.HomePageView.as_view(), name='index'),
+    path('map/', views.MapCoffeehousesView.as_view(), name='coffee_map'),
 ]
