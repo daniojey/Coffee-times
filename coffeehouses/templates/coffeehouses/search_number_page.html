@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+<form id="phone-search-form">
+    {% csrf_token %}
+    <div class='form-content'>
+        <input type="text" id='phone' name='phone' placeholder='Введіть номер телефону'>
+        <button type="button" id="check-booking">Поиск</button>  <!-- Изменено на "button" с id -->
+    </div>
+</form>
+
+<!-- Контейнер для отображения бронирований -->
+<div id="bookings-container"></div>
+
+
+<script src="{% static "js/phone_search.js" %}"></script>
+{% endblock %}
