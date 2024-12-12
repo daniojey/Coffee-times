@@ -1,16 +1,25 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static "css/menu_page.css" %}">
 <div class='base-container'>
-    <div class='menu-container'>
+    <div class='menu-container' style="background-image: url({% static "images/wood_texture.jpg" %})">
         {% for product in products %}
-            <div class='product'>
-                {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                {% endif %}
-                <p>{{ product.name }}</p>
-                <p>{{ product.price }}</p>
-            </div>
+            <a href="#" class='product-link'>
+                <div class='product'>
+                    {% if product.image %}
+                    <div class='product-image'>
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    </div>
+                    {% endif %}
+                    <div class='product-context'>
+                        <p>{{ product.name }}</p>
+                        <p>{{ product.description|truncatechars:68 }}</p>
+                        <p>{{ product.price }}грн</p>
+                    </div>
+                </div>
+            </a>
         {% endfor %}
     </div>
 </div>
