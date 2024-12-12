@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class='base-container'>
+    <div class='menu-container'>
+        {% for product in products %}
+            <div class='product'>
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% endif %}
+                <p>{{ product.name }}</p>
+                <p>{{ product.price }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

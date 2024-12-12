@@ -2,7 +2,7 @@ import json
 from django.core.serializers.json import DjangoJSONEncoder
 from django.views.generic import View, TemplateView
 
-from coffeehouses.models import CoffeeHouse
+from coffeehouses.models import CoffeeHouse, Product
 
 # Create your views here.
 class HomePageView(TemplateView):
@@ -33,3 +33,16 @@ class MapCoffeehousesView(TemplateView):
         })
 
         return context
+    
+class MenuPageView(TemplateView):
+    template_name = 'coffeehouses/menu_page.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        context.update({
+            'products': Product.objects.all()
+        })
+
+        return context
+    
