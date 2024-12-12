@@ -3,16 +3,15 @@
 
 
 {% block content %}
-<body>
     <link rel="stylesheet" href="{% static "css/homepage.css" %}">
 
     <div class='base-container'>
-        <a href="{% url "orders:index" %}">Стартовая страничка заказов</a>
-        
-        <a href="{% url "orders:reservation" %}">Оставить резервацию</a>
-
-        <a href="{% url "coffeehouses:coffee_map" %}">Карта магазинов</a>
+        <div class='content-container'>
+            <a href="{% url "orders:index" %}">Стартовая страничка заказов</a>
+            
+            <a href="{% url "orders:reservation" %}">Оставить резервацию</a>
+            
+            <a href="{% url "coffeehouses:coffee_map" %}">Карта магазинов</a>
+        </div>
     </div>
-</body>
-
 {% endblock %}

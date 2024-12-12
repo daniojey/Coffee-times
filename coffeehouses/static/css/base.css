@@ -1,6 +1,13 @@
+html {
+    height: 100%;
+}
+
 body {
     background-color: #ffffff;
     margin: 0;
+    min-height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
 }
 
 header {
@@ -60,3 +67,36 @@ header {
 .hidden {
     display: none;
 }
+
+/* Стили для footer */
+footer {
+    background-color: #000000; /* Цвет фона */
+    color: #fff; /* Цвет текста */
+    padding: 10px 10px;
+    text-align: center;
+  }
+  
+  .footer-container {
+    display: flex; /* Flexbox для выравнивания содержимого */
+    align-items: center; /* Вертикальное выравнивание */
+    justify-content: space-between; /* Пространство между блоками */
+    max-width: 1200px; /* Максимальная ширина */
+    margin: 0 auto; /* Центрирование footer */
+  }
+  
+  .footer-image-container img {
+    max-height: 30px; /* Ограничение высоты изображения */
+  }
+  
+  .footer-content-container {
+    text-align: right; /* Текст выравнивается справа */
+  }
+  
+  .footer-content-container a {
+    color: #fff; /* Цвет ссылок */
+    text-decoration: none; /* Убираем подчеркивание */
+  }
+  
+  .footer-content-container a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+  }

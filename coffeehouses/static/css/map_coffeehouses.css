@@ -1,9 +1,15 @@
+.base-container {
+    display: flex;
+    flex-direction: column;
+}
+
 .information-container {
     display: flex;
     flex-direction: column;
     padding: 10px 24px;
     font-size: 18px;
     gap: 10px;
+    margin-bottom: 20px;
 }
 
 .information-container h2{
@@ -19,6 +25,7 @@
     width: 70%;
     margin: 0 auto;
     border: 2px solid #4E3629;
+    margin-bottom: 40px;
 }
 
 .btn-primary {

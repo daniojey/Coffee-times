@@ -2,33 +2,40 @@
 <html lang="en">
     {% load static %}
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{% static "css/base.css" %}">
-        <link rel="shortcut icon" type="image/png" href="{% static 'icons/favicon.png' %}" >
+        <link rel="shortcut icon" type="image/png" href="{% static 'icons/favicon.png' %}">
         <title>Домашня сторінка</title>
     </head>
-    
-    <header>
-        <div class='base-links-container'>
-            <div class='home-page-container'>
-                <a href="{% url "coffeehouses:index" %}">Головна</a>
-            </div>
-            
-            <div class='base-links'>
-                <ul>
-                    <li><a href="#">Меню</a></li>
-                    <li><a href="#">Мої бронювання</a></li>
-                    <li><a href="{% url "coffeehouses:coffee_map" %}">Мапа кав'ярень</a></li>
-                    <li><a href="#">Профіль</a></li>
-                </ul>
-            </div>
-        </div>
-    </header>
     <body>
+        <header>
+            <div class='base-links-container'>
+                <div class='home-page-container'>
+                    <a href="{% url "coffeehouses:index" %}">Головна</a>
+                </div>
+                
+                <div class='base-links'>
+                    <ul>
+                        <li><a href="#">Меню</a></li>
+                        <li><a href="#">Мої бронювання</a></li>
+                        <li><a href="{% url "coffeehouses:coffee_map" %}">Мапа кав'ярень</a></li>
+                        <li><a href="#">Профіль</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
         {% block content %}
         {% endblock %}
-    </body>
 
-    <footer>
-        <!-- Your footer content -->
-    </footer>
+        <footer>
+            <div class='footer-container'>
+                <div class='footer-image-container'></div>
+                <div class='footer-content-container'>
+                    <p>2024 Все права защищены</p>
+                </div>
+            </div>
+        </footer>
+    </body>
 </html>
