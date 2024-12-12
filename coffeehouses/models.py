@@ -1,5 +1,37 @@
 from django.db import models
 
+class Category(models.Model):
+    name = models.CharField(max_length=155, unique=True, verbose_name='Категорія')
+    slug = models.SlugField(max_length=200, unique=True,)
+
+    class Meta:
+        db_table = 'category'
+        verbose_name = 'Категорию'
+        verbose_name_plural = 'Категории'
+        ordering = ("id",)
+
+    def __str__(self):
+        return self.name
+
+
+class Product(models.Model):
+    image = models.ImageField(upload_to='goods_images', blank=True, null=True, verbose_name='Зображення')
+    name = models.CharField(max_length=250, verbose_name="Назва продукту")
+    description = models.TextField(blank=True, null=True, verbose_name='Опис')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='categories')
+    price = models.DecimalField(default=0.00, max_digits=7, decimal_places=2, verbose_name='Цена')
+    discount = models.DecimalField(default=0.00, max_digits=4, decimal_places=2, verbose_name='Скидка в %')
+
+    class Meta:
+        db_table = 'products'
+        verbose_name = 'Продукт'
+        verbose_name_plural = 'Продукты'
+        ordering = ("id",)
+
+    def __str__(self):
+        return self.name
+
+
 # Create your models here.
 class CoffeeHouse(models.Model):
     name = models.CharField(max_length=155, verbose_name="Назва кав'ярні")
