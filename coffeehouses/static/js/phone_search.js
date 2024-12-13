@@ -4,10 +4,10 @@ function formatTime(timeString) {
   
     // Формируем строку в формате 2ч 00мин
     if (hours > 0) {
-      return `${hours}ч ${minutes}мин`;  // Если есть часы, показываем их
+      return `${hours}г ${minutes}хв`;  // Если есть часы, показываем их
     }
   
-    return `${minutes}мин ${seconds}сек`;  // Если нет часов, показываем минуты и секунды
+    return `${minutes}хв ${seconds}сек`;  // Если нет часов, показываем минуты и секунды
   }
   
   // Отправка формы через JS при нажатии Enter
@@ -57,11 +57,13 @@ function formatTime(timeString) {
           const formattedDuration = formatTime(reservation.times);  // Длительность
   
           bookingElement.innerHTML = `
-            <p>Номер стола: ${reservation.table_number}</p>
-            <p>Количество мест: ${reservation.seats}</p>
-            <p>Дата: ${reservation.date}</p>
-            <p>Час бронювання: ${formattedReservationTime}</p>
-            <p>Продовжуваність бронювання: ${formattedDuration}</p>
+            <div class="reservation-container">
+                <p>Дата: ${reservation.date}</p>
+                <p>Номер столика: ${reservation.table_number}</p>
+                <p>Кількість місць: ${reservation.seats}</p>
+                <p>Час бронювання: ${formattedReservationTime}</p>
+                <p>Продовжуваність бронювання: ${formattedDuration}</p>
+            </div>
           `;
           container.appendChild(bookingElement);
         });

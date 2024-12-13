@@ -61,16 +61,14 @@ class ReservationSearchView(View):
         data = json.loads(request.body)
         phone = data.get('phone')
 
-        print(phone)
         if phone[0] == '0':
             phone = '38' + phone
-        print(phone)
 
         if not phone:
             return JsonResponse({'error': 'По цьому номеру телефону немає бронювань'}, status=400)
 
         # Ищем бронирования по номеру телефона
-        reservations = Reservation.objects.filter(customer_phone=phone).select_related('coffeehouse', 'table')
+        reservations = Reservation.objects.filter(customer_phone=phone).select_related('coffeehouse', 'table').order_by('-reservation_date')
 
         # Преобразуем данные бронирований в нужный формат
         reservations_data = [{
