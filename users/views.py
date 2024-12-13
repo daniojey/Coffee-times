@@ -25,7 +25,7 @@ class LoginView(FormView):
 
             return super().form_valid(form) 
         else:
-            form.add_error(None, "Неверный логин или пароль")
+            form.add_error(None, "Невірний логин або номер телефону або пароль")
             return self.form_invalid(form)
 
 
