@@ -1,3 +1,4 @@
+import re
 from django.contrib import auth
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
@@ -6,6 +7,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView
 
 from users.forms import UserLoginForm, UserRegistrationForm
+from users.models import User
 
 class LoginView(FormView):
     template_name='users/login.html'
@@ -34,7 +36,21 @@ class RegistrationView(FormView):
 
     def form_valid(self, form) -> HttpResponse:
         user = form.save(commit=False)
-        user.set_password(form.cleaned_data['password'])  # Шифруем пароль перед сохранением
+        phone = form.cleaned_data.get('phone', None)
+
+        pattern = r'^(?:380|0)\d{9}$'
+        if re.match(pattern, phone):
+            if phone[0] == '0':
+                phone = '38' + phone
+            if User.objects.filter(phone=phone).exists():
+                form.add_error('phone', 'Такий номер телефону вже існує')
+                return self.form_invalid(form)
+        else:
+            form.add_error('phone', 'Неверный формат номера телефона. Укажите номер в формате 380123456789 или 0123456789.')
+            return self.form_invalid(form)
+
+
+        user.phone = phone
         user.save()  # Сохраняем пользователя в базе данных
         
         self.object = user
