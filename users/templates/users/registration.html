@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class='base-container'>
+    <div class='form-container'>
+        <form action="" method='post'>{% csrf_token %}
+            {{ form.as_p }}
+        </form>
+    </div>
+</div>
+{% endblock %}
