@@ -2,10 +2,18 @@
 {% load static %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static "css/login.css" %}">
 <div class='base-container'>
     <div class='form-container'>
         <form action="" method='post'>{% csrf_token %}
-            {{ form.as_p }}
+            <p><input type="text" id='username' name='username' placeholder='Логін' class='form-input'></p>
+            <p><input type="password" id='password' name='password' placeholder='Пароль' class='form-input'></p>
+
+            {% for error in form.errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+
+            <button type='submit' class='submit-btn'>Увійти</button>
         </form>
     </div>
 </div>
