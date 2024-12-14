@@ -4,8 +4,10 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
+from orders.models import Reservation
 from users.forms import UserLoginForm, UserRegistrationForm
 from users.models import User
 
@@ -62,8 +64,22 @@ class RegistrationView(FormView):
     
 
 
-def profile(request):
-    return redirect(reverse("coffeehouses:index"))
+class ProfileView(LoginRequiredMixin,TemplateView):
+    template_name = 'users/profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        user = self.request.user
+        reservations = Reservation.objects.filter(customer_name=user.username, customer_phone=user.phone)
+
+        context.update({
+            'user': user,
+            'reservations': reservations
+        })
+
+        return context
+    
 
 def logout(request):
     auth.logout(request)

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class='base-container'>
+    <div class='profile-page'>
+        {{ user.username }}
+        {{ user.phone }}
+    </div>
+    <div class='reservation-content'>
+        {% for item in  reservations %}
+        <div class='reservation-item'>
+            {{ item.coffeehouse }}
+            {{ item.reservation_date }}
+            {{ item.reservation_time }}
+            {{ item.booking_durartion }}
+            {{ item.get_status }}
+        </div>
+            {% endfor %}
+        </div>
+</div>
+{% endblock %}

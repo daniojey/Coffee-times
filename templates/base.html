@@ -20,7 +20,7 @@
                         <li><a href="{% url "coffeehouses:menu_page" %}">Меню</a></li>
                         <li><a href="{% url "coffeehouses:coffee_map" %}">Мапа кав'ярень</a></li>
                         {% if user.is_authenticated %}
-                            <li><a href="#">Профіль</a></li>
+                            <li><a href="{% url "users:profile" %}">Профіль</a></li>
                         {% else %}
                             <li><a href="{% url "coffeehouses:search_number_page" %}">Мої бронювання</a></li>
                             <li><a href="{% url "users:login" %}">Увійти</a> | <a href="{% url "users:registration" %}">Зарееструватися</a></li>
