@@ -2,19 +2,34 @@
 {% load static %}
 
 {% block content %}
-<form methon='post' id='reservation-form'>{% csrf_token %}
-    {% for field in form %}
-        {% if field.name == "table" %}
-            <div id="available-tables-container" class="hidden">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-            </div>
-        {% else %}
-            <p>{{ field.label }}|{{ field }}</p>
-        {% endif %}
-    {% endfor %}
-    <button type='submit'>Зберегти</button>
-</form>
+<link rel="stylesheet" href="{% static "css/reservation.css" %}">
+<div class='base-container'>
 
+    <div class='form-content'>
+        <form method='post' id='reservation-form' class='form-body'>{% csrf_token %}
+            {% for field in form %}
+                {% if field.name == "table" %}
+                <div id="available-tables-container" class="hidden">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                </div>
+                {% elif field.is_hidden %}
+                {{ field }}
+                {% elif field.name == 'reservation_date' %}
+                    <div class='date-wrapper'>
+                        <label>{{ field.label }}:</label>
+                        {{ field }}
+                    </div>
+                {% else %}
+                <p>{{ field.label }}: {{ field }}</p>
+                {% endif %}
+            {% endfor %}
+            <div class='button-container'>
+                <button type='submit' class='submit-btn'>Зберегти</button>
+            </div>
+        </form>
+    </div>
+        
+</div>
 <script src="{% static "js/get_available_tables.js" %}"></script>
 {% endblock %}

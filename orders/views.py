@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import json
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, View, TemplateView, FormView
 from django.db.models import F, Q, DurationField, ExpressionWrapper, TimeField
 
@@ -18,10 +19,27 @@ class HomePageOrders(TemplateView):
 class CreateReservation(FormView):
     template_name = 'orders/reservation.html'
     form_class= CreateReservationForm
+    success_url = reverse_lazy('coffeehouses:index')
+
+    def form_valid(self, form):
+        user = self.request.user
+
+        if user.is_authenticated:
+            reservation = form.save(commit=False)
+            reservation.customer_name = user.username
+            reservation.customer_phone = user.phone
+            reservation.save()
+        else:
+            form.save()
+
+        return super().form_valid(form)
+    
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-
+        user = self.request.user
+        kwargs['user'] = user
+        
         coffeehouse_id = self.request.GET.get('coffeehouse', None)
         
         if coffeehouse_id:
@@ -86,7 +104,6 @@ def get_available_tables(request):
              # Фильтруем пересекающиеся брони
             overlapping_reservations = annotations_reservation.filter(end_time__gt=reservation_time).filter(reservation_time__lt=end_time).values_list('table_id', flat=True)
 
-            print(overlapping_reservations)
 
             # Формируем данные для ответа
             tables_data = [{"id": table.id, 'name': table.table_number} for table in Table.objects.filter(coffeehouse_id=coffeehouse_id).exclude(id__in=overlapping_reservations)]

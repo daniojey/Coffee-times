@@ -5,23 +5,30 @@ let previousData = {
     booking_duration: ''
 };
 
-document.getElementById('reservation-form').addEventListener('change', function () {
-    // Логируем начало события изменения
-    console.log("Form changed, starting to gather data...");
+let isTableContainerVisible = false; // Флаг для отслеживания состояния видимости контейнера
 
-    // Получаем значения из формы
+document.getElementById('reservation-form').addEventListener('change', function (event) {
+    const tableSelections = document.getElementById('available-tables-container');
+    const tableSelectField = document.getElementById('available_tables');
+
+    // Если изменяется выбор столика, игнорируем дальнейшую обработку
+    if (event.target.id === 'available_tables') {
+        console.log("Table selection changed, skipping form update logic.");
+        return;
+    }
+
+    // Скрываем блок с доступными столиками до обновления
+    if (!['available_tables'].includes(event.target.id)) {
+        tableSelections.classList.add('hidden');
+        isTableContainerVisible = false;
+    }
+
+    // Получаем значения полей формы
     const coffeehouse = document.getElementById('coffeehouse').value;
     const reservation_date = document.getElementById('reservation_date').value;
     const reservation_time = document.getElementById('reservation_time').value;
     const booking_duration = document.getElementById('booking_duration').value;
 
-    const tableSelections = document.getElementById('available-tables-container');
-
-    console.log('Before hiding:', tableSelections.classList);
-    tableSelections.classList.add('hidden');
-    console.log('After hiding:', tableSelections.classList);
-
-    // Логируем данные формы
     console.log("Form data:", {
         coffeehouse: coffeehouse,
         reservation_date: reservation_date,
@@ -29,7 +36,7 @@ document.getElementById('reservation-form').addEventListener('change', function 
         booking_duration: booking_duration
     });
 
-    // Проверяем, изменилось ли хотя бы одно поле
+    // Проверяем, изменилось ли хотя бы одно из ключевых полей
     if (
         coffeehouse !== previousData.coffeehouse ||
         reservation_date !== previousData.reservation_date ||
@@ -44,11 +51,11 @@ document.getElementById('reservation-form').addEventListener('change', function 
             booking_duration: booking_duration
         };
 
-        // Проверяем, все ли поля заполнены
+        // Проверяем, заполнены ли все поля
         if (coffeehouse && reservation_date && reservation_time && booking_duration) {
             console.log("All fields filled, sending AJAX request...");
 
-            // Отправляем AJAX запрос
+            // Отправляем AJAX-запрос
             fetch('get_tables/', {
                 method: 'POST',
                 headers: {
@@ -63,39 +70,35 @@ document.getElementById('reservation-form').addEventListener('change', function 
                 })
             })
             .then(response => {
-                // Логируем статус ответа
                 console.log("Response status:", response.status);
-
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-
                 return response.json();
             })
             .then(data => {
-                // Логируем полученные данные
                 console.log("Data received from server:", data);
 
-                // Обновляем список доступных столиков
-                const tableSelect = document.getElementById('available_tables');
-                tableSelect.innerHTML = '';  // очищаем текущие варианты
+                // Очищаем текущие варианты выбора столиков
+                tableSelectField.innerHTML = '';
 
-                // Логируем процесс обновления списка столиков
-                console.log("Updating table options...");
+                // Добавляем новые варианты
                 data.tables.forEach(table => {
                     const option = document.createElement('option');
                     option.value = table.id;
                     option.textContent = table.name;
-                    tableSelect.appendChild(option);
+                    tableSelectField.appendChild(option);
                 });
 
-                // Показываем поле, если столики доступны
-                console.log('Before hiding:', tableSelections.classList);
-                tableSelections.classList.remove('hidden');
-                console.log('Before hiding:', tableSelections.classList);
+                // Показываем блок с доступными столиками, если есть данные
+                if (data.tables.length > 0) {
+                    tableSelections.classList.remove('hidden');
+                    isTableContainerVisible = true;
+                } else {
+                    console.log("No tables available.");
+                }
             })
             .catch(error => {
-                // Логируем ошибку
                 console.error("Ошибка:", error);
             });
         } else {
