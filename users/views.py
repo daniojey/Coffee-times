@@ -10,6 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from orders.models import Reservation
 from users.forms import UserLoginForm, UserRegistrationForm
 from users.models import User
+from users.utils import get_actual_reservations
 
 class LoginView(FormView):
     template_name='users/login.html'
@@ -71,10 +72,13 @@ class ProfileView(LoginRequiredMixin,TemplateView):
         context = super().get_context_data(**kwargs)
 
         user = self.request.user
-        reservations = Reservation.objects.filter(customer_name=user.username, customer_phone=user.phone)
+        reservations = Reservation.objects.filter(customer_name=user.username, customer_phone=user.phone).order_by('-reservation_date')[:3]
+        actual_reservations = get_actual_reservations(phone=user.phone)
+        print(actual_reservations)
 
         context.update({
             'user': user,
+            'actual_reservations': actual_reservations,
             'reservations': reservations
         })
 
