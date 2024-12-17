@@ -1,15 +1,17 @@
 from datetime import datetime, timedelta
 import json
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, View, TemplateView, FormView
-from django.db.models import F, Q, DurationField, ExpressionWrapper, TimeField
+from django.db.models import F, ExpressionWrapper, TimeField
 
 from coffeehouses.forms import CreateReservationForm
 from coffeehouses.models import CoffeeHouse, Table
 from orders.models import Reservation
 from django.views.decorators.csrf import csrf_exempt
+
+from users.utils import get_actual_reservations, get_user_ip
 
 # Create your views here.
 
@@ -23,14 +25,26 @@ class CreateReservation(FormView):
 
     def form_valid(self, form):
         user = self.request.user
+        ip = get_user_ip(self.request)
+
+        actual_reservations = get_actual_reservations(phone=user.phone)
+        if len(actual_reservations) >= 2:
+            return JsonResponse({'status': 'success', 'message': 'Вы создали слишком много резерваций, вы сможете создать новую если отмените одну из созданных ранее.'})
+        
+        reservation_ip = get_actual_reservations(ip=ip)
+        if len(reservation_ip) >= 2:
+            return JsonResponse({'status': 'success', 'message': 'Вы создали слишком много резерваций, вы сможете создать новую если отмените одну из созданных ранее.'})
 
         if user.is_authenticated:
             reservation = form.save(commit=False)
             reservation.customer_name = user.username
             reservation.customer_phone = user.phone
+            reservation.ip = ip
             reservation.save()
         else:
-            form.save()
+            reservation = form.save(commit=False)
+            reservation.ip = ip
+            reservation.save()
 
         return super().form_valid(form)
     
@@ -57,6 +71,8 @@ class CreateReservation(FormView):
 
 @csrf_exempt
 def get_available_tables(request):
+    ip = get_user_ip(request=request)
+    print(ip)
     if request.method == 'POST':
         try:
             # Парсим данные из тела запроса

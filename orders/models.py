@@ -14,6 +14,7 @@ class Reservation(models.Model):
     booking_duration = models.DurationField(verbose_name='Продовжуваність бронювання')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания заказа")
     status = models.BooleanField(default=False)  # True — посетил, False — не посетил
+    created_ip = models.CharField(verbose_name='Ip с которого созданна резервация')
 
     def __str__(self) -> str:
         return f"Кав'ярня:{self.coffeehouse} - Ім'я кліента:{self.customer_name} - Номер Телефону:{self.customer_phone} - Дата та час бронювання:{self.reservation_date}|{self.reservation_time}"
