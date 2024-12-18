@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 import json
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -27,13 +27,13 @@ class CreateReservation(FormView):
         user = self.request.user
         ip = get_user_ip(self.request)
 
-        actual_reservations = get_actual_reservations(phone=user.phone)
-        if len(actual_reservations) >= 2:
-            return JsonResponse({'status': 'success', 'message': 'Вы создали слишком много резерваций, вы сможете создать новую если отмените одну из созданных ранее.'})
+        # actual_reservations = get_actual_reservations(phone=user.phone)
+        # if len(actual_reservations) >= 2:
+        #     return JsonResponse({'status': 'success', 'message': 'Вы создали слишком много резерваций, вы сможете создать новую если отмените одну из созданных ранее.'})
         
-        reservation_ip = get_actual_reservations(ip=ip)
-        if len(reservation_ip) >= 2:
-            return JsonResponse({'status': 'success', 'message': 'Вы создали слишком много резерваций, вы сможете создать новую если отмените одну из созданных ранее.'})
+        # reservation_ip = get_actual_reservations(ip=ip)
+        # if len(reservation_ip) >= 2:
+        #     return JsonResponse({'status': 'success', 'message': 'Вы создали слишком много резерваций, вы сможете создать новую если отмените одну из созданных ранее.'})
 
         if user.is_authenticated:
             reservation = form.save(commit=False)
@@ -130,3 +130,67 @@ def get_available_tables(request):
 
     else:
         return JsonResponse({'tables': 'Нет доступных столиков, выберете пожалуйста другой вариант'}, status=405)
+    
+
+
+def get_available_times(request):
+    date_str = request.GET.get('date')
+    coffeehouse_id = request.GET.get('coffeehouse', None)
+    if coffeehouse_id or coffeehouse_id != '':
+        coffeehouse = CoffeeHouse.objects.get(id=coffeehouse_id)
+    else:
+        coffeehouse = None
+
+    now = datetime.now()
+
+    if date_str:
+        selected_date = datetime.strptime(date_str, '%Y-%m-%d')
+    else:
+        selected_date = now
+
+    time_choices = []
+    start_hour = now.hour if selected_date.date() == now.date() else 0
+    start_minute = now.minute if selected_date.date() == now.date() else 0
+    end_hour = 24
+
+    if coffeehouse:
+        # Если сегодняшняя дата и время сейчас меньше чем время открытия кафе
+        if now.time() < coffeehouse.opening_time and selected_date.date() == now.date():
+            print('1')
+            st_hour = coffeehouse.opening_time
+            en_hour = coffeehouse.closing_time
+
+            start_hour = str(st_hour).split(':')
+            end_hour = str(en_hour).split(':')
+
+            start_hour = int(start_hour[0])
+            end_hour = int(end_hour[0]) - 1
+
+        # Если дата сегодняшняя но время у при котором пользователь зашёл создать резервацию позже чем открытие кофейни
+        # то высталяем лишь ограничение на закрытие
+        elif now.time() > coffeehouse.opening_time and selected_date.date() == now.date():
+            print('2')
+            en_hour = coffeehouse.closing_time
+            end_hour = str(en_hour).split(':')
+            end_hour = int(end_hour[0]) - 1
+
+        # Если другая дата то ограничиваем время лишь по открытию и закрытию
+        elif selected_date.date() != now.date():
+            print('3')
+            st_hour = coffeehouse.opening_time
+            en_hour = coffeehouse.closing_time
+
+            start_hour = str(st_hour).split(':')
+            end_hour = str(en_hour).split(':')
+
+            start_hour = int(start_hour[0])
+            end_hour = int(end_hour[0]) - 1
+        
+        
+    for hour in range(start_hour, end_hour):
+        for minute in range(0, 60, 30):
+            if hour > start_hour or (hour == start_hour and minute >= start_minute):
+                time_str = f"{hour:02}:{minute:02}"
+                time_choices.append(time_str)
+
+    return JsonResponse({'times': time_choices})

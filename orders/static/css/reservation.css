@@ -84,6 +84,7 @@ p {
     border: 1px solid #FFFF;
     border-radius: 12px;
     padding: 10px;
+    padding-right: 45px;
     font-size: 16px;
     appearance: none !important; /* Убираем стандартный стиль браузера */
     -webkit-appearance: none !important; /* Для Safari/Chrome */

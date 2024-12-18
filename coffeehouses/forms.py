@@ -1,9 +1,9 @@
-from datetime import time, timedelta
+from datetime import date, time, timedelta
 from django import forms
-from django.forms import widgets
+from django.forms import ValidationError, widgets
 
-from coffeehouses.models import CoffeeHouse, Table
 from orders.models import Reservation
+from orders import widgets
 
 
 class CreateReservationForm(forms.ModelForm):
@@ -16,16 +16,17 @@ class CreateReservationForm(forms.ModelForm):
             self.fields['customer_phone'].required = False
             self.fields['customer_name'].widget = forms.HiddenInput()
             self.fields['customer_phone'].widget = forms.HiddenInput()
-
+        
+        self.fields['reservation_date'].widget.attrs['min'] = date.today().isoformat()
 
     reservation_date = forms.DateField(
         label='Дата',
         widget=forms.DateInput(attrs={'type': 'date', 'id': 'reservation_date', 'class': 'date-input', 'placeholder': 'Оберіть дату'})
     )
-    reservation_time = forms.TimeField(
-        label='Час бронювання',
-        widget=forms.TimeInput(attrs={'type': 'time', 'placeholder': 'Години:хвилини (наприклад, 14:30)', 'id': 'reservation_time', 'class': 'time-input'})
-    )
+    # reservation_time = forms.TimeField(
+    #     label='Час бронювання',
+    #     widget=forms.TimeInput(attrs={'type': 'time', 'placeholder': 'Години:хвилини (наприклад, 14:30)', 'id': 'reservation_time', 'class': 'time-input'})
+    # )
     booking_duration = forms.TimeField(
         label='Продовжуваність бронювання',
         widget=forms.TimeInput(attrs={'type': 'time', 'id': 'booking_duration', 'class': 'time-input'})
@@ -49,12 +50,13 @@ class CreateReservationForm(forms.ModelForm):
             'reservation_time': 'Час бронювання',
             'table': 'Оберіть столик'
         }
+
         widgets = {
             'coffeehouse': forms.Select(attrs={'id': 'coffeehouse', 'class': 'custom-select'}),
             'customer_name': forms.TextInput(attrs={'type': 'text', 'placeholder': "Введіть ім'я", 'id': 'customer_phone', 'class':'custom-input'}),
             'customer_phone': forms.TextInput(attrs={'type': 'text', 'placeholder': '380xxxxxxxxx', 'id': 'customer_phone', 'class':'custom-input'}),
             'reservation_date': forms.DateInput(attrs={'type': 'date', 'id': 'reservation_date', 'class': 'date-input','placeholder': 'Оберіть дату'}),
-            'reservation_time': forms.TimeInput(attrs={'type': 'time', 'id': 'reservation_time', 'class': 'time-input'}),
+            'reservation_time': widgets.CustomTimeSelect(attrs={'id': 'reservation_time', 'class': 'time-input'}),
             'booking_duration': forms.TimeInput(attrs={'type': 'time', 'id': 'booking_duration', 'class': 'time-input'}),
             'table': forms.Select(attrs={'id': 'available_tables', 'class': 'custom-table'})
         }
@@ -73,3 +75,9 @@ class CreateReservationForm(forms.ModelForm):
             except ValueError:
                 raise forms.ValidationError("Invalid duration format. Use HH:MM.")
         return duration
+
+    def clean_reservation_date(self):
+        reservation_date = self.cleaned_data['reservation_date']
+        if reservation_date < date.today():
+            raise ValidationError("Неможливо обрати дату раніше сьогоднішньої.")
+        return reservation_date
