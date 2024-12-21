@@ -19,6 +19,8 @@ def get_actual_reservations(phone=None, ip=None):
         ).exclude(
             Q(reservation_date=now().date(), reservation_time__lt=now().time()) 
         ).order_by('reservation_date', 'reservation_time')
+    else:
+        res = []
     
     return res
 

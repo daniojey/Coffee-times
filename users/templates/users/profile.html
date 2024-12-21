@@ -11,17 +11,19 @@
             <p>Ваш номер телефону - {{ user.phone }}</p>
             <a href="{% url "users:logout" %}" class='out-link'>Вийти з аккаунту</a>
         </div>
+        {% if actual_reservations %}
         <div class="active-reservation">
             <h2>Актуальні резервації:</h2>
             {% for item in actual_reservations %}
-                <div class='reservation-item'>
-                    <p>Кав'ярня - {{ item.coffeehouse }}</p>
-                    <p>Дата - {{ item.reservation_date }}</p>
-                    <p>Час резервації - {{ item.reservation_time }}</p>
-                    <p>Статус - {{ item.get_status }}</p>
-                </div>
+            <div class='reservation-item'>
+                <p>Кав'ярня - {{ item.coffeehouse }}</p>
+                <p>Дата - {{ item.reservation_date }}</p>
+                <p>Час резервації - {{ item.reservation_time }}</p>
+                <p>Статус - {{ item.get_status }}</p>
+            </div>
             {% endfor %}
         </div>
+        {% endif %}
     </div>
     <div class='reservation-content'>
         <h2>Історія резервацій:</h2>

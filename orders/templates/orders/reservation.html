@@ -20,6 +20,14 @@
                         <label>{{ field.label }}:</label>
                         {{ field }}
                     </div>
+                {% elif field.name == "reservation_time" %}
+                    <div class='reservation-time-container'>
+                        <p class='reservation-time-field'>{{ field.label }}: {{ field }}</p>
+                        
+                        <div id="no-available-times-message" class="hidden">
+                            Нет доступного времени для выбранной даты и кофейни.
+                        </div>
+                    </div>
                 {% else %}
                 <p>{{ field.label }}: {{ field }}</p>
                 {% endif %}
@@ -31,6 +39,6 @@
     </div>
         
 </div>
-<script src="{% static "js/get_available_tables.js" %}"></script>
 <script src="{% static "js/get_available_times.js" %}"></script>
+<script src="{% static "js/get_available_tables.js" %}"></script>
 {% endblock %}

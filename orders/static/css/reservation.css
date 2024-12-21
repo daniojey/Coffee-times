@@ -77,6 +77,10 @@ p {
 
 }
 
+.reservation-time-container {
+    display: flex;
+    align-items: center;
+}
 
 .time-input {
     color: #FFFF;
@@ -102,6 +106,16 @@ p {
     width: 20px; /* Увеличиваем область клика */
     cursor: pointer;
 }
+
+#no-available-times-message {
+    color: #FFFF;
+    background-color: #000000;
+    border: 1px solid #FFFF;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 12px;
+}
+
 
 .custom-input {
     padding: 10px;

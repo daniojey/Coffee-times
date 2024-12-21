@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta, time
 import json
+import re
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -26,6 +27,7 @@ class CreateReservation(FormView):
     def form_valid(self, form):
         user = self.request.user
         ip = get_user_ip(self.request)
+        print(ip)
 
         # actual_reservations = get_actual_reservations(phone=user.phone)
         # if len(actual_reservations) >= 2:
@@ -113,16 +115,15 @@ def get_available_tables(request):
             # Извлекаем только время окончания
             end_time = end_datetime.time()
 
-            print(end_datetime)
-            print(end_time)
-
-
+            print(f"RESERVATION_TIME", reservation_time)
              # Фильтруем пересекающиеся брони
             overlapping_reservations = annotations_reservation.filter(end_time__gt=reservation_time).filter(reservation_time__lt=end_time).values_list('table_id', flat=True)
+            print(f"OVERLAPPING", overlapping_reservations)
 
 
             # Формируем данные для ответа
             tables_data = [{"id": table.id, 'name': table.table_number} for table in Table.objects.filter(coffeehouse_id=coffeehouse_id).exclude(id__in=overlapping_reservations)]
+            print(f"DATA", tables_data)
             return JsonResponse({'tables': tables_data})
 
         except json.JSONDecodeError:
@@ -192,5 +193,8 @@ def get_available_times(request):
             if hour > start_hour or (hour == start_hour and minute >= start_minute):
                 time_str = f"{hour:02}:{minute:02}"
                 time_choices.append(time_str)
-
-    return JsonResponse({'times': time_choices})
+                
+    if len(time_choices) == 0:
+        return JsonResponse({'times': [], 'message': 'Нет доступного времени на сегодня'})
+    else:
+        return JsonResponse({'times': time_choices})
