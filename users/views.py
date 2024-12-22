@@ -1,10 +1,12 @@
 import re
 from django.contrib import auth
 from django.contrib.auth import authenticate, login
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import FormView, TemplateView
+from django.views.generic import FormView, ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from orders.models import Reservation
@@ -83,7 +85,40 @@ class ProfileView(LoginRequiredMixin,TemplateView):
         })
 
         return context
-    
+
+class HistoryReservationView(LoginRequiredMixin, ListView):
+    template_name = "users/user_history.html"
+    context_object_name = 'reservations'
+    paginate_by = 5
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.phone:
+            reservations = Reservation.objects.filter(customer_phone=user.phone).order_by('-reservation_date')
+        else:
+            reservations = Reservation.objects.filter(customer_name=user.username)
+
+        # Применение фильтров
+        filter_query = self.request.GET.get('filter', '')
+        if filter_query:
+            reservations.filter(Q(coffeehouse_icontains=filter_query) | Q(reservation_date__icontains=filter_query))
+
+        created_date = self.request.GET.get('date_added', '')
+        if created_date:
+            reservations.order_by('-reservation_date')
+
+        return reservations
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs) 
+        
+        page = self.request.GET.get('page', 1)
+        paginator = Paginator(self.get_queryset(), self.paginate_by)
+        context['page_obj'] = paginator.get_page(page)
+
+        context['filter'] = self.request.GET.get('filter', '')
+
+        return context
 
 def logout(request):
     auth.logout(request)

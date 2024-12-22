@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static "css/user_history.css" %}">
+
+    <div class='base-container'>
+        <div class='reservation-content'>
+            {% for item in reservations %}
+            <div class='reservation-item'>
+                <p>Кав'ярня - {{ item.coffeehouse }}</p>
+                <p>Дата - {{ item.reservation_date }}</p>
+                <p>Час резервації - {{ item.reservation_time }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class='filter-content'>
+            Фильтр в будущем
+        </div>
+    </div>
+    
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+            <div class='page-text-links'>
+                <a href="?page=1" class='text-link'>Первая</a>
+                <a href="?page={{ page_obj.previous_page_number }}" class='text-link'>Назад</a>
+            </div>
+            {% endif %}
+            
+            <div class='page-number-container'>
+                {% for page in page_obj.paginator.page_range %}
+                {% if page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                
+                    <a href="?page={{ page }}" {% if page == page_obj.number %} class="page-number active" {% else %} class='page-number'{% endif %}>{{ page }}</a>
+                {% endif %}
+                {% endfor %}
+            </div>
+            
+            {% if page_obj.has_next %}
+
+            <div class='page-text-links'>
+                <a href="?page={{ page_obj.next_page_number }}" class='text-link'>Вперёд</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class='text-link'>Последняя</a>
+            </div>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}
