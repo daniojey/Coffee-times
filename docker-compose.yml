@@ -1,0 +1,34 @@
+version: '3.11'
+services:
+  db:
+    restart: always
+    container_name: my_postgres_container  # Задаем имя контейнера для сервиса 'db'
+    image: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+    volumes:
+      - db_data:/var/lib/postgresql/date
+  
+
+  web:
+    build: .
+    container_name: my_django_container  # Задаем имя контейнера для сервиса 'web'
+    volumes:
+      - .:/app
+      - ./media:/application/static/media
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+
+volumes:
+  db_data:
