@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+import dj_database_url
+import sys
+from decouple import config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-dtm(&qi$!j_z_vgr26=o-v5*c93t$g-h@shxk%#znf8*^*oyx_'
+SECRET_KEY = config('DJANGO_SECRET_KEY', default="django-insecure-dtm(&qi$!j_z_vgr26=o-v5*c93t$g-h@shxk%#znf8*^*oyx_")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -46,6 +50,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -79,14 +84,19 @@ WSGI_APPLICATION = 'main.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Coffee_times',
-        'USER': 'coffee_user',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',  # Или адрес сервера
-        'PORT': '5432',       # Стандартный порт PostgreSQL
-    }
+    'default': dj_database_url.config(
+        default="postgres://coffee_user:root@localhost:5432/Coffee_times",  # Это строка по умолчанию для локальной базы данных
+        conn_max_age=600,
+        ssl_require=True  # Для безопасности на Heroku
+    )
+    # {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'Coffee_times',
+    #     'USER': 'coffee_user',
+    #     'PASSWORD': 'root',
+    #     'HOST': 'localhost',  # Или адрес сервера
+    #     'PORT': '5432',       # Стандартный порт PostgreSQL
+    # }
 }
 
 AUTH_USER_MODEL = 'users.User'
@@ -129,12 +139,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+if 'test' in sys.argv:
+    # Используем стандартное хранилище для тестов, чтобы избежать ошибок с манифестом
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+else:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
     BASE_DIR / "static", 'users'
 ]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

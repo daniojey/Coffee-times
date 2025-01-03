@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static "css/registration.css" %}">
+<div class='base-container'>
+    <div class='form-container'>
+        <form action="" method='post'>{% csrf_token %}
+            <p><input type="text" id='username' name='username' placeholder='Логін' class='form-input'></p>
+            <p><input type="text" id='phone' name='phone' placeholder='Номер телефону' class='form-input'></p>
+            <p><input type="password" id='password1' name='password1' placeholder='Пароль' class='form-input'></p>
+            <p><input type="password" id='password2' name='password2'placeholder='Повторіть пароль' class='form-input'></p>
+
+            {% for field_name, error_list in form.errors.items %}
+                <p class="error-message" data-field="{{ field_name }}">{{ error_list|join:", " }}</p>
+            {% endfor %}
+
+            <button type='submit' class='submit-btn'>Зарєеструватися</button>
+        </form>
+    </div>
+</div>
+
+<script src="{% static "js/registration_error_mesage.js" %}"></script>
+{% endblock %}

@@ -1,0 +1,51 @@
+.base-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.information-container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 24px;
+    font-size: 18px;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.information-container h2{
+    margin: 0;
+}
+
+.information-container p{
+    margin: 0;
+}
+
+#map {
+    height: 750px;
+    width: 70%;
+    margin: 0 auto;
+    border: 2px solid #4E3629;
+    margin-bottom: 40px;
+}
+
+.btn-primary {
+    color: rgb(255, 255, 255) !important;
+    text-decoration: none;
+    background-color: black;
+    padding: 7px 10px;
+    border-radius: 15px;
+    margin: 0 auto;
+    transition: color 0.6s ease, background-color 0.7s ease;
+    border: 1px solid black;
+}
+
+.btn-primary:hover {
+    background-color: #FFFF;
+    color: black !important;
+}
+
+.mark-content {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
