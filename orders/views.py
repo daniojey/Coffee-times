@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, View, TemplateView, FormView
 from django.db.models import F, ExpressionWrapper, TimeField
 
+import coffeehouses
 from coffeehouses.forms import CreateReservationForm
 from coffeehouses.models import CoffeeHouse, Table
 from orders.models import Reservation
@@ -74,7 +75,6 @@ class CreateReservation(FormView):
 @csrf_exempt
 def get_available_tables(request):
     ip = get_user_ip(request=request)
-    print(ip)
     if request.method == 'POST':
         try:
             # Парсим данные из тела запроса
@@ -115,15 +115,12 @@ def get_available_tables(request):
             # Извлекаем только время окончания
             end_time = end_datetime.time()
 
-            print(f"RESERVATION_TIME", reservation_time)
              # Фильтруем пересекающиеся брони
             overlapping_reservations = annotations_reservation.filter(end_time__gt=reservation_time).filter(reservation_time__lt=end_time).values_list('table_id', flat=True)
-            print(f"OVERLAPPING", overlapping_reservations)
 
 
             # Формируем данные для ответа
             tables_data = [{"id": table.id, 'name': table.table_number} for table in Table.objects.filter(coffeehouse_id=coffeehouse_id).exclude(id__in=overlapping_reservations)]
-            print(f"DATA", tables_data)
             return JsonResponse({'tables': tables_data})
 
         except json.JSONDecodeError:
@@ -165,7 +162,7 @@ def get_available_times(request):
             end_hour = str(en_hour).split(':')
 
             start_hour = int(start_hour[0])
-            end_hour = int(end_hour[0]) - 1
+            end_hour = int(end_hour[0])
 
         # Если дата сегодняшняя но время у при котором пользователь зашёл создать резервацию позже чем открытие кофейни
         # то высталяем лишь ограничение на закрытие
@@ -173,7 +170,7 @@ def get_available_times(request):
             print('2')
             en_hour = coffeehouse.closing_time
             end_hour = str(en_hour).split(':')
-            end_hour = int(end_hour[0]) - 1
+            end_hour = int(end_hour[0]) 
 
         # Если другая дата то ограничиваем время лишь по открытию и закрытию
         elif selected_date.date() != now.date():
@@ -185,7 +182,7 @@ def get_available_times(request):
             end_hour = str(en_hour).split(':')
 
             start_hour = int(start_hour[0])
-            end_hour = int(end_hour[0]) - 1
+            end_hour = int(end_hour[0])
         
         
     for hour in range(start_hour, end_hour):
@@ -197,4 +194,62 @@ def get_available_times(request):
     if len(time_choices) == 0:
         return JsonResponse({'times': [], 'message': 'Нет доступного времени на сегодня'})
     else:
+        time_choices.pop()
         return JsonResponse({'times': time_choices})
+    
+
+
+def get_booking_duration(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+
+            coffeehouse_id = data.get('coffeehouse')
+            reservation_time = data.get('reservation_time')
+
+            coffeehouse = get_object_or_404(CoffeeHouse, id=coffeehouse_id)
+
+            # Преобразуем время закрытия и время бронирования в datetime
+            closing_time = datetime.strptime(coffeehouse.closing_time.strftime("%H:%M"), "%H:%M")
+            reservation_time = datetime.strptime(reservation_time, "%H:%M")
+
+            # Вычисляем разницу между временем закрытия и временем бронирования
+            difference = closing_time - reservation_time
+
+            if difference.total_seconds() <= 0:
+                # Если разница отрицательная или равна 0, бронирование невозможно
+                return JsonResponse({'data': ["00:00"]})
+
+            # Получаем оставшиеся часы и минуты
+            remaining_hours, remainder = divmod(difference.seconds, 3600)
+            remaining_minutes = remainder // 60
+
+            durations = []
+
+            # Генерация доступных интервалов времени
+            if remaining_hours <= 3:
+                for hour in range(remaining_hours + 1):
+                    for minute in range(0, 60, 15):  # Интервалы по 15 минут
+                        if hour == remaining_hours and minute > remaining_minutes:
+                            break  # Прерываем, если минуты выходят за пределы оставшегося времени
+                        elif hour > 4 and minute > remaining_minutes:
+                            break
+
+                        durations.append(f"{hour:02}:{minute:02}")
+            else:
+                for hour in range(4):
+                    for minute in range(0, 60, 15):  # Интервалы по 15 минут
+                        if hour == 3 and minute > 0:
+                            break
+                        durations.append(f"{hour:02}:{minute:02}")
+
+            if len(durations) == 0:
+                durations.append("00:00")
+
+            return JsonResponse({'data': durations})
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Ошибка логики'}, status=405)
+
+
+
+    

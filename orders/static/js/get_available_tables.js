@@ -91,6 +91,7 @@ function getAvailableTables() {
 
         const tableSelectField = document.getElementById('available_tables');
         const tableSelections = document.getElementById('available-tables-container');
+        const noTablesMessage = document.getElementById('no-available-tibles-message');
 
         // Очищаем текущие варианты выбора столиков
         tableSelectField.innerHTML = '';
@@ -106,8 +107,10 @@ function getAvailableTables() {
         // Показываем блок с доступными столиками, если есть данные
         if (data.tables.length > 0) {
             tableSelections.classList.remove('hidden');
+            noTablesMessage.classList.add('hidden');  // Скрыть сообщение, если есть столики
         } else {
-            console.log("No tables available.");
+            tableSelections.classList.add('hidden');  // Скрыть контейнер с таблицами
+            noTablesMessage.classList.remove('hidden');  // Показать сообщение, если столики отсутствуют
         }
     })
     .catch(error => {

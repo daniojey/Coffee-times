@@ -74,8 +74,8 @@ class ProfileView(LoginRequiredMixin,TemplateView):
         context = super().get_context_data(**kwargs)
 
         user = self.request.user
-        reservations = Reservation.objects.filter(customer_name=user.username, customer_phone=user.phone).order_by('-reservation_date')[:3]
         actual_reservations = get_actual_reservations(phone=user.phone)
+        reservations = Reservation.objects.filter(customer_name=user.username, customer_phone=user.phone).exclude(id__in=actual_reservations.values_list('id', flat=True)).order_by('-reservation_date')[:3]
         print(actual_reservations)
 
         context.update({

@@ -40,8 +40,8 @@ class CustomBookingSelect(forms.Select):
         for hour in range(0, 4):
             for minute in range(0, 60, 15):
                     if hour <= 3:
-                        if hour == 3 and minute == 0:
-                            ...
+                        if hour == 3 and minute > 0:
+                            break
                         else:
                             time_str = f"{hour:02}:{minute:02}"
                             time_choices.append((time_str, time_str))

@@ -9,10 +9,14 @@
         <form method='post' id='reservation-form' class='form-body'>{% csrf_token %}
             {% for field in form %}
                 {% if field.name == "table" %}
-                <div id="available-tables-container" class="hidden">
-                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {{ field }}
-                </div>
+                    <div id="available-tables-container" class="hidden">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                    </div>
+                    
+                    <div id="no-available-tibles-message" class="hidden">
+                        Немає доступных столиків, оберіть інший час або дату.
+                    </div>
                 {% elif field.is_hidden %}
                 {{ field }}
                 {% elif field.name == 'reservation_date' %}
