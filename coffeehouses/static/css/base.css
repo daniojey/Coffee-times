@@ -85,9 +85,16 @@ footer {
     max-width: 1200px; /* Максимальная ширина */
     margin: 0 auto; /* Центрирование footer */
   }
+
+  .footer-image-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
   
   .footer-image-container img {
-    max-height: 30px; /* Ограничение высоты изображения */
+    max-height: 24px; /* Ограничение высоты изображения */
   }
   
   .footer-content-container {
