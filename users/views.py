@@ -98,20 +98,35 @@ class HistoryReservationView(LoginRequiredMixin, ListView):
     paginate_by = 5
 
     def get_queryset(self):
+        s_active = self.request.GET.get('is_active', '')
+        s_coffeehouse = self.request.GET.get('is_cafe', '')
+        s_sort_by = self.request.GET.get('sort_by', '')
+
+        print(s_sort_by)
+
         user = self.request.user
         if user.phone:
-            reservations = Reservation.objects.filter(customer_phone=user.phone).order_by('-reservation_date')
+            reservations = Reservation.objects.filter(customer_phone=user.phone)
         else:
             reservations = Reservation.objects.filter(customer_name=user.username)
 
-        # Применение фильтров
-        filter_query = self.request.GET.get('filter', '')
-        if filter_query:
-            reservations.filter(Q(coffeehouse_icontains=filter_query) | Q(reservation_date__icontains=filter_query))
+        if s_active:
+            if user.phone:
+                reservations = get_actual_reservations(phone=user.phone)
+            else:
+                reservations = get_actual_reservations(username=user.username)
 
-        created_date = self.request.GET.get('date_added', '')
-        if created_date:
-            reservations.order_by('-reservation_date')
+        if s_coffeehouse:
+            reservations = reservations.order_by('coffeehouse')
+        
+
+        if s_sort_by:
+            if s_sort_by == 'date':
+                print('1')
+                reservations = reservations.order_by('-reservation_date')
+            elif s_sort_by == 'time':
+                reservations = reservations.order_by('reservation_time')
+
 
         return reservations
 
