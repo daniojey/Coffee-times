@@ -12,7 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from orders.models import Reservation
 from users.forms import UserLoginForm, UserRegistrationForm
 from users.models import User
-from users.utils import get_actual_reservations
+from users.utils import get_actual_reservations, get_user_ip
 
 class LoginView(FormView):
     template_name='users/login.html'
@@ -74,9 +74,15 @@ class ProfileView(LoginRequiredMixin,TemplateView):
         context = super().get_context_data(**kwargs)
 
         user = self.request.user
-        actual_reservations = get_actual_reservations(phone=user.phone)
-        reservations = Reservation.objects.filter(customer_name=user.username, customer_phone=user.phone).exclude(id__in=actual_reservations.values_list('id', flat=True)).order_by('-reservation_date')[:3]
-        print(actual_reservations)
+        
+        if not user.phone:
+            actual_reservations = get_actual_reservations(username=user.username)
+        else:
+            actual_reservations = get_actual_reservations(phone=user.phone)
+
+        
+        actual_res_list = actual_reservations.values_list('id', flat=True)[:2]
+        reservations = Reservation.objects.filter(customer_name=user.username, customer_phone=user.phone).exclude(id__in=actual_res_list).order_by('-reservation_date')[:3]
 
         context.update({
             'user': user,

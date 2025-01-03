@@ -3,7 +3,7 @@ from django.db.models import Q
 
 from orders.models import Reservation
 
-def get_actual_reservations(phone=None, ip=None):
+def get_actual_reservations(phone=None, ip=None, username=None):
     print(now().time())
     if phone:
         res =Reservation.objects.filter(
@@ -15,6 +15,13 @@ def get_actual_reservations(phone=None, ip=None):
     elif ip:
         res =Reservation.objects.filter(
             Q(created_ip=ip) &
+            Q(reservation_date__gte=now().date())
+        ).exclude(
+            Q(reservation_date=now().date(), reservation_time__lt=now().time()) 
+        ).order_by('reservation_date', 'reservation_time')
+    elif username:
+        res =Reservation.objects.filter(
+            Q(customer_name=username) &
             Q(reservation_date__gte=now().date())
         ).exclude(
             Q(reservation_date=now().date(), reservation_time__lt=now().time()) 
