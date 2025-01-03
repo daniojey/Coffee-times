@@ -1,1 +1,1 @@
-web: gunicorn cofetimes.wsgi --log-file -
+web: gunicorn main.wsgi:application
