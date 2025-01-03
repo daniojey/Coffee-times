@@ -1,1 +1,1 @@
-web: gunicorn coffeetimes.wsgi
+web: gunicorn main.wsgi --log-file -
