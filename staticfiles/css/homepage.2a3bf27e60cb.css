@@ -4,6 +4,7 @@
 }
 
 .content-container {
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -19,11 +20,10 @@
 
 .base-container a{
     display: flex;
+    box-sizing: border-box;
     align-items: center;
     text-align: center;
     justify-content: center;
-    max-width: 200px;
-    width: 100%;
     padding: 8px 16px;
     background-color: #000000;
     color: #FFFF;

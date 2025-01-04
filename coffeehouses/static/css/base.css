@@ -15,6 +15,7 @@ header {
     align-items: center;
     justify-content: space-between;
     background-color: black;
+    min-height: 40px;
 }
 
 .base-links-container {
@@ -119,5 +120,74 @@ footer {
 
     .base-links-container {
         padding: 3px 15px;
+    }
+}
+
+/* Бургер */
+.burger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.burger span {
+    width: 25px;
+    height: 1.5px;
+    background-color: white;
+    transition: transform 0.3s;
+}
+
+/* Боковая панель (sidebar) для мобильных устройств */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -3000px; /* Скрыта за пределами экрана */
+    width: 200px;
+    height: 100%;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.sidebar ul li a:hover {
+    color: #ffcc00;
+}
+
+/* Скрытие обычных ссылок на мобильных устройствах */
+@media (max-width: 768px) {
+    .base-links {
+        display: none;
+    }
+
+    /* Показ боковой панели на мобильных устройствах */
+    .sidebar.active {
+        left: 0; /* Показываем панель */
+        z-index: 9999;
+    }
+
+    /* Для бургер-меню */
+    .burger {
+        display: flex;
     }
 }

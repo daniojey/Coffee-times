@@ -30,7 +30,7 @@ p {
     border: 1px solid #FFF;
     border-radius: 12px;
     appearance: none; /* Убираем стандартную стрелочку */
-    background-image: url("/static/icons/arrow_down.95818abba96e.svg"); /* Добавляем свою стрелку */
+    background-image: url("/static/icons/arrow_down.ef87f3e8508c.svg"); /* Добавляем свою стрелку */
     background-repeat: no-repeat;
     background-position: right 10px center; /* Положение стрелки */
     background-size: 20px; /* Размер стрелки */
@@ -46,7 +46,7 @@ p {
     border: 1px solid #FFF;
     border-radius: 12px;
     appearance: none; /* Убираем стандартную стрелочку */
-    background-image: url("/static/icons/arrow_down.95818abba96e.svg"); /* Добавляем свою стрелку */
+    background-image: url("/static/icons/arrow_down.ef87f3e8508c.svg"); /* Добавляем свою стрелку */
     background-repeat: no-repeat;
     background-position: right 10px center; /* Положение стрелки */
     background-size: 20px; /* Размер стрелки */
@@ -70,7 +70,7 @@ p {
     appearance: none !important; /* Убираем стандартную иконку */
     -webkit-appearance: none; /* Для Safari/Chrome */
     -moz-appearance: none; /* Для Firefox */
-    background-image: url("/static/icons/calendar.267419beede1.svg"); /* Путь к иконке календаря */
+    background-image: url("/static/icons/calendar.2b075adb3eb6.svg"); /* Путь к иконке календаря */
     background-repeat: no-repeat;
     background-position: right 10px center; /* Положение иконки */
     background-size: 20px; /* Размер иконки */

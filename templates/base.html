@@ -15,18 +15,40 @@
                     <a href="{% url "coffeehouses:index" %}">Головна</a>
                 </div>
                 
-                <div class='base-links'>
-                    <ul>
-                        <li><a href="{% url "coffeehouses:menu_page" %}">Меню</a></li>
-                        <li><a href="{% url "coffeehouses:coffee_map" %}">Мапа кав'ярень</a></li>
-                        {% if user.is_authenticated %}
+                <nav class="navbar">
+                    <div class="burger" id="burger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    
+                    <div class='base-links' id='base-links'>
+                        <ul>
+                            <li><a href="{% url "coffeehouses:menu_page" %}">Меню</a></li>
+                            <li><a href="{% url "coffeehouses:coffee_map" %}">Мапа кав'ярень</a></li>
+                            {% if user.is_authenticated %}
                             <li><a href="{% url "users:profile" %}">Профіль</a></li>
-                        {% else %}
+                            {% else %}
                             <li><a href="{% url "coffeehouses:search_number_page" %}">Мої бронювання</a></li>
                             <li><a href="{% url "users:login" %}">Увійти</a> | <a href="{% url "users:registration" %}">Зарееструватися</a></li>
-                        {% endif %}
-                    </ul>
-                </div>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                     <!-- Боковая панель (sidebar) для мобильных устройств -->
+                    <div class="sidebar" id="sidebar">
+                        <ul>
+                            <li><a href="{% url "coffeehouses:menu_page" %}">Меню</a></li>
+                            <li><a href="{% url "coffeehouses:coffee_map" %}">Мапа кав'ярень</a></li>
+                            {% if user.is_authenticated %}
+                            <li><a href="{% url "users:profile" %}">Профіль</a></li>
+                            {% else %}
+                            <li><a href="{% url "coffeehouses:search_number_page" %}">Мої бронювання</a></li>
+                            <li><a href="{% url "users:login" %}">Увійти</a> | <a href="{% url "users:registration" %}">Зарееструватися</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </nav>
             </div>
         </header>
 
@@ -46,5 +68,27 @@
             </div>
         </footer>
         <script src="http://127.0.0.1:35729/livereload.js"></script>
+        <script>
+            // Получаем элементы
+            const burger = document.getElementById('burger');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.createElement('div');
+
+            // Создаем затемнение фона
+            overlay.className = 'overlay';
+            document.body.appendChild(overlay);
+
+            // Обработчик для открытия/закрытия sidebar
+            burger.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+            });
+
+            // Закрытие sidebar при клике на затемнение
+            overlay.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+        </script>
     </body>
 </html>
