@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'coffeehouses',
     'orders',
     'users',
+    'livereload',
 ]
 
 MIDDLEWARE = [
@@ -87,7 +88,6 @@ DATABASES = {
     'default': dj_database_url.config(
         default="postgres://coffee_user:root@localhost:5432/Coffee_times",  # Это строка по умолчанию для локальной базы данных
         conn_max_age=600,
-        ssl_require=True  # Для безопасности на Heroku
     )
     # {
     #     'ENGINE': 'django.db.backends.postgresql',

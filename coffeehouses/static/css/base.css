@@ -107,3 +107,17 @@ footer {
 .footer-content-container a:hover {
     text-decoration: underline; /* Подчеркивание при наведении */
 }
+
+@media (max-width: 450px) {
+    .base-links a {
+        font-size: 14px;
+    }
+
+    .footer-image-container label{
+        display: none;
+    }
+
+    .base-links-container {
+        padding: 3px 15px;
+    }
+}
