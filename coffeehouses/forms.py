@@ -48,7 +48,8 @@ class CreateReservationForm(forms.ModelForm):
             'coffeehouse': "Кав'ярня",
             'customer_phone': 'Номер телефону',
             'reservation_time': 'Час бронювання',
-            'table': 'Оберіть столик'
+            'table': 'Оберіть столик',
+            'booking_duration': "Продовжуваність",
         }
 
         widgets = {

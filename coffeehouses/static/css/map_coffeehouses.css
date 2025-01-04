@@ -49,3 +49,42 @@
     justify-content: center;
     text-align: center;
 }
+
+@media (max-width: 850px) {
+
+    #map {
+        height: 65vh;
+        width: 95%;
+    }
+}
+
+@media (max-width: 700px) {
+    .information-container {
+        margin-bottom: 10px;
+    }
+
+    .information-container h2 {
+        font-size: 18px;
+    }
+
+    #map {
+        margin-bottom: 10px;
+        height: 70vh;
+    }
+
+    p {
+        font-size: 16px;
+    }
+}
+
+@media (max-height: 790px) {
+    #map {
+        height: 60vh;
+    }
+}
+
+@media (max-height: 600px) {
+    #map {
+        height: 55vh;
+    }
+}

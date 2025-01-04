@@ -6,16 +6,6 @@
 
     <div class='base-container'>
         <div class='reservation-content'>
-            {% for item in reservations %}
-            <div class='reservation-item'>
-                <p>Кав'ярня - {{ item.coffeehouse }}</p>
-                <p>Дата - {{ item.reservation_date }}</p>
-                <p>Час резервації - {{ item.reservation_time }}</p>
-            </div>
-            {% endfor %}
-        </div>
-
-        <div class='filter-content'>
             <!-- Форма фильтрации -->
             <form method="get" class='filter-form-content'>
                 <h2>Фільтри</h2>
@@ -42,6 +32,16 @@
                 <button type="submit" class='filter-button'>Застосувати</button>
             </form>
         </div>
+
+        <div class='filter-content'>
+            {% for item in reservations %}
+            <div class='reservation-item'>
+                <p>Кав'ярня - {{ item.coffeehouse }}</p>
+                <p>Дата - {{ item.reservation_date }}</p>
+                <p>Час резервації - {{ item.reservation_time }}</p>
+            </div>
+            {% endfor %}
+        </div>
     </div>
     
     <div class="pagination">
@@ -49,7 +49,7 @@
             {% if page_obj.has_previous %}
             <div class='page-text-links'>
                 <a href="?page=1{% if request.GET.is_active %}&is_active={{ request.GET.is_active }}{% endif %}{% if request.GET.is_cafe %}&is_cafe={{ request.GET.is_cafe }}{% endif %}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}" class='text-link'>Первая</a>
-                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.is_active %}&is_active={{ request.GET.is_active }}{% endif %}{% if request.GET.is_cafe %}&is_cafe={{ request.GET.is_cafe }}{% endif %}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}" class='text-link'>Назад</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.is_active %}&is_active={{ request.GET.is_active }}{% endif %}{% if request.GET.is_cafe %}&is_cafe={{ request.GET.is_cafe }}{% endif %}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}" class='text-link-preview'>Назад</a>
             </div>
             {% endif %}
     
@@ -63,7 +63,7 @@
     
             {% if page_obj.has_next %}
             <div class='page-text-links'>
-                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.is_active %}&is_active={{ request.GET.is_active }}{% endif %}{% if request.GET.is_cafe %}&is_cafe={{ request.GET.is_cafe }}{% endif %}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}" class='text-link'>Вперёд</a>
+                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.is_active %}&is_active={{ request.GET.is_active }}{% endif %}{% if request.GET.is_cafe %}&is_cafe={{ request.GET.is_cafe }}{% endif %}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}" class='text-link-next'>Вперёд</a>
                 <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.is_active %}&is_active={{ request.GET.is_active }}{% endif %}{% if request.GET.is_cafe %}&is_cafe={{ request.GET.is_cafe }}{% endif %}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}" class='text-link'>Последняя</a>
             </div>
             {% endif %}
