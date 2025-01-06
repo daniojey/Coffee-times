@@ -59,6 +59,12 @@ select {
     font-size: 16px;
     min-width: 168px;
     max-width: 210px;
+    transition: color 0.5s ease, background-color 0.4s ease;
+}
+
+.filter-btn:hover {
+    color: black;
+    background-color: white;
 }
 
 .menu-container {
@@ -253,7 +259,7 @@ select {
     }
 
     .form-content {
-        padding: 20px 40px;
+        padding: 0px 40px;
     }
 
     .filter-main-body {
