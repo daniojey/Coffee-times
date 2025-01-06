@@ -1,10 +1,12 @@
 import json
+from django.core.paginator import Paginator
 from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.views.generic import View, TemplateView
+from django.views.generic import ListView, View, TemplateView
 
-from coffeehouses.models import CoffeeHouse, Product
+from coffeehouses.models import Category, CoffeeHouse, Product
 from orders.models import Reservation
 
 # Create your views here.
@@ -37,15 +39,38 @@ class MapCoffeehousesView(TemplateView):
 
         return context
     
-class MenuPageView(TemplateView):
+class MenuPageView(ListView):
     template_name = 'coffeehouses/menu_page.html'
+    context_object_name = 'products'
+    paginate_by = 2
+
+    def get_queryset(self):
+        search = self.request.GET.get('search', '')
+        print(search)
+        category_filter = self.request.GET.get('category', '')
+
+        products = Product.objects.all()
+
+        if category_filter:
+            category = Category.objects.get(name=category_filter)
+            print(category)
+            products = products.filter(category=category)
+            print(products)
+
+        if search:
+            products = products.filter(Q(name__icontains=search) | Q(description__icontains=search))
+
+
+        return products
+
 
     def get_context_data(self, **kwargs):
+        page = self.request.GET.get('page', 1)
+        pagination = Paginator(self.get_queryset(), self.paginate_by)
+
         context = super().get_context_data(**kwargs)
         
-        context.update({
-            'products': Product.objects.all()
-        })
+        context['page_obj'] = pagination.get_page(page)
 
         return context
     

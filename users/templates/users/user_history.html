@@ -42,31 +42,31 @@
             </div>
             {% endfor %}
         </div>
-    </div>
-    
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-            <div class='page-text-links'>
-                <a href="?page=1{% if request.GET.is_active %}&is_active={{ request.GET.is_active }}{% endif %}{% if request.GET.is_cafe %}&is_cafe={{ request.GET.is_cafe }}{% endif %}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}" class='text-link'>Первая</a>
-                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.is_active %}&is_active={{ request.GET.is_active }}{% endif %}{% if request.GET.is_cafe %}&is_cafe={{ request.GET.is_cafe }}{% endif %}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}" class='text-link-preview'>Назад</a>
-            </div>
-            {% endif %}
-    
-            <div class='page-number-container'>
-                {% for page in page_obj.paginator.page_range %}
-                {% if page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
-                    <a href="?page={{ page }}{% if request.GET.is_active %}&is_active={{ request.GET.is_active }}{% endif %}{% if request.GET.is_cafe %}&is_cafe={{ request.GET.is_cafe }}{% endif %}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}" {% if page == page_obj.number %} class="page-number active" {% else %} class='page-number'{% endif %}>{{ page }}</a>
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                <div class='page-text-links'>
+                    <a href="?page=1{% if request.GET.is_active %}&is_active={{ request.GET.is_active }}{% endif %}{% if request.GET.is_cafe %}&is_cafe={{ request.GET.is_cafe }}{% endif %}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}" class='text-link'>Первая</a>
+                    <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.is_active %}&is_active={{ request.GET.is_active }}{% endif %}{% if request.GET.is_cafe %}&is_cafe={{ request.GET.is_cafe }}{% endif %}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}" class='text-link-preview'>Назад</a>
+                </div>
                 {% endif %}
-                {% endfor %}
-            </div>
-    
-            {% if page_obj.has_next %}
-            <div class='page-text-links'>
-                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.is_active %}&is_active={{ request.GET.is_active }}{% endif %}{% if request.GET.is_cafe %}&is_cafe={{ request.GET.is_cafe }}{% endif %}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}" class='text-link-next'>Вперёд</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.is_active %}&is_active={{ request.GET.is_active }}{% endif %}{% if request.GET.is_cafe %}&is_cafe={{ request.GET.is_cafe }}{% endif %}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}" class='text-link'>Последняя</a>
-            </div>
-            {% endif %}
-        </span>
+        
+                <div class='page-number-container'>
+                    {% for page in page_obj.paginator.page_range %}
+                    {% if page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                        <a href="?page={{ page }}{% if request.GET.is_active %}&is_active={{ request.GET.is_active }}{% endif %}{% if request.GET.is_cafe %}&is_cafe={{ request.GET.is_cafe }}{% endif %}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}" {% if page == page_obj.number %} class="page-number active" {% else %} class='page-number'{% endif %}>{{ page }}</a>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+        
+                {% if page_obj.has_next %}
+                <div class='page-text-links'>
+                    <a href="?page={{ page_obj.next_page_number }}{% if request.GET.is_active %}&is_active={{ request.GET.is_active }}{% endif %}{% if request.GET.is_cafe %}&is_cafe={{ request.GET.is_cafe }}{% endif %}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}" class='text-link-next'>Вперёд</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.is_active %}&is_active={{ request.GET.is_active }}{% endif %}{% if request.GET.is_cafe %}&is_cafe={{ request.GET.is_cafe }}{% endif %}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}" class='text-link'>Последняя</a>
+                </div>
+                {% endif %}
+            </span>
+        </div>
     </div>
 {% endblock %}
