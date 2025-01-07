@@ -1,3 +1,7 @@
+:root {
+    --index: calc(1vh + 1vw)
+}
+
 .product {
     display: flex;
     flex: 1;
@@ -15,6 +19,7 @@
 
 .product-content {
     box-sizing: border-box;
+    font-size: calc(var(--index) * 1 );
     display: flex;
     flex-direction: column;
     background-color: black;
@@ -39,5 +44,6 @@
 @media (max-width: 430px) {
     .product-content {
         right: 0%;
+        padding: 10px;
     }
 }
