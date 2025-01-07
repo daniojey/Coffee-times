@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static "css/product.css" %}">
+
+<div class='product'>
+    {% if product.image %}
+        <img src="{{ product.image.url }}" class='product-image'>
+    {% endif %}
+    
+    <div class='product-content'>
+        <p>{{ product.name }}</p>
+        <p>{{ product.description }}</p>
+        <p>{{ product.price }}</p>      
+    </div>
+</div>
+
+{% endblock %}

@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView, View, TemplateView
 
 from coffeehouses.models import Category, CoffeeHouse, Product
@@ -42,7 +42,7 @@ class MapCoffeehousesView(TemplateView):
 class MenuPageView(ListView):
     template_name = 'coffeehouses/menu_page.html'
     context_object_name = 'products'
-    paginate_by = 2
+    paginate_by = 4
 
     def get_queryset(self):
         search = self.request.GET.get('search', '')
@@ -73,6 +73,22 @@ class MenuPageView(ListView):
         context['page_obj'] = pagination.get_page(page)
 
         return context
+    
+    
+class ProductView(View):
+    
+    def get(self, request, *args, **kwargs):
+        product_pk = kwargs.get('pk')
+        print(f"pk - {product_pk}")
+
+        product = get_object_or_404(Product, pk=product_pk)
+        print(product)
+        context = {
+            'product': product
+        }
+
+        return render(request, 'coffeehouses/product.html', context)
+    
     
 class ReservationSearchView(View):
     template_name = 'coffeehouses/search_number_page.html'
