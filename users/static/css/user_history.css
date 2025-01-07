@@ -2,6 +2,12 @@
 
 .base-container {
     display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.content-site {
+    display: flex;
     flex: 1;
 }
 
@@ -181,6 +187,10 @@
 }
 
 @media (max-width: 800px){
+    .content-site {
+        flex-direction: column;
+    }
+
     .text-link-next, .text-link-preview {
         display: none;
     }
