@@ -2,6 +2,13 @@
 
 .base-container {
     display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.content-site {
+    display: flex;
+    flex: 1;
 }
 
 .reservation-content {
@@ -108,6 +115,28 @@
     background-color: black;
 }
 
+.text-link-next, .text-link-preview {
+    display: flex;
+    color: rgb(0, 0, 0);
+    background-color: white;
+    font-size: 18px;
+    text-decoration: none;
+    height: 38px;
+    border: 1px solid black;
+    align-items: center;
+    text-align: center;
+    padding: 0px 4px;
+    border-radius: 4px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+
+.text-link-next:hover, .text-link-preview:hover {
+    color: white;
+    background-color: black;
+}
+
+
 .page-text-links {
     display: flex;
     align-items: center;
@@ -155,4 +184,56 @@
 .page-number.active {
     background-color: black;
     color: white !important;
+}
+
+@media (max-width: 800px){
+    .content-site {
+        flex-direction: column;
+    }
+
+    .text-link-next, .text-link-preview {
+        display: none;
+    }
+
+    .filter-form-content {
+        width: 272px;
+        margin-bottom: 5px;
+    }
+
+    .base-container {
+        flex-direction: column;
+    }
+
+    .reservation-content {
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+        margin-bottom: 5px;
+    }
+
+    .filter-content {
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+    }
+
+    .filter-form-content h2 {
+        margin-bottom: 0px;
+    }
+
+    .reservation-item {
+        margin: 0px;
+        margin-bottom: 5px;
+    }
+
+    .page-text-links {
+        margin: 0px;
+    }
+
+    .text-link {
+        font-size: 15px;
+    }
+
 }

@@ -2,8 +2,7 @@ import re
 from django.contrib import auth
 from django.contrib.auth import authenticate, login
 from django.core.paginator import Paginator
-from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView, ListView, TemplateView
@@ -20,6 +19,7 @@ class LoginView(FormView):
     success_url=reverse_lazy('coffeehouses:index')
 
     def form_valid(self, form) -> HttpResponse:
+        _next =  self.request.GET.get('next')
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
 
@@ -28,6 +28,9 @@ class LoginView(FormView):
             self.object = user
             login(self.request, user=user)
 
+            if _next:
+                return HttpResponseRedirect(_next)
+            
             return super().form_valid(form) 
         else:
             form.add_error(None, "Невірний логин або номер телефону або пароль")
@@ -69,6 +72,7 @@ class RegistrationView(FormView):
 
 class ProfileView(LoginRequiredMixin,TemplateView):
     template_name = 'users/profile.html'
+    redirect_field_name = 'next'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -93,6 +97,7 @@ class ProfileView(LoginRequiredMixin,TemplateView):
         return context
 
 class HistoryReservationView(LoginRequiredMixin, ListView):
+    redirect_field_name = 'next'
     template_name = "users/user_history.html"
     context_object_name = 'reservations'
     paginate_by = 5

@@ -1,0 +1,49 @@
+:root {
+    --index: calc(1vh + 1vw)
+}
+
+.product {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    height: 86%;
+    position: relative; /* Необходимо для абсолютного позиционирования вложенных элементов */
+}
+
+.product-image {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    filter: brightness(50%); /* Darkens the image */
+}
+
+.product-content {
+    box-sizing: border-box;
+    font-size: calc(var(--index) * 1 );
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    border: 1.5px solid bisque;
+    border-radius: 14px;
+    color: white;
+    position: absolute;
+    top: 50%; /* Центрирование по вертикали */
+    right: 20%;
+    transform: translateY(-50%); /* Центрирует по вертикали относительно родителя */
+    padding: 20px;
+    max-width: 400px; /* Ограничивает максимальную ширину */
+    transition: right 0.3s ease;
+}
+
+@media (max-width: 1000px) {
+    .product-content {
+        right: 10%;
+    }
+}
+
+@media (max-width: 430px) {
+    .product-content {
+        right: 0%;
+        padding: 10px;
+    }
+}

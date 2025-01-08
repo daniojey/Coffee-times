@@ -1,6 +1,3 @@
-body{
-    overflow: hidden;
-}
 
 .base-container {
     display: flex;
@@ -125,4 +122,38 @@ body{
 .history-link:hover {
     color: black;
     background-color: #FFFF;
+}
+
+
+@media (max-width: 750px){
+    .active-reservation {
+        gap: 10px;
+    }
+
+    .base-container {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .left-column {
+        width: 100%;
+        padding: 0px;
+        margin-bottom: 0px;
+    }
+
+    .reservation-content {
+        width: 100%;
+        margin-top: 0px;
+        gap: 10px;
+    }
+
+    h2 {
+        margin: 5px 0px;
+    }
+
+    p {
+        margin: 5px 0px;
+    }
 }
