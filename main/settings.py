@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'coffeehouses',
     'orders',
     'users',
-    'livereload',
+    # 'livereload',
 ]
 
 MIDDLEWARE = [

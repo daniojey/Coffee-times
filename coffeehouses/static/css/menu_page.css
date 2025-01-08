@@ -81,6 +81,16 @@ select {
     justify-content: center;
 }
 
+.menu-none-header {
+    --index: calc(1vh + 1vw);
+    margin: 0px auto;
+    margin-top: 50px;
+    font-size: calc(var(--index) * 1.75);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
 .product-link {
     display: flex;
     text-decoration: none;

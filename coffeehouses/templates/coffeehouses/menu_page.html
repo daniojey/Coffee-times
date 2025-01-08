@@ -29,6 +29,8 @@
                 <button type="submit" class='filter-btn'>Применить фильтры</button>
             </form>
         </div>
+
+        {% if products %}
         <div class='menu-container' style="background-image: url({% static "images/wood_texture.jpg" %})">
             {% for product in products %}
             <a href="{% url "coffeehouses:product" pk=product.pk %}" class='product-link'>
@@ -47,6 +49,9 @@
             </a>
             {% endfor %}
         </div>
+        {% else %}
+            <h2 class='menu-none-header'>Відсутнє меню</h2>
+        {% endif %}
     </div>
 
     <div class="pagination">

@@ -13,7 +13,10 @@ COPY . /app
 
 # Устанавливаем переменные окружения
 ENV PYTHONUNBUFFERED=1
-ENV DJANGO_SETTINGS_MODULE=main.production
+ENV DJANGO_SETTINGS_MODULE=main.settings
+ENV SESSION_COOKIE_SECURE=False
+ENV CSRF_COOKIE_SECURE=False
+ENV SECURE_SSL_REDIRECT=False
 
 # Окрываем порт
 EXPOSE 8000

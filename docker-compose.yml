@@ -3,18 +3,24 @@ services:
   db:
     restart: always
     container_name: my_postgres_container  # Задаем имя контейнера для сервиса 'db'
+    environment:
+        POSTGRES_DB: Coffee_times
+        POSTGRES_USER: coffee_user
+        POSTGRES_PASSWORD: root
     image: postgres
     ports:
       - "5432:5432"
     networks:
       - app-network
     volumes:
-      - db_data:/var/lib/postgresql/date
+      - db_data:/var/lib/postgresql/data
   
 
   web:
     build: .
-    container_name: my_django_container  # Задаем имя контейнера для сервиса 'web'
+    container_name: coffeetimes_container  # Задаем имя контейнера для сервиса 'web'
+    environment:
+       DATABASE_URL: postgres://coffee_user:root@db:5432/Coffee_times
     volumes:
       - .:/app
       - ./media:/application/static/media
