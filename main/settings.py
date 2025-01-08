@@ -15,6 +15,7 @@ from pathlib import Path
 import dj_database_url
 import sys
 from decouple import config
+from django.templatetags.static import static
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -36,6 +37,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "unfold",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,9 +45,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # мои приложения
     'coffeehouses',
     'orders',
     'users',
+
+    # Другие приложения
     # 'livereload',
 ]
 
@@ -164,3 +169,58 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+UNFOLD = {
+    "SITE_HEADER": "Админка",
+    "TEXT": {
+        "HEADER": "text-primary-500", # Молочный цвет для заголовков
+        "PARAGRAPH": "text-gray-200",  # Светло-серый для основного текста
+        "SECONDARY": "text-gray-400",  # Серый для второстепенного текста
+    },
+    "ELEMENTS": {
+        "CARD": "bg-dark-400 border-dark-300", # Чуть светлее фон для карточек
+        "TABLE": {
+            "HEADER": "bg-dark-300",           # Фон заголовка таблицы
+            "ROW": "hover:bg-dark-200",        # Подсветка строк при наведении
+        }
+    },
+    "COLORS": {
+        "primary": {
+            "50": "250 245 255",
+            "100": "243 232 255",
+            "200": "233 213 255",
+            "300": "216 180 254",
+            "400": "192 132 252",
+            "500": "255 223 145",
+            "600": "35 35 35",
+            "700": "126 34 206",
+            "800": "107 33 168",
+            "900": "238 167 4",
+            "950": "59 7 100",
+        }, 
+        "font": {
+            "subtle-light": "107 114 128",
+            "subtle-dark": "156 163 175",
+            "default-light": "75 85 99",
+            "default-dark": "209 213 219",
+            "important-light": "17 24 39",
+            "important-dark": "243 244 246",
+        },
+    },
+
+    "STYLES": [
+        lambda request: static("css/unfold.css"),
+    ],
+
+
+    "SITE_TITLE": 'Моя админка',  # Название панели
+
+    "SITE_FAVICONS": [
+        {
+            "rel": "icon",
+            "sizes": "32x32",
+            "type": "image/svg+xml",
+            "href": lambda request: static("icons/favicon.png"),
+        },
+    ],
+}

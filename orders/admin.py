@@ -1,6 +1,9 @@
 from django.contrib import admin
 
 from orders.models import Reservation
-# Register your models here.
+from unfold.admin import ModelAdmin
 
-admin.site.register(Reservation)
+@admin.register(Reservation)
+class ReservationClass(ModelAdmin):
+    pass
+# admin.site.register(Reservation)

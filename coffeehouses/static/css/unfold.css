@@ -1,0 +1,16 @@
+:root {
+    --color-base-800: 20 20 20 !important;
+    --color-base-950: 0 0 0 !important; 
+    --color-base-900: 0 0 0 !important;
+    --color-primary-700: 255 223 145 !important;
+}
+
+.bg-primary-600,
+.dark\:bg-primary-500 {
+    background-color: #ffecec23 !important;
+}
+
+
+/* .dark\:bg-base-700 {
+    background-color: rgb(255, 255, 255) !important;
+} */
