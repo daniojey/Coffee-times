@@ -1,4 +1,5 @@
 import json
+import re
 from django.core.paginator import Paginator
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Q
@@ -102,11 +103,15 @@ class ReservationSearchView(View):
         data = json.loads(request.body)
         phone = data.get('phone')
 
-        if phone[0] == '0':
-            phone = '38' + phone
-
         if not phone:
             return JsonResponse({'error': 'По цьому номеру телефону немає бронювань'}, status=400)
+        else:
+            if phone[0] == '0':
+                phone = '38' + phone
+
+            pattern = r'^(?:380|0)\d{9}$'
+            if not re.match(pattern, phone):
+                return JsonResponse({'error': 'Невірний формат номеру телефону, перевірте  формат введеного номеру'}, status=400)
 
         # Ищем бронирования по номеру телефона
         reservations = Reservation.objects.filter(customer_phone=phone).select_related('coffeehouse', 'table').order_by('-reservation_date')
