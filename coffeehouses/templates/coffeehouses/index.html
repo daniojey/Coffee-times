@@ -6,12 +6,30 @@
     <link rel="stylesheet" href="{% static "css/homepage.css" %}">
 
     <div class='base-container'>
-        <div class='content-container'>
+        <div class='reservation-content'>
+            <img src="{% static "images/caffee.webp" %}">
+            <div class='reservation-link'>
+                <p>Бажаете відвідати нас с групою друзів ? Тоді ви можете забронювати столик щоб точко бути впевненими що ви гарно проведете час</p>
+                <a href="{% url "orders:reservation" %}">Створити бронювання</a>
+            </div>
+        </div>
+
+        <div class='coffeemap-content'>
+            <p>Ви також можете знайти найближчу кав'ярню до себе на <a href="{% url "coffeehouses:coffee_map" %}">Мапі</a></p>          
+        </div>
+
+        <div class='menu-content'>
+            <p>Також в меню вы можете переглянути товары</p>
+            <div>
+                <a href="{% url "coffeehouses:menu_page" %}">Переглянути меню</a>
+            </div>
+        </div>
+        {% comment %} <div class='content-container'>
             <a href="{% url "orders:index" %}">Стартовая страничка заказов</a>
             
             <a href="{% url "orders:reservation" %}">Оставить резервацию</a>
             
             <a href="{% url "coffeehouses:coffee_map" %}">Карта магазинов</a>
-        </div>
+        </div> {% endcomment %}
     </div>
 {% endblock %}
