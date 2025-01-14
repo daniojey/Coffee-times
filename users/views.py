@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import FormView, ListView, TemplateView
+from django.views.generic import DeleteView, FormView, ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from orders.models import Reservation
@@ -145,6 +145,10 @@ class HistoryReservationView(LoginRequiredMixin, ListView):
         context['filter'] = self.request.GET.get('filter', '')
 
         return context
+
+class DeleteReservationView(DeleteView):
+    model = Reservation
+    success_url = reverse_lazy('users:profile')
 
 def logout(request):
     auth.logout(request)

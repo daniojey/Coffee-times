@@ -20,6 +20,9 @@
                 <p>Дата - {{ item.reservation_date }}</p>
                 <p>Час резервації - {{ item.reservation_time }}</p>
                 <p>Статус - {{ item.get_status }}</p>
+                <a href="#" class='delete-reservation-link' data-reservation-id="{{ item.id }}">
+                    <img src="{% static "images/delete_bucket.jpg" %}" alt="">
+                </a>
             </div>
             {% endfor %}
         </div>
@@ -38,4 +41,18 @@
         <a href="{% url "users:reservation_history" %}" class='history-link'>Історія бронювань</a>
         </div>
 </div>
+
+<!-- Всплывающее окно -->
+<div id="deleteModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h2>Ви впевненні що бажаєте відмінити резервацію ?</h2>
+        <form id="deleteForm" method="post">
+            {% csrf_token %}
+            <button type="submit" class="confirm-btn">Відмінити</button>
+            <button type="button" class="cancel-btn">Назад</button>
+        </form>
+    </div>
+</div>
+
+<script src="{% static 'js/delete_reservation.js' %}"></script>
 {% endblock %}

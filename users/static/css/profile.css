@@ -86,6 +86,7 @@
 }
 
 .reservation-item {
+    position: relative;
     display: flex;
     flex-direction: column;
     border-radius: 15px;
@@ -96,6 +97,29 @@
 
 .reservation-item p {
     margin: 10px 0;
+}
+
+.delete-reservation-link {
+    position: absolute;
+    top: 15%;
+    left: 95%;
+    transform: translate(-50%, -50%); /* Центрирование */
+    width: 25px;
+    height: 25px;
+    overflow: hidden;
+    background-color: white;
+    border-radius: 4px;
+    transition: border 0.3s ease;
+}
+
+.delete-reservation-link:hover{
+    border: 1px solid red;
+}
+
+.delete-reservation-link img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
 }
 
 .history-link {
@@ -156,4 +180,60 @@
     p {
         margin: 5px 0px;
     }
+}
+
+@media (max-width: 400px) {
+    .delete-reservation {
+        left: 90%;
+    }
+}
+
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.modal.show {
+    opacity: 1;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 300px;
+    transform: scale(0.5);
+    transition: transform 0.3s ease;
+}
+
+.modal.show .modal-content {
+    transform: scale(1);
+}
+
+.confirm-btn {
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.cancel-btn {
+    background-color: gray;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
 }

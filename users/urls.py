@@ -10,6 +10,7 @@ urlpatterns = [
     path('registration/', views.RegistrationView.as_view(), name='registration'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('history/', views.HistoryReservationView.as_view(), name='reservation_history'),
+    path('delete-reservation/<int:pk>/', views.DeleteReservationView.as_view(), name='delete_reservation'),
     path('logout/', views.logout, name='logout'),
     
 ]

@@ -251,5 +251,3 @@ def get_booking_duration(request):
             return JsonResponse({'error': 'Ошибка логики'}, status=405)
 
 
-
-    
