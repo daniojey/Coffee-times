@@ -3,10 +3,12 @@ from django.contrib import auth
 from django.contrib.auth import authenticate, login
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DeleteView, FormView, ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from decouple import config
+import requests
 
 from orders.models import Reservation
 from users.forms import UserLoginForm, UserRegistrationForm
@@ -153,3 +155,129 @@ class DeleteReservationView(DeleteView):
 def logout(request):
     auth.logout(request)
     return redirect(reverse("coffeehouses:index"))
+
+
+# Константы Google OAuth
+GOOGLE_CLIENT_ID = config("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET')
+GOOGLE_REDIRECT_URI = 'http://localhost:8000/user/oauth/callback/'
+GOOGLE_AUTH_URL = 'https://accounts.google.com/o/oauth2/auth'
+GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token'
+GOOGLE_USER_INFO_URL = 'https://www.googleapis.com/oauth2/v2/userinfo'
+
+
+def google_login(request):
+    # URL для запроса авторизации
+    auth_url = (
+        f"{GOOGLE_AUTH_URL}?response_type=code"
+        f"&client_id={GOOGLE_CLIENT_ID}"
+        f"&redirect_uri={GOOGLE_REDIRECT_URI}"
+        f"&scope=email profile"
+    )
+    return redirect(auth_url)
+
+
+
+def google_callback(request):
+    # Получение кода из запроса
+    code = request.GET.get('code')
+    if not code:
+        return render(request, 'error.html', {'message': 'Authorization failed'})
+
+    # Обмен кода на токен
+    token_data = {
+        'code': code,
+        'client_id': GOOGLE_CLIENT_ID,
+        'client_secret': GOOGLE_CLIENT_SECRET,
+        'redirect_uri': GOOGLE_REDIRECT_URI,
+        'grant_type': 'authorization_code',
+    }
+    token_response = requests.post(GOOGLE_TOKEN_URL, data=token_data)
+    token_json = token_response.json()
+    access_token = token_json.get('access_token')
+
+    # Получение информации о пользователе
+    user_info_response = requests.get(
+        GOOGLE_USER_INFO_URL,
+        headers={'Authorization': f'Bearer {access_token}'}
+    )
+    user_info = user_info_response.json()
+
+    # Извлечение данных о пользователе
+    email = user_info.get('email')
+    first_name = user_info.get('given_name', 'User')
+    last_name = user_info.get('family_name', '')
+
+    # Проверяем, есть ли пользователь с таким email
+    user = User.objects.filter(email=email).first()
+
+    if user:
+        # Если пользователь уже существует, входим
+        login(request, user)
+        return redirect('coffeehouses:index')  # Перенаправление на главную страницу
+    else:
+        # Если пользователя нет, создаём нового
+        username = email.split('@')[0]  # Генерация username на основе email
+        phone = request.session.get('phone')  # Проверяем, есть ли телефон в сессии
+
+        if not phone:
+            # Если телефона нет, перенаправляем на страницу для ввода телефона
+            request.session['google_user_info'] = {
+                'email': email,
+                'username': username,
+                'first_name': first_name,
+                'last_name': last_name,
+            }
+            return redirect('users:get_phone')  # URL для ввода телефона
+
+        # Создаём пользователя
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            password=None,  # OAuth пользователи могут не иметь пароля
+        )
+        user.profile.phone = phone  # Сохраняем телефон в связанную модель Profile, если есть
+        user.save()
+
+        # Входим в систему
+        login(request, user)
+
+    return redirect('coffeehouses:index')  # Перенаправление на главную страницу
+
+
+def get_phone(request):
+    if request.method == 'POST':
+        phone = request.POST.get('phone')
+        print(phone)
+        google_user_info = request.session.get('google_user_info')
+
+        pattern = r'^(?:380|0)\d{9}$'
+        if re.match(pattern, phone):
+            if phone[0] == '0':
+                phone = '38' + phone
+
+        if google_user_info and phone:
+
+            if not User.objects.filter(phone=phone).exists():
+                # Создаём пользователя с указанным телефоном
+                user = User.objects.create_user(
+                    username=google_user_info['username'],
+                    email=google_user_info['email'],
+                    first_name=google_user_info['first_name'],
+                    last_name=google_user_info['last_name'],
+                    password=None,  # OAuth пользователи могут не иметь пароля
+                    phone=phone
+                )
+                user.save()
+
+                # Входим в систему
+                login(request, user)
+                return redirect('coffeehouses:index')
+            else:
+                # Если пользователь существует переводим на страничку с логином и очищаем сессию
+                del request.session['google_user_info']
+                return redirect('users:login')
+
+    return render(request, 'users/get_phone.html')

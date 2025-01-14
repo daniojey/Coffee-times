@@ -8,7 +8,8 @@
         <form action="" method='post'>{% csrf_token %}
             <p><input type="text" id='username' name='username' placeholder='Логін aбо номер телефону' class='form-input'></p>
             <p><input type="password" id='password' name='password' placeholder='Пароль' class='form-input'></p>
-
+            
+            <a href="{% url "users:google_login" %}">Вход через GOOGLE</a>
             {% for error in form.errors.values %}
                 <p>{{ error }}</p>
             {% endfor %}

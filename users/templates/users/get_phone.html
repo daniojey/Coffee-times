@@ -1,0 +1,6 @@
+<form method="post">
+    {% csrf_token %}
+    <label for="phone">Введите ваш номер телефона:</label>
+    <input type="text" id="phone" name="phone" required>
+    <button type="submit">Сохранить</button>
+</form>
