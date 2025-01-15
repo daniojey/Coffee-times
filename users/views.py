@@ -157,7 +157,7 @@ def logout(request):
 # Константы Google OAuth
 GOOGLE_CLIENT_ID = config("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET')
-GOOGLE_REDIRECT_URI = 'http://localhost:8000/user/oauth/callback/'
+GOOGLE_REDIRECT_URI = config('GOOGLE_REDIRECT_URL')
 GOOGLE_AUTH_URL = 'https://accounts.google.com/o/oauth2/auth'
 GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token'
 GOOGLE_USER_INFO_URL = 'https://www.googleapis.com/oauth2/v2/userinfo'
