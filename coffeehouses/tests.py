@@ -1,12 +1,91 @@
 from datetime import date, time, timedelta
 import json
-from unicodedata import category
 from django.test import TestCase
 from django.urls import reverse, reverse_lazy
 
 from coffeehouses.models import Category, CoffeeHouse, Product, Table
 from orders.models import Reservation
 
+
+# Тесты моделей
+class CategoryModelTest(TestCase):
+    def setUp(self):
+        self.category = Category.objects.create(
+            name='Test Category',
+            slug='test-category',
+        )
+
+    def test_created_model(self):
+        self.assertEqual(self.category.name, 'Test Category')
+        self.assertEqual(self.category.slug, 'test-category')
+        self.assertIn(self.category.id, Category.objects.all().values_list('id',flat=True))
+
+class ProductModelTest(TestCase):
+    def setUp(self):
+        self.category = Category.objects.create(
+            name='Test Category',
+            slug='test-category',
+        )
+
+        self.product = Product.objects.create(
+            name='Test product',
+            description='test description',
+            category=self.category,
+            price=10.50,
+        )
+
+    def test_created_model(self):
+        self.assertEqual(self.product.name ,'Test product')
+        self.assertEqual(self.product.description, 'test description')
+        self.assertEqual(self.product.category, self.category)
+        self.assertEqual(self.product.price, 10.50)
+
+
+class CoffeeHouseModelTest(TestCase):
+    def setUp(self):
+        self.coffeehouse = CoffeeHouse.objects.create(
+            name='Coffeehouse test',
+            description='test description',
+            address='test address 1',
+            location={"lat": 51.7558, "lng": 38.6173},
+            opening_time=time(hour=7),
+            closing_time=time(hour=18)
+        )
+
+    def test_created_model(self):
+        self.assertEqual(self.coffeehouse.name, 'Coffeehouse test')
+        self.assertEqual(self.coffeehouse.description, 'test description')
+        self.assertEqual(self.coffeehouse.address, 'test address 1')
+        self.assertEqual(self.coffeehouse.location, {"lat": 51.7558, "lng": 38.6173})
+        self.assertEqual(self.coffeehouse.opening_time, time(hour=7))
+        self.assertEqual(self.coffeehouse.closing_time, time(hour=18))
+
+
+
+class TableModelTest(TestCase):
+    def setUp(self):
+        self.coffeehouse = CoffeeHouse.objects.create(
+            name='Coffeehouse test',
+            description='test description',
+            address='test address 1',
+            location={"lat": 51.7558, "lng": 38.6173},
+            opening_time=time(hour=7),
+            closing_time=time(hour=18)
+        )
+
+        self.table = Table.objects.create(
+            coffeehouse=self.coffeehouse,
+            table_number=1,
+            seats=3,
+        )
+
+    def test_model_create(self):
+        self.assertEqual(self.table.coffeehouse, self.coffeehouse)
+        self.assertEqual(self.table.table_number, 1)
+        self.assertEqual(self.table.seats, 3)
+
+
+# Тесты представлений
 class HomePageViewTest(TestCase):
     def setUp(self):
         self.url = reverse_lazy('coffeehouses:index')

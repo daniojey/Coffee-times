@@ -47,16 +47,13 @@ class MenuPageView(ListView):
 
     def get_queryset(self):
         search = self.request.GET.get('search', '')
-        print(search)
         category_filter = self.request.GET.get('category', '')
 
         products = Product.objects.all()
 
         if category_filter:
             category = Category.objects.get(name=category_filter)
-            print(category)
             products = products.filter(category=category)
-            print(products)
 
         if search:
             products = products.filter(Q(name__icontains=search) | Q(description__icontains=search))
@@ -80,10 +77,8 @@ class ProductView(View):
     
     def get(self, request, *args, **kwargs):
         product_pk = kwargs.get('pk')
-        print(f"pk - {product_pk}")
 
         product = get_object_or_404(Product, pk=product_pk)
-        print(product)
         context = {
             'product': product
         }
