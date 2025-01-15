@@ -279,7 +279,9 @@ def get_phone(request):
             else:
                 # Если пользователь существует переводим на страничку с логином и очищаем сессию
                 del request.session['google_user_info']
-                del request.session['get_phone_error']
+
+                if 'get_phone_error' in request.session:
+                    del request.session['get_phone_error']
                 return redirect('users:login')
             
     context = {
