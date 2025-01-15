@@ -1,0 +1,85 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    min-height: 100%;
+}
+
+.base-container {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 10px 10px 10px;
+    width: 100%; /* Контейнер занимает всю ширину окна */
+    max-width: 500px; /* Ограничение максимальной ширины */
+    margin: 0 auto; /* Центрирование при большом экране */
+}
+
+.base-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Контент занимает всю ширину контейнера */
+    max-width: 500px; /* Ограничение максимальной ширины контента */
+    box-sizing: border-box;
+}
+
+.error-container {
+    color: white;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: rgba(255, 0, 0, 0.685);
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 5px; /* Скругленные углы для красоты */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    color: white;
+    gap: 10px;
+    padding: 20px;
+    border-radius: 5px; /* Скругленные углы */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень для объема */
+}
+
+label {
+    display: flex;
+}
+
+input[type="text"] {
+    display: flex;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

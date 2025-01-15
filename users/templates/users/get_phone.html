@@ -1,6 +1,24 @@
-<form method="post">
-    {% csrf_token %}
-    <label for="phone">Введите ваш номер телефона:</label>
-    <input type="text" id="phone" name="phone" required>
-    <button type="submit">Сохранить</button>
-</form>
+{% load static %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static "css/get_phone.css" %}">
+<title>Встановлення телефону</title>
+
+<body>
+    <div class='base-container'>
+        <div class='base-content'>
+            {% if phone_error %}
+            <div class='error-container'>
+                <p>{{phone_error}}</p>
+            </div>
+            {% endif %}
+            
+            <form method="post">
+                {% csrf_token %}
+                <label for="phone">Введите ваш номер телефона:</label>
+                <input type="text" id="phone" name="phone" placeholder="380xxxxxxxx" required>
+                <button type="submit">Сохранить</button>
+            </form>
+        </div>
+    </div>
+</body>

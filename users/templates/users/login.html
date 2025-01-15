@@ -9,12 +9,20 @@
             <p><input type="text" id='username' name='username' placeholder='Логін aбо номер телефону' class='form-input'></p>
             <p><input type="password" id='password' name='password' placeholder='Пароль' class='form-input'></p>
             
-            <a href="{% url "users:google_login" %}">Вход через GOOGLE</a>
-            {% for error in form.errors.values %}
-                <p>{{ error }}</p>
-            {% endfor %}
-
+            
             <button type='submit' class='submit-btn'>Увійти</button>
+            <a href="{% url "users:google_login" %}" class='google-login'>
+                <label>Увійти через</label>
+                <img src="{% static "icons/google_icon.svg" %}">
+            </a>
+
+            {% if form.errors %}
+                <div class='error-container'>
+                    {% for error in form.errors.values %}
+                    <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </form>
     </div>
 </div>

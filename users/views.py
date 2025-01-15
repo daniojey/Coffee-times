@@ -237,8 +237,8 @@ def google_callback(request):
             first_name=first_name,
             last_name=last_name,
             password=None,  # OAuth пользователи могут не иметь пароля
+            phone=phone
         )
-        user.profile.phone = phone  # Сохраняем телефон в связанную модель Profile, если есть
         user.save()
 
         # Входим в систему
@@ -250,13 +250,15 @@ def google_callback(request):
 def get_phone(request):
     if request.method == 'POST':
         phone = request.POST.get('phone')
-        print(phone)
         google_user_info = request.session.get('google_user_info')
 
         pattern = r'^(?:380|0)\d{9}$'
         if re.match(pattern, phone):
             if phone[0] == '0':
                 phone = '38' + phone
+        else:
+            request.session['get_phone_error'] = 'Невірний формат телефону, введіть вірний формат номеру'
+            return redirect('users:get_phone')
 
         if google_user_info and phone:
 
@@ -274,10 +276,18 @@ def get_phone(request):
 
                 # Входим в систему
                 login(request, user)
+
+                del request.session['get_phone_error']
                 return redirect('coffeehouses:index')
             else:
                 # Если пользователь существует переводим на страничку с логином и очищаем сессию
                 del request.session['google_user_info']
+                del request.session['get_phone_error']
                 return redirect('users:login')
+            
+    context = {
+        'title': 'Створення аккаунту',
+        'phone_error': request.session['get_phone_error'] if 'get_phone_error' in request.session else None
+    }
 
-    return render(request, 'users/get_phone.html')
+    return render(request, 'users/get_phone.html', context=context)
