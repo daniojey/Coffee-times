@@ -109,13 +109,11 @@ class HistoryReservationView(LoginRequiredMixin, ListView):
         s_coffeehouse = self.request.GET.get('is_cafe', '')
         s_sort_by = self.request.GET.get('sort_by', '')
 
-        print(s_sort_by)
-
         user = self.request.user
         if user.phone:
-            reservations = Reservation.objects.filter(customer_phone=user.phone)
+            reservations = Reservation.objects.filter(customer_phone=user.phone).select_related('coffeehouse')
         else:
-            reservations = Reservation.objects.filter(customer_name=user.username)
+            reservations = Reservation.objects.filter(customer_name=user.username).select_related('coffeehouse')
 
         if s_active:
             if user.phone:
@@ -129,7 +127,6 @@ class HistoryReservationView(LoginRequiredMixin, ListView):
 
         if s_sort_by:
             if s_sort_by == 'date':
-                print('1')
                 reservations = reservations.order_by('-reservation_date')
             elif s_sort_by == 'time':
                 reservations = reservations.order_by('reservation_time')

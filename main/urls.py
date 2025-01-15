@@ -18,13 +18,15 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
+from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('coffeehouses.urls',namespace='coffeehouses')),
     path('orders/', include('orders.urls', namespace='orders')),
     path('user/', include('users.urls', namespace='users')),
-]
+    
+]  +  debug_toolbar_urls()
 
 
 if settings.DEBUG:
