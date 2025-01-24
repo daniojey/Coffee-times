@@ -18,6 +18,7 @@ class CreateReservationForm(forms.ModelForm):
             self.fields['customer_phone'].widget = forms.HiddenInput()
         
         self.fields['reservation_date'].widget.attrs['min'] = date.today().isoformat()
+        self.fields['created_ip'].required = False
 
     reservation_date = forms.DateField(
         label='Дата',
@@ -43,6 +44,7 @@ class CreateReservationForm(forms.ModelForm):
             'reservation_time',
             'booking_duration',
             'table',
+            "created_ip",
         ]
         labels = {
             'coffeehouse': "Кав'ярня",
@@ -59,12 +61,16 @@ class CreateReservationForm(forms.ModelForm):
             'reservation_date': forms.DateInput(attrs={'type': 'date', 'id': 'reservation_date', 'class': 'date-input','placeholder': 'Оберіть дату'}),
             'reservation_time': widgets.CustomTimeSelect(attrs={'id': 'reservation_time', 'class': 'time-input'}),
             'booking_duration': widgets.CustomBookingSelect(attrs={'id': 'booking_duration', 'class': 'time-input'}),
-            'table': forms.Select(attrs={'id': 'available_tables', 'class': 'custom-table'})
+            'table': forms.Select(attrs={'id': 'available_tables', 'class': 'custom-table'}),
+            'created_ip': forms.HiddenInput()
         }
     
     def clean_booking_duration(self):
         duration = self.cleaned_data.get('booking_duration')
         refactor_time = str(duration).split(":")
+        test_time = [int(v) for v in refactor_time]
+        if sum(test_time) == 0:
+            raise ValidationError(message="Продовжуманість бронювання не може бути нульова")
         res = timedelta(hours=int(refactor_time[1]), minutes=int(refactor_time[2]))
         return res
 

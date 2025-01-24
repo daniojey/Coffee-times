@@ -87,8 +87,8 @@ class ProfileView(LoginRequiredMixin,TemplateView):
             actual_reservations = get_actual_reservations(phone=user.phone)
 
         
-        actual_res_list = actual_reservations.values_list('id', flat=True)[:2]
-        reservations = Reservation.objects.filter(customer_name=user.username, customer_phone=user.phone).exclude(id__in=actual_res_list).order_by('-reservation_date')[:3]
+        actual_res_list = set(actual_reservations.values_list('id', flat=True)[:2])
+        reservations = Reservation.objects.filter(customer_name=user.username, customer_phone=user.phone).exclude(id__in=actual_res_list).select_related('coffeehouse').order_by('-reservation_date')[:3]
 
         context.update({
             'user': user,

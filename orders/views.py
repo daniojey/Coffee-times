@@ -28,7 +28,7 @@ class CreateReservation(FormView):
     def form_valid(self, form):
         user = self.request.user
         ip = get_user_ip(self.request)
-        print(ip)
+        # print(self.request.POST)
 
         # actual_reservations = get_actual_reservations(phone=user.phone)
         # if len(actual_reservations) >= 2:
@@ -42,14 +42,17 @@ class CreateReservation(FormView):
             reservation = form.save(commit=False)
             reservation.customer_name = user.username
             reservation.customer_phone = user.phone
-            reservation.ip = ip
+            reservation.created_ip = ip
             reservation.save()
         else:
             reservation = form.save(commit=False)
-            reservation.ip = ip
+            reservation.created_ip = ip
             reservation.save()
 
         return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        return super().form_invalid(form)
     
 
     def get_form_kwargs(self):
