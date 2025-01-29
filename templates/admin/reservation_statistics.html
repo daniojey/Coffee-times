@@ -1,0 +1,61 @@
+{% extends "unfold/layouts/base.html" %}
+
+{% block content %}
+<div class="p-4">
+    <div style="width: 100%; margin: 20px auto;">
+        <canvas id="reservationChart"></canvas>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        const ctx = document.getElementById('reservationChart').getContext('2d');
+        
+        const data = {
+            labels: {{ labels|safe }},
+            datasets: [{
+                label: 'Количество резерваций',
+                data: {{ data|safe }},
+                borderColor: '#2563eb',
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                tension: 0.2,
+                fill: true
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Статистика резерваций по месяцам',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        };
+
+        new Chart(ctx, config);
+    </script>
+</div>
+{% endblock %}

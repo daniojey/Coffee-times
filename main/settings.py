@@ -241,7 +241,50 @@ UNFOLD = {
     "SIDEBAR": {
         "show_search": True,  # Search in applications and models names
         "show_all_applications": True,  # Dropdown with all applications and models
+        "navigation": [
+            {
+                "title": _("Navigation"),
+                "separator": False,  # Top border
+                "collapsible": False,  # Collapsible group of links
+                "items": [
+                    {
+                        "title": _("Dashboard"),
+                        "icon": "dashboard",  # Supported icon set: https://fonts.google.com/icons
+                        "link": reverse_lazy("admin:index"),
+                        "permission": lambda request: request.user.is_superuser,
+                    },
+                    {
+                        "title":_("Кавярні"),
+                        "link": reverse_lazy("admin:coffeehouses_coffeehouse_changelist"),
+                    },
+                    {
+                        "title":_("Столики"),
+                        "link":reverse_lazy("admin:coffeehouses_table_changelist"),
+                    },
+                    {
+                        "title":_("Категорії"),
+                        "link": reverse_lazy("admin:coffeehouses_category_changelist"),
+                    },
+                    {
+                        "title":_("Продукти"),
+                        "link":reverse_lazy("admin:coffeehouses_product_changelist")
+                    },
+                    {
+                        "title":_("Бронювання"),
+                        "link": reverse_lazy("admin:orders_reservation_changelist"),
+                    },
+                    {
+                        "title": _("Статистика"),
+                        "link": reverse_lazy("admin:reservation_statistics")
+                    },
+                    {
+                        "title": _("Пользователи"),
+                        "icon": "people",
+                        "link": reverse_lazy("admin:users_user_changelist"),
+                    },
+                ],
+            },
+        ],
     },
-
     
 }
