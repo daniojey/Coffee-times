@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView, View, TemplateView
+from django.contrib.postgres.search import SearchVector
 
 from coffeehouses.models import Category, CoffeeHouse, Product
 from orders.models import Reservation
@@ -56,7 +57,11 @@ class MenuPageView(ListView):
             products = products.filter(category=category)
 
         if search:
-            products = products.filter(Q(name__icontains=search) | Q(description__icontains=search))
+            products = products.annotate(
+                search=SearchVector("name", "description"),
+                ).filter(search=search)
+            
+            # products = products.filter(Q(name__icontains=search) | Q(description__icontains=search))
 
 
         return products

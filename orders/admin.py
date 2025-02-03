@@ -52,6 +52,7 @@ class ReservationStatisticsView(UnfoldModelAdminViewMixin, TemplateView):
 class ReservationModelAdmin(ModelAdmin):
     list_select_related = ["coffeehouse", "table"]
     list_display = ["coffeehouse", "get_table_seats", "customer_name", "customer_phone", "reservation_date", "reservation_time", "booking_duration", "created_at"]
+    search_fields = ["customer_name", "customer_phone"]
 
     def get_table_seats(self, obj):
         return obj.table.table_number
