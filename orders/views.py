@@ -1,13 +1,13 @@
 from datetime import datetime, timedelta, time
 import json
 import re
+from django.forms import ValidationError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, View, TemplateView, FormView
-from django.db.models import F, ExpressionWrapper, TimeField
+from django.db.models import F, Q, ExpressionWrapper, TimeField
 
-import coffeehouses
 from coffeehouses.forms import CreateReservationForm
 from coffeehouses.models import CoffeeHouse, Table
 from orders.models import Reservation
@@ -37,6 +37,40 @@ class CreateReservation(FormView):
         # reservation_ip = get_actual_reservations(ip=ip)
         # if len(reservation_ip) >= 2:
         #     return JsonResponse({'status': 'success', 'message': 'Вы создали слишком много резерваций, вы сможете создать новую если отмените одну из созданных ранее.'})
+
+        reservation_time = self.request.POST['reservation_time']
+        booking_duration = self.request.POST['booking_duration']
+        table = self.request.POST["table"]
+        reservation_date = self.request.POST['reservation_date']
+        coffeehouse_id = self.request.session['coffeehouse']
+
+        # Преобразуем reservation_time в объект времени
+        reservation_time_obj = datetime.strptime(reservation_time, "%H:%M").time()
+
+        # Преобразуем строки в часы и минуты
+        h2, m2 = map(int, booking_duration.split(':'))
+        reservation_datetime = datetime.combine(datetime.strptime(reservation_date, "%Y-%m-%d"), reservation_time_obj)
+
+        # Создаём объект timedelta и объект datetime
+        delta2 = timedelta(hours=h2, minutes=m2)
+
+        # Складываем время
+        total_time = reservation_datetime + delta2
+
+        end_time = total_time.time()
+
+        reservation_filter = Reservation.objects.filter(coffeehouse__id=coffeehouse_id, table__table_number=table, reservation_date=reservation_date).select_related("table")
+        reservations_exists = reservation_filter.annotate(
+            end_time = ExpressionWrapper(
+                    F('reservation_time') + F('booking_duration'),
+                    output_field=TimeField()
+                )
+        )
+
+        result = reservations_exists.filter(Q(end_time__gt=reservation_time) & Q(reservation_time__lt=end_time))
+
+        if result:
+            return ValidationError("Помилка: бронювання на данный час і столик вже створене, оберіть будь-ласка інший час або столик")
 
         if user.is_authenticated:
             reservation = form.save(commit=False)
@@ -124,6 +158,7 @@ def get_available_tables(request):
 
             # Формируем данные для ответа
             tables_data = [{"id": table.id, 'name': table.table_number} for table in Table.objects.filter(coffeehouse_id=coffeehouse_id).exclude(id__in=overlapping_reservations)]
+            request.session['coffeehouse'] = coffeehouse_id
             return JsonResponse({'tables': tables_data})
 
         except json.JSONDecodeError:
@@ -157,7 +192,6 @@ def get_available_times(request):
     if coffeehouse:
         # Если сегодняшняя дата и время сейчас меньше чем время открытия кафе
         if now.time() < coffeehouse.opening_time and selected_date.date() == now.date():
-            print('1')
             st_hour = coffeehouse.opening_time
             en_hour = coffeehouse.closing_time
 
@@ -170,14 +204,12 @@ def get_available_times(request):
         # Если дата сегодняшняя но время у при котором пользователь зашёл создать резервацию позже чем открытие кофейни
         # то высталяем лишь ограничение на закрытие
         elif now.time() > coffeehouse.opening_time and selected_date.date() == now.date():
-            print('2')
             en_hour = coffeehouse.closing_time
             end_hour = str(en_hour).split(':')
             end_hour = int(end_hour[0]) 
 
         # Если другая дата то ограничиваем время лишь по открытию и закрытию
         elif selected_date.date() != now.date():
-            print('3')
             st_hour = coffeehouse.opening_time
             en_hour = coffeehouse.closing_time
 
