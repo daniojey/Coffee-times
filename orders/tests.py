@@ -1,6 +1,7 @@
 from datetime import date, datetime, time, timedelta, timezone
 from django.test import TestCase
 from django.urls import reverse
+from django.utils.timezone import localtime, now, datetime
 
 from coffeehouses.models import CoffeeHouse, Table
 from orders.models import Reservation
@@ -69,10 +70,11 @@ class CreateReservationTest(TestCase):
             'table': self.table.id,
             'customer_name': 'Test_name',
             'customer_phone': '380966344260',
-            'reservation_date': date(year=2025, month=1, day=25),
-            'reservation_time': time(hour=11),
-            'booking_duration': "00:02:00",  # Указание часов таким образом это условие использования кастомного виджета для отображения досутпного времени
+            'reservation_date': now().date(),
+            'reservation_time': "11:00",
+            'booking_duration': "02:00",  # Указание часов таким образом это условие использования кастомного виджета для отображения досутпного времени
         }
+        
         response = self.client.get(reverse('orders:reservation'))
         self.assertTemplateUsed(response, 'orders/reservation.html')
 
@@ -106,7 +108,7 @@ class CreateReservationTest(TestCase):
         self.assertEqual(reservation.table, self.table)
         self.assertEqual(reservation.customer_name, 'Test_name')
         self.assertEqual(reservation.customer_phone, '380966344260')
-        self.assertEqual(reservation.reservation_date, date(year=2025, month=1, day=25))
+        self.assertEqual(reservation.reservation_date, now().date())
         self.assertEqual(reservation.reservation_time, time(hour=11))
         self.assertEqual(reservation.booking_duration, timedelta(hours=2))
         self.assertEqual(reservation.status, False)

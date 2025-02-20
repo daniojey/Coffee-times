@@ -42,7 +42,7 @@ class CreateReservation(FormView):
         booking_duration = self.request.POST['booking_duration']
         table = self.request.POST["table"]
         reservation_date = self.request.POST['reservation_date']
-        coffeehouse_id = self.request.session['coffeehouse']
+        coffeehouse_id = self.request.session.get('coffeehouse')
 
         # Преобразуем reservation_time в объект времени
         reservation_time_obj = datetime.strptime(reservation_time, "%H:%M").time()
