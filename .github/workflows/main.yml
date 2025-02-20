@@ -10,7 +10,9 @@ jobs:
       postgres:
         image: postgres:16
         env:
+          POSTGRES_USER: coffee_user
           POSTGRES_PASSWORD: root
+          POSTGRES_DB: Coffee_times
         ports:
           - 5432:5432
         options: >-
