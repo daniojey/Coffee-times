@@ -9,6 +9,8 @@ jobs:
     services:
       postgres:
         image: postgres:16
+        env:
+          POSTGRES_PASSWORD: root
         ports:
           - 5432:5432
         options: >-
