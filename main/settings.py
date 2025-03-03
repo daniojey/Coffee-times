@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 
     # Сторонние приложения
     "debug_toolbar",
+    "rest_framework",
 
     # мои приложения
     'coffeehouses',
