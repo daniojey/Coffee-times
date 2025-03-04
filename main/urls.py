@@ -19,12 +19,24 @@ from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
 from debug_toolbar.toolbar import debug_toolbar_urls
+from rest_framework.routers import DefaultRouter
+from api.views import ProductViewSets, ProfileHitoryAPI, ProfileInfoAPI, ReservationSearchAPI
+
+
+
+router = DefaultRouter()
+router.register(r"products", ProductViewSets)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('coffeehouses.urls',namespace='coffeehouses')),
     path('orders/', include('orders.urls', namespace='orders')),
     path('user/', include('users.urls', namespace='users')),
+    path('api/', include(router.urls)),
+    path('api/v1/', include('api.urls')),
+    
+
+
     
 ]  +  debug_toolbar_urls()
 

@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'coffeehouses',
     'orders',
     'users',
+    'api',
 
     # Другие приложения
     # 'livereload',
