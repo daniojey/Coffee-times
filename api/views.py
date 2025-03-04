@@ -2,10 +2,12 @@ import re
 from rest_framework import viewsets, status
 
 from api.paginators import CustomHistoryPagination
+from api.permission import IsAdminOrReadOnly, IsUserOrReadOnly
 from users.utils import get_actual_reservations
 from . import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
 from orders.models import Reservation
 
@@ -14,6 +16,7 @@ from coffeehouses.models import Product
 class ProductViewSets(viewsets.ModelViewSet):
     queryset =  Product.objects.all()
     serializer_class = serializers.ProductSerializer
+    permission_classes = (IsAdminUser,)
 
     def get_serializer_context(self):
         """Передаем текущего пользователя в сериализатор"""
@@ -22,6 +25,7 @@ class ProductViewSets(viewsets.ModelViewSet):
 
 
 class ReservationSearchAPI(APIView):
+    permission_classes = (IsAdminOrReadOnly, )
     """АPI для поиска резервации по номеру телефона"""
     def post(self, request, *args, **kwargs):
         phone = request.data.get('phone')
@@ -49,6 +53,8 @@ class ReservationSearchAPI(APIView):
     
 
 class ProfileInfoAPI(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, *args, **kwargs):
         user = request.user
 
@@ -68,6 +74,7 @@ class ProfileInfoAPI(APIView):
 
 
 class ProfileHitoryAPI(APIView):
+    permission_classes = (IsAuthenticated, IsUserOrReadOnly)
     def get(self, request, *args, **kwargs):
         s_active = request.GET.get("is_active", '')
         s_coffeehouse = request.GET.get('is_cafe', '')
