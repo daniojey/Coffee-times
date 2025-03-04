@@ -26,3 +26,6 @@ class Reservation(models.Model):
             return "Просроченное"
         elif self.reservation_date >= now().date():
             return "Актуальное"
+        
+    class Meta:
+        ordering = ['-reservation_date']

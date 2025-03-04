@@ -1,6 +1,7 @@
 import re
 from rest_framework import viewsets, status
 
+from api.paginators import CustomHistoryPagination
 from users.utils import get_actual_reservations
 from . import serializers
 from rest_framework.views import APIView
@@ -95,5 +96,10 @@ class ProfileHitoryAPI(APIView):
             elif s_sort_by == 'time':
                 reservations = reservations.order_by('reservation_time')
 
-        serrializer = serializers.ReservationProfileSericalizer(reservations, many=True)
-        return Response({'reservations': serrializer.data}, status=status.HTTP_200_OK)
+        paginator = CustomHistoryPagination()
+        result_page = paginator.paginate_queryset(reservations, request)
+        if result_page is not None:
+            serializer = serializers.ReservationProfileSericalizer(result_page, many=True, context={"request": request})
+            return paginator.get_paginated_response(serializer.data)
+
+        return Response({'reservations': []}, status=status.HTTP_200_OK)
