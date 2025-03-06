@@ -1,9 +1,12 @@
+from datetime import datetime, timedelta
 import re
+from django.db.models import F, Q, ExpressionWrapper
+from django.forms import TimeField, ValidationError
 from rest_framework import viewsets, status
 
 from api.paginators import CustomHistoryPagination
 from api.permission import IsAdminOrReadOnly, IsUserOrReadOnly
-from users.utils import get_actual_reservations
+from users.utils import get_actual_reservations, get_user_ip
 from . import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -110,3 +113,20 @@ class ProfileHitoryAPI(APIView):
             return paginator.get_paginated_response(serializer.data)
 
         return Response({'reservations': []}, status=status.HTTP_200_OK)
+    
+
+
+class CreateReservationAPI(APIView):
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        ip = get_user_ip(request)
+
+        # Передаём request в сериализатор для получения контекста
+        serializer = serializers.ReservationCreateSerializer(data=request.data, context={'request': request, 'ip': ip})
+
+        # Проверка данных
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Бронирование успешно созданно', 'reservation': serializer.data}, status=status.HTTP_201_CREATED)
+            
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
