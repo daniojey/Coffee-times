@@ -10,8 +10,13 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['name','category', 'price', 'discount', 'adds_by']
+        fields = ['name', 'description','category', 'price', 'discount', 'adds_by']
         
+        extra_kwargs = {
+            'name': {'required': True},
+            'description': {'required': False},
+        }
+
     def get_adds_by(self, obj):
         request = self.context.get('request')
         return request.user.username if request else None

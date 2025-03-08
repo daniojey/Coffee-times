@@ -28,7 +28,7 @@ class ProductViewSets(viewsets.ModelViewSet):
 
 
 class ReservationSearchAPI(APIView):
-    permission_classes = (IsAdminOrReadOnly, )
+    # permission_classes = (IsAdminOrReadOnly, )
     """АPI для поиска резервации по номеру телефона"""
     def post(self, request, *args, **kwargs):
         phone = request.data.get('phone')
