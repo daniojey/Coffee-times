@@ -79,6 +79,7 @@ class ReservationProfileSericalizer(serializers.ModelSerializer):
 
 
 class ReservationCreateSerializer(serializers.ModelSerializer):
+    # TODO Доабить проверки для разных данных
     coffeehouse = serializers.PrimaryKeyRelatedField(queryset=CoffeeHouse.objects.all(), required=True)
     table = serializers.PrimaryKeyRelatedField(queryset=Table.objects.all(), required=True)
 
@@ -152,7 +153,11 @@ class ReservationCreateSerializer(serializers.ModelSerializer):
 
         if request.user.is_authenticated:
             validated_data['customer_name'] = request.user.username
-            validated_data['customer_phone'] = request.user.phone
+            
+            if request.data['customer_phone']:
+                validated_data['customer_phone'] = request.data['customer_phone']
+            else:
+                validated_data['customer_phone'] = request.user.phone
 
         validated_data['created_ip'] = ip
         return super().create(validated_data)

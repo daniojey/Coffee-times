@@ -68,7 +68,7 @@ class ProfileInfoAPI(APIView):
 
         actual_res_list = set(actual_reservations.values_list('id', flat=True)[:2])
         actual_res_queryset = Reservation.objects.filter(id__in=actual_res_list)
-        reservations = Reservation.objects.filter(customer_name=user.username, customer_phone=user.phone).exclude(id__in=actual_res_list).select_related('coffeehouse').order_by('-reservation_date')[:3]
+        reservations = Reservation.objects.filter(Q(customer_name=user.username) | Q(customer_phone=user.phone)).exclude(id__in=actual_res_list).select_related('coffeehouse').order_by('-reservation_date')[:3]
 
         serializer_actual_res = serializers.ReservationProfileSericalizer(actual_res_queryset, many=True)
         serializer_reservations = serializers.ReservationProfileSericalizer(reservations, many=True)

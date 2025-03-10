@@ -4,7 +4,6 @@ from django.db.models import Q
 from orders.models import Reservation
 
 def get_actual_reservations(phone=None, ip=None, username=None):
-    print(now().time())
     if phone:
         res =Reservation.objects.filter(
             Q(customer_phone=phone) &
