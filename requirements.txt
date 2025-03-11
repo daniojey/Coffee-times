@@ -9,12 +9,14 @@ django-debug-toolbar==5.0.1
 django-livereload-server==0.5.1
 django-unfold==0.44.0
 djangorestframework==3.15.2
+djangorestframework_simplejwt==5.5.0
 gunicorn==23.0.0
 idna==3.10
 oauthlib==3.2.2
 packaging==24.2
 pillow==11.0.0
 psycopg2-binary==2.9.10
+PyJWT==2.9.0
 python-decouple==3.8
 requests==2.32.3
 requests-oauthlib==2.0.0
