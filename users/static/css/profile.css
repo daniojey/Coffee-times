@@ -27,8 +27,8 @@
     justify-content: center;
     box-sizing: border-box;
     width: 100%;
-    color: #FFFF;
-    background-color: black;
+    background-color: #CDBDA3;
+    color: #4D4631;
     padding: 24px;
     border-radius: 15px;
 }
@@ -42,10 +42,10 @@
     width: 100%;
     margin-top: 16px;
     padding: 8px 15px;
-    background-color: rgb(0, 0, 0);
+    background-color: #4D4631;
     border-radius: 15px;
     border: 2px solid white;
-    color: #FFFF;
+    color: #CDBDA3;
     text-decoration: none;
     transition: color 0.5s ease, background-color 0.5s ease;
 }
@@ -58,14 +58,18 @@
 .active-reservation {
     display: flex;
     flex-direction: column;
-    background-color: black;
-    color: #FFFF;
+    background-color: #CDBDA3;
+    color: #4D4631;
     font-size: 16px;
     padding: 24px;
     border-radius: 15px;
     align-items: center;
     justify-content: center;
     gap: 20px;
+}
+
+.active-reservation h2{
+    margin: 0px;
 }
 
 
@@ -76,8 +80,8 @@
     align-items: center;
     justify-content: center;
     width: 45%;
-    background-color: black;
-    color: #FFFF;
+    background-color: #CDBDA3;
+    color: #4D4631;
     margin-top: 20px;
     margin-bottom: 20px;
     padding: 24px;
@@ -90,7 +94,8 @@
     display: flex;
     flex-direction: column;
     border-radius: 15px;
-    border: 1px solid #FFFF;
+    border: 1px solid #4F4A33;
+    box-shadow: 5px 5px 5px #4F4A33;
     width: 100%;
     padding: 10px;
 }
@@ -130,8 +135,8 @@
     margin-top: 20px;
     margin-bottom: 13px;
     width: 100%;
-    color: #FFFF;
-    background-color: black;
+    color: #CDBDA3;
+    background-color: #4D4631;
     transition: color 0.5s ease, background-color 0.5s ease;
     align-items: center;
     justify-content: center;

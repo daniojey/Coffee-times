@@ -73,8 +73,8 @@
     max-width: 1250px;
     max-height: 710px;
     width: 98%; /* Адаптивная ширина */
-    background-color: black;
-    color: white;
+    background-color: #CDBDA3;
+    color: #4D4631;
     align-items: center;
     justify-content: center;
     margin: 0px auto;
@@ -83,14 +83,14 @@
 
 .coffeemap-content a{
     margin-left: 5px;
-    color: wheat;
+    color: #4D4631;
     text-decoration: none;
     font-size: 22px;
     transition: color 0.5 ease;
 }
 
 .coffeemap-content a:hover{
-    color: yellow;
+    color: #4D4631;
 }
 
 
@@ -103,8 +103,8 @@
     max-width: 1250px;
     max-height: 710px;
     width: 98%; /* Адаптивная ширина */
-    background-color: black;
-    color: white;
+    background-color: #CDBDA3;
+    color: #4D4631;
     align-items: center;
     justify-content: center;
     margin: 0px auto;
@@ -113,7 +113,8 @@
 
 .menu-content a{
     text-decoration: none;
-    color: white;
+    color: #CDBDA3;
+    background-color: #4D4631;
     padding: 5px 11px;
     border-radius: 12px;
     border: 1.5px solid white;

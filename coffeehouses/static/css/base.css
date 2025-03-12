@@ -6,7 +6,7 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
-    background-color: #ffffff;
+    background-color: #F5F0E4;
     min-height: 100%;
 }
 
@@ -14,7 +14,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: black;
+    background-color: #B8A890;
     min-height: 56px;
 }
 
@@ -33,7 +33,12 @@ header {
 }
 
 .home-page-container a {
-    color: #FFFFFF;
+    color: #4D4631;
+    font-family: Roboto;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
     text-decoration: none;
     transition: color 0.6s ease;
 }
@@ -54,13 +59,18 @@ header {
 }
 
 .base-links a {
-    color: #FFFFFF;
+    color: #4D4631;
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
     text-decoration: none;
     transition: color 0.6s ease;
 }
 
 .base-links a:hover {
-    color: #ffffff;
+    color: rgb(0, 0, 0);
 }
 
 .hidden {
@@ -69,9 +79,14 @@ header {
 
 /* Стили для footer */
 footer {
-    background-color: #000000; /* Цвет фона */
-    color: #fff; /* Цвет текста */
-    padding: 10px 10px;
+    background-color: #B8A890; /* Цвет фона */
+    color: #4D4631; /* Цвет текста */
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    padding: 5px 5px;
     box-sizing: border-box;
     text-align: center;
     margin-top: auto; /* Это гарантирует, что футер всегда будет внизу */
@@ -101,7 +116,7 @@ footer {
 }
 
 .footer-content-container a {
-    color: #fff; /* Цвет ссылок */
+    color: #4D4631; /* Цвет ссылок */
     text-decoration: none; /* Убираем подчеркивание */
 }
 

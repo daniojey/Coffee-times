@@ -6,9 +6,8 @@
 <div class='base-container'>
     <div class='form-container'>
         <form action="" method='post'>{% csrf_token %}
-            <p><input type="text" id='username' name='username' placeholder='Логін aбо номер телефону' class='form-input'></p>
-            <p><input type="password" id='password' name='password' placeholder='Пароль' class='form-input'></p>
-            
+            <p class="form-label"><input type="text" id='username' name='username' placeholder='Логін aбо номер телефону' class='form-input'></p>
+            <p class="form-label"><input type="password" id='password' name='password' placeholder='Пароль' class='form-input'></p>
             
             <button type='submit' class='submit-btn'>Увійти</button>
             <a href="{% url "users:google_login" %}" class='google-login'>

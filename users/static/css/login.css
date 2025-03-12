@@ -22,7 +22,7 @@ form {
     gap: 20px;
 }
 
-p {
+.form-label {
     margin: 0px;
 }
 
