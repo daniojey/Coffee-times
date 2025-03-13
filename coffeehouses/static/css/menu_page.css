@@ -17,8 +17,8 @@
     border: 1px solid burlywood;
     justify-content: center;
     align-items: center;
-    background-color: black;
-    color: white;
+    background-color: #CDBDA3;
+    color: #4D4631;
 }
 
 .filter-main-body {
@@ -42,6 +42,7 @@
     border-radius: 12px;
     padding: 0px 5px;
     margin: 0px;
+    border: 1px solid #CDBDA3;
 }
 
 select {
@@ -52,8 +53,8 @@ select {
 }
 
 .filter-btn {
-    background-color: black;
-    color: white;
+    background-color: #4D4631;
+    color: #f5f5f5;
     border: 1.5px solid white;
     border-radius: 14px;
     font-size: 16px;
@@ -63,7 +64,7 @@ select {
 }
 
 .filter-btn:hover {
-    color: black;
+    color: #4D4631;
     background-color: white;
 }
 

@@ -7,10 +7,10 @@
     box-sizing: border-box; 
     margin: 0 auto;
     margin-top: 80px;
-    background-color: black;
+    background-color: #CDBDA3;
     align-items: center;
     justify-content: center;
-    color: azure;
+    color: #4D4631;
     font-size: 18px;
     border-radius: 15px;
 }
@@ -27,7 +27,12 @@ form {
     border-radius: 15px;
     font-size: 19px;
     background-color: aliceblue;
-    color: black;
+    color: #4D4631;
+    border: none;
+}
+
+.form-input:focus{
+    outline: 2px solid #4D4631;
 }
 
 
@@ -38,9 +43,9 @@ form {
     justify-content: center;
     padding: 5px 7px;
     font-size: 20px;
-    color: black;
+    color: #4D4631;
+    border: 1px solid #4D4631;
     background-color: #FFFF;
-    border: none;
     margin: 10px 0px;
     border-radius: 5px;
     max-width: 250px;

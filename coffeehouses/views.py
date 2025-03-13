@@ -53,8 +53,12 @@ class MenuPageView(ListView):
         products = Product.objects.all()
 
         if category_filter:
-            category = Category.objects.get(name=category_filter)
-            products = products.filter(category=category)
+            category = Category.objects.filter(name=category_filter).first()
+
+            if category:
+                products = products.filter(category=category)
+            else:
+                products = products.none()
 
         if search:
             products = products.annotate(
