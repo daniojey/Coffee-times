@@ -34,7 +34,7 @@ SECRET_KEY = config('DJANGO_SECRET_KEY', default="django-insecure-dtm(&qi$!j_z_v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "rest_framework",
     'rest_framework_simplejwt',
+    'corsheaders',
 
     # мои приложения
     'coffeehouses',
@@ -73,6 +74,7 @@ INTERNAL_IPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -342,3 +344,8 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5500",  # Разрешить запросы с этого домена
+]
