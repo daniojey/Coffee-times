@@ -13,7 +13,7 @@ from orders.models import Reservation
 
 # Create your views here.
 class HomePageView(TemplateView):
-    template_name ='coffeehouses/index.html'
+    template_name ='coffeehouses/indextest.html'
 
 
 class MapCoffeehousesView(TemplateView):

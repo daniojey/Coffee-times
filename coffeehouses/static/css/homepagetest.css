@@ -1,0 +1,116 @@
+:root {
+    --index: calc(1vh + 1vw);
+}
+
+
+header {
+    background-color: rgba(15, 15, 15, 0.6);
+    z-index: 5;
+}
+
+footer {
+    background-color: rgb(15, 15, 15);
+}
+
+.hero-block {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    background-image: url('../images/coffee_homepage2.jpg');
+    object-fit: cover;
+    background-position: end;
+    background-repeat: no-repeat;
+    position: relative; 
+    transition: filter 0.4s ease;
+    margin-top: -56px; 
+    padding-top: 56px; 
+}
+
+.hero-block::after {
+    content: '';
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin-top: -56px; 
+    padding-top: 56px; 
+    background-color: rgb(0, 0, 0, 0.8);
+    z-index: 1;
+}
+
+
+
+.hero-block__info {
+    position: absolute;
+    filter: brightness(70%);
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    left: 60%;
+    top: 30%;
+    display: flex;
+    max-width: 350px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-color: rgba(15, 15, 15, 0.2);
+    z-index: 2;
+    padding: 10px 15px;
+    pointer-events: all;
+    transition: left 0.4s ease, transform 0.4s ease;
+
+}
+
+.hero-block__info h2{
+    font-size: calc(var(--index) * 0.9);
+}
+
+.hero-block__info p{
+    font-size: calc(var(--index) * 0.8);
+}
+
+.hero-block__info a{
+    color: black;
+    text-decoration: none;
+    padding: 5px 60px;
+    background-color: #b8a890;
+    text-align: center;
+    border-radius: 4px;
+    font-size: calc(var(--index) * 0.8);
+    transition: color 0.6s ease, background-color 0.6s ease;
+
+}
+
+
+.hero-block__info a:hover{
+    color: white;
+    background-color: #887b67;
+}
+
+@media (max-width: 1000px) {
+
+    .hero-block__info {
+        left: 50% !important; /* Центрирование по горизонтали */
+        top: 50% !important;
+        max-width: 90%;       /* Чтобы текст не прилипал к краям */
+        width: 80%;
+        text-align: center;   /* Выравнивание текста по центру */
+        padding: 20px;        /* Увеличиваем отступы */
+        left: auto;           /* Отключаем предыдущее позиционирование */
+        transform: translate(-50%, -50%);
+    }
+
+    .hero-block__info h2{
+        font-size: calc(var(--index) * 1.5);
+    }
+
+    .hero-block__info p{
+        font-size: calc(var(--index) * 1.2);
+    }
+
+    .hero-block__info a{
+        font-size: calc(var(--index) * 1.2);
+    }
+}

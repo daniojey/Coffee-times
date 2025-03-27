@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static "css/homepagetest.css" %}">
+
+<div class="hero-block">
+    <div class='hero-block__info'>
+        <h2>Аромат, который объединяет</h2>  
+        <p>У нас каждое утро начинается с обжарки свежих зерен и теплых улыбок. Попробуйте авторские рецепты кофе, созданные бариста-виртуозами, и десерты ручной работы. Погрузитесь в атмосферу живых разговоров и уюта, где время замедляет свой бег.</p>
+        <a href="{% url "coffeehouses:menu_page" %}">Меню</a>
+    </div>
+</div>
+{% endblock %}
