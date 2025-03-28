@@ -93,7 +93,8 @@ class ProfileView(LoginRequiredMixin,TemplateView):
         context.update({
             'user': user,
             'actual_reservations': actual_reservations,
-            'reservations': reservations
+            'reservations': reservations,
+            'active_tab': 'profile-link',
         })
 
         return context

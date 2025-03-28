@@ -13,7 +13,7 @@
         <header>
             <div class='base-links-container'>
                 <div class='home-page-container'>
-                    <a href="{% url "coffeehouses:index" %}">Головна</a>
+                    <a href="{% url "coffeehouses:index" %}" id="main-link">Головна</a>
                 </div>
                 
                 <nav class="navbar">
@@ -23,14 +23,14 @@
                         <span></span>
                     </div>
                     
-                    <div class='base-links' id='base-links'>
-                        <ul>
-                            <li><a href="{% url "coffeehouses:menu_page" %}">Меню</a></li>
-                            <li><a href="{% url "coffeehouses:coffee_map" %}">Мапа кав'ярень</a></li>
+                    <div class='base-links' id='base-links' data-activeLink="{{ active_tab }}">
+                        <ul class='header-links'>
+                            <li><a href="{% url "coffeehouses:menu_page" %}" id="menu-link">Меню</a></li>
+                            <li><a href="{% url "coffeehouses:coffee_map" %}" id="map-link">Мапа кав'ярень</a></li>
                             {% if user.is_authenticated %}
-                            <li><a href="{% url "users:profile" %}">Профіль</a></li>
+                            <li><a href="{% url "users:profile" %}" id="profile-link">Профіль</a></li>
                             {% else %}
-                            <li><a href="{% url "coffeehouses:search_number_page" %}">Мої бронювання</a></li>
+                            <li><a href="{% url "coffeehouses:search_number_page" %}" id="reservation-link">Мої бронювання</a></li>
                             <li><a href="{% url "users:login" %}">Увійти</a> | <a href="{% url "users:registration" %}">Зарееструватися</a></li>
                             {% endif %}
                         </ul>
@@ -91,5 +91,6 @@
                 overlay.classList.remove('active');
             });
         </script>
+        <script src="{% static "js/active_link.js" %}"></script>
     </body>
 </html>

@@ -14,7 +14,8 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #B8A890;
+    background-color: rgba(15, 15, 15, 0.6);
+    z-index: 5;
     min-height: 56px;
 }
 
@@ -40,7 +41,7 @@ header {
     font-weight: 600;
     line-height: normal;
     text-decoration: none;
-    transition: color 0.6s ease;
+    transition: color 0.6s ease, background-color 0.9s ease;
 }
 
 .home-page-container a:hover {
@@ -58,6 +59,12 @@ header {
     list-style: none;
 }
 
+.active-link {
+    background-color: #B8A890;
+    border-radius: 50%;
+    padding: 6px 12px;
+}
+
 .base-links a {
     color: #4D4631;
     font-family: Roboto;
@@ -66,7 +73,7 @@ header {
     font-weight: 600;
     line-height: normal;
     text-decoration: none;
-    transition: color 0.6s ease;
+    transition: color 0.6s ease, background-color 0.9s ease;
 }
 
 .base-links a:hover {

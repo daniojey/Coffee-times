@@ -1,6 +1,7 @@
 :root {
     --index: calc(1vh + 1vw);
     --swiper-theme-color: #b8a890 !important;
+    --swiper-navigation-sides-offset: 5px;
 }
 
 header {
@@ -214,9 +215,9 @@ footer {
     transition: opacity 0.25s ease-in-out;
 }
 
-.swiper-image {
+/* .swiper-image {
     width: calc(var(--index) * 27 );
-}
+} */
 
 .swiper-pagination {
     display: none;
@@ -228,4 +229,11 @@ footer {
 
 .swiper-button-next {
     color: #b8a890;
+}
+
+@media (max-width: 1000px) {
+    .slide-item {
+        height: calc(var(--index) * 14);
+        width: calc(var(--index) * 18);
+    }
 }

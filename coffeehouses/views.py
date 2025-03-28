@@ -21,6 +21,7 @@ class HomePageView(TemplateView):
         products = Product.objects.all()[:4]
 
         context.update({
+            'active_tab': 'main-link',
             'products': products,
         })
 
@@ -48,6 +49,7 @@ class MapCoffeehousesView(TemplateView):
 
         context.update({
             'coffee_shops': json.dumps(coffee_shops_data, cls=DjangoJSONEncoder),
+            'active_tab': 'map-link',
         })
 
         return context
@@ -89,6 +91,9 @@ class MenuPageView(ListView):
         context = super().get_context_data(**kwargs)
         
         context['page_obj'] = pagination.get_page(page)
+        context.update({
+            'active_tab': 'menu-link',
+        })
 
         return context
     
@@ -100,7 +105,8 @@ class ProductView(View):
 
         product = get_object_or_404(Product, pk=product_pk)
         context = {
-            'product': product
+            'product': product,
+            'active_tab': 'menu-link',
         }
 
         return render(request, 'coffeehouses/product.html', context)
