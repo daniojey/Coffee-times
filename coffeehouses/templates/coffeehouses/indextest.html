@@ -3,6 +3,8 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static "css/homepagetest.css" %}">
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
 <div class="hero-block">
     <div class='hero-block__info'>
@@ -11,4 +13,45 @@
         <a href="{% url "coffeehouses:menu_page" %}">Меню</a>
     </div>
 </div>
+
+
+<div class='swiper-block'>
+    <p class='swiper_block__preview'>Різноманітні аромати</p>
+
+    <!-- Slider main container -->
+    <div class="swiper slider">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+            <!-- Slides -->
+             {% for product in products %}
+                <div class="swiper-slide slide">
+                    <div class='slide-item'>
+                        {% if product.image %}
+                            <img src="{{ product.image.url}}">
+                        {% endif %}
+                        <div id="productId">
+                            <div class='product__name_description'>
+                                <p>{{ product }}</p>
+                                <p>{{ product.description|truncatechars:80 }}</p>
+                            </div>
+                            <div class='product__price'>
+                                <p>Ціна {{ product.price }}грн</p>
+
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            {% endfor %}
+            
+        </div>  
+        <!-- If we need navigation buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+</div>
+
+<script src="{% static "js/show_overlay_products.js" %}"></script>
+<script src="{% static "js/swiper.js" %}"></script>
+<script src="{% static "js/phone_slides_style.js" %}"></script>
 {% endblock %}

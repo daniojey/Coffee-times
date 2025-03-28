@@ -15,6 +15,17 @@ from orders.models import Reservation
 class HomePageView(TemplateView):
     template_name ='coffeehouses/indextest.html'
 
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+
+        products = Product.objects.all()[:4]
+
+        context.update({
+            'products': products,
+        })
+
+        return context
+
 
 class MapCoffeehousesView(TemplateView):
     template_name = 'coffeehouses/map_coffeehouses.html'
