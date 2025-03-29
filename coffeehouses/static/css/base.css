@@ -34,7 +34,7 @@ header {
 }
 
 .home-page-container a {
-    color: #4D4631;
+    color: #a79883;
     font-family: Roboto;
     font-size: 24px;
     font-style: normal;
@@ -61,12 +61,19 @@ header {
 
 .active-link {
     background-color: #B8A890;
+    color: #4D4631 !important;
     border-radius: 50%;
     padding: 6px 12px;
+    transition: color 0.4s ease, background-color 0.5s ease;
+}
+
+.active-link:hover {
+    background-color: #998c79;
+    color: #f5f5f5 !important;
 }
 
 .base-links a {
-    color: #4D4631;
+    color: #B8A890;
     font-family: Roboto;
     font-size: 16px;
     font-style: normal;
@@ -86,8 +93,9 @@ header {
 
 /* Стили для footer */
 footer {
+    border-top: #a79883 solid 0.5px; /* Граница сверху */
     background-color: #B8A890; /* Цвет фона */
-    color: #4D4631; /* Цвет текста */
+    color: #a79883; /* Цвет текста */
     font-family: Roboto;
     font-size: 16px;
     font-style: normal;
@@ -167,12 +175,12 @@ footer {
     left: -3000px; /* Скрыта за пределами экрана */
     width: 200px;
     height: 100%;
-    background-color: #CDBDA3;
-    color: #4D4631;
+    background-color: rgb(15, 15, 15);
+    color: #B8A890;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
     transition: left 0.3s ease;
-    z-index: 1000;
+    z-index: 9999 !important;
 }
 
 .sidebar ul {
@@ -186,7 +194,7 @@ footer {
 }
 
 .sidebar ul li a {
-    color: #4D4631;
+    color: #B8A890;
     text-decoration: none;
     font-size: 18px;
     transition: color 0.3s;
@@ -205,7 +213,7 @@ footer {
     /* Показ боковой панели на мобильных устройствах */
     .sidebar.active {
         left: 0; /* Показываем панель */
-        z-index: 9999;
+        z-index: 9999 !important;
     }
 
     /* Для бургер-меню */
