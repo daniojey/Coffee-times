@@ -51,6 +51,34 @@
     </div>
 </div>
 
+<div class='navigation-block'>
+    <p class='navigation-block-title'>Бронювання столиків легко та зручно</p>
+
+    <div class="navigation-block__map" data-url="{% url "coffeehouses:coffee_map" %}">
+        <p class='map-title'>Знайти на мапі</p>
+        <img src="{% static "images/map_intro.png" %}" class="map-intro">
+        <img src="{% static "icons/mark_map.png" %}" class='mark-map'>
+    </div>
+
+    <div class="navigation-block__info">
+        <div class="navigation__info-first" data-url="{% if user.is_authenticated %}{% url "users:profile" %}{% else %}{% url "coffeehouses:search_number_page" %}{% endif %}">
+            <img src="{% static "icons/search_reservations.png" %}" class="navigation__info-search-img">
+            <p>Пошук бронювання</p>
+        </div>
+
+        <div class="navigation__info-second" data-url="{% url 'orders:reservation' %}">
+            <img src="{% static "icons/plus_reservation.png" %}" class="navigation__info-plus-img">
+            <p>Створити бронювання</p>
+        </div>
+    </div>
+
+
+</div>
+
+<script src="{% static "js/navigation_block_mobile.js" %}"></script>
+<script src="{% static "js/plus_reservation.js" %}"></script>
+<script src="{% static "js/reservation_search.js" %}"></script>
+<script src="{% static "js/map_element.js" %}"></script>
 <script src="{% static "js/show_overlay_products.js" %}"></script>
 <script src="{% static "js/swiper.js" %}"></script>
 <script src="{% static "js/phone_slides_style.js" %}"></script>
