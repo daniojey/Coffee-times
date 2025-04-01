@@ -6,7 +6,7 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
-    background-color: #F5F0E4;
+    background-color: rgba(15, 15, 15);
     min-height: 100vh;
 }
 
@@ -14,9 +14,13 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: rgba(15, 15, 15, 0.6);
+    background-color: rgba(15, 15, 15);
     z-index: 5;
     min-height: 56px;
+}
+
+:root {
+    --index: calc(1vh + 1vw);
 }
 
 .base-links-container {
@@ -94,7 +98,7 @@ header {
 /* Стили для footer */
 footer {
     border-top: #a79883 solid 0.5px; /* Граница сверху */
-    background-color: #B8A890; /* Цвет фона */
+    background-color: rgba(15, 15, 15); /* Цвет фона */
     color: #a79883; /* Цвет текста */
     font-family: Roboto;
     font-size: 16px;

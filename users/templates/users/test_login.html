@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static "css/test_login.css" %}">
+
+<div class='base-container'>
+    <div class="form-container">
+        <form action="" method='post'>{% csrf_token %}
+            <h3>Welcome Back!</h3>
+            <p class='second-title'>Don`n have account yet? <a href="{% url "users:registration" %}" class='signuplink'>Sign Up</a></p>
+            <p class="form-label"><input type="text" id='username' name='username' placeholder='Логін aбо номер телефону' class='form-input' autofocus></p>
+            <p class="form-label"><input type="password" id='password' name='password' placeholder='Пароль' class='form-input'></p>
+            
+            <button type='submit' class='submit-btn'>Увійти</button>
+
+            <div class="or">
+                <div class="line"></div>
+                <p id="or">OR</p>
+            </div>
+            <a href="{% url "users:google_login" %}" class='google-login'>
+                <img src="{% static "icons/google_icon.svg" %}">
+            </a>
+        </form>
+    </div>
+
+    {% if form.errors %}
+        <!-- Преобразуем ошибки в JSON и сохраняем в скрытом теге -->
+        {{ form.errors|json_script:"form-errors" }}
+    {% endif %}
+</div>
+
+
+<script src="{% static "js/errors_showing.js" %}"></script>
+<script src="{% static "js/opacity_form.js" %}"></script>
+{% endblock %}

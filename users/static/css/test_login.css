@@ -1,0 +1,230 @@
+header {
+    border-bottom: #a79883 solid 0.5px;
+}
+
+
+.base-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 400px; /* Ограничиваем ширину формы */
+    padding: 24px; /* Отступы внутри формы */
+    box-sizing: border-box; /* Учитываем отступы в ширине */
+    border-radius: 10px;
+    background-color: rgb(23, 23, 23);
+    border: 0.1px solid rgb(255, 255, 255, 0.05);
+    border-top: 0.2px solid rgb(255, 255, 255, 0.1);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out; /* Плавный переход */
+}
+
+
+/* Стили для формы */
+form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+form h3{
+    width: 100%;
+    color: #a79883;
+    font-size: calc(var(--index) * 1);
+    margin: 0;
+    margin-bottom: 10px; /* Отступ снизу */
+    text-align: center; /* Центрируем заголовок */
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+
+.second-title {
+    width: 100%;
+    color: #585248;
+    font-size: calc(var(--index) * 0.7);
+    margin: 0;
+    margin-bottom: 10px; /* Отступ снизу */
+    text-align: center; /* Центрируем заголовок */
+    margin-bottom: 35px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.signuplink {
+    text-decoration: none;
+    color: #a79883;
+    font-size: calc(var(--index) * 0.7);
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    transition: color 0.6s ease;
+}
+
+.signuplink:hover {
+    color: #f5f5f5;
+}
+
+.form-label {
+    margin: 0; /* Отступ снизу */
+}
+
+form input {
+    display: flex;
+    width: 100%;
+    height: 36px;
+    margin-bottom: 20px; /* Отступ снизу */
+    padding: 10px; /* Отступы внутри поля ввода */
+    border-radius: 5px;
+    border: 1px solid #272319; /* Цвет рамки */
+    font-size: calc(var(--index) * 0.7); /* Размер шрифта */
+    box-sizing: border-box; /* Учитываем отступы в ширине */
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3); /* Тень для поля ввода */
+    background-color: rgb(39, 39, 39);
+    color: #a79883; /* Цвет текста */
+    transition: box-shadow 0.3s ease, border 0.3s ease; /* Плавный переход */
+}
+
+form input:focus {
+    outline: none; /* Убираем обводку при фокусе */
+    border: 1px solid #a79883; /* Цвет рамки при фокусе */
+    box-shadow: 0px 3px 5px #a79883; /* Тень для поля ввода при фокусе */
+}
+
+form button{
+    width: 100%;
+    height: 36px;
+    padding: 10px; /* Отступы внутри кнопки */
+    border-radius: 5px;
+    border: none; /* Убираем рамку */
+    background-color: #a79883; /* Цвет фона кнопки */
+    color: rgb(15, 15, 15); /* Цвет текста кнопки */
+    font-size: calc(var(--index) * 0.8); /* Размер шрифта */
+    cursor: pointer; /* Курсор при наведении */
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    transition: background-color 0.6s ease, color 0.6s ease; /* Плавный переход */
+}
+
+form button:hover {
+    background-color:  #585248;/* Цвет фона при наведении */
+    color:  #f5f5f5;/* Цвет текста при наведении */
+    
+}
+
+.or {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.line {
+    position: absolute;
+    top: 50%; /* Центрируем линию по вертикали */
+    width: 100%;
+    flex-grow: 1; /* Занимает оставшееся пространство */
+    height: 0.5px; /* Высота линии */
+    background-color: #35322c; /* Цвет линии */
+}
+
+#or {
+    text-align: center; /* Центрируем текст */
+    margin: 30px 0; /* Отступы сверху и снизу */
+    color: #585248;
+    background-color: rgb(23, 23, 23);
+    font-size: calc(var(--index) * 0.6);
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    padding: 0 10px; /* Отступы слева и справа */
+    z-index: 1; /* Поверх линии */
+}
+
+.google-login {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 36px;
+    border-radius: 5px;
+    border: none; /* Убираем рамку */
+    background-color: rgb(39, 39, 39); /* Цвет фона кнопки */
+    transition: background-color 0.6s ease; /* Плавный переход */
+    border: 0.1px solid rgb(0, 0, 0, 0.05);
+}
+
+.google-login:hover {
+    background-color:  #585248;/* Цвет фона при наведении */
+}
+
+.google-login img{
+    position: absolute;
+    height: 26px;
+    width: 26px;
+    top: 50%; /* Центрируем изображение по вертикали */
+    left: 50%;
+    transform: translate(-50%, -50%); /* Центрируем изображение по горизонтали */
+}
+
+/* Стили для ошибок */
+.error-popup {
+    display: flex;
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    max-width: 400px;
+    padding: 16px;
+    border-radius: 5px;
+    transform: translate(-50%, -50%);
+    color: #f5f5f5;
+    background-color: rgb(224, 56, 56);
+    font-size: calc(var(--index) * 0.7);
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    transition: opacity 0.5s ease-in-out;
+    animation: slideIn 0.5s; /* Анимация появления */
+}
+
+
+@keyframes slideIn {
+    0% {
+        top: -10%;
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+
+/* Стиль для автозаполненных полей */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    font-size: 18px !important; /* Задаем одинаковый размер шрифта для всех состояний */
+    -webkit-text-fill-color: #a79883 !important; /* Цвет текста */
+    -webkit-box-shadow: 0 0 0 1000px rgb(39, 39, 39) inset !important; /* Цвет фона */
+    caret-color: #ffffff !important; /* Цвет курсора */
+    transition: background-color 5000s ease-in-out 0s; /* Сохраняем цвет фона при автозаполнении */
+}

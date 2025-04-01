@@ -16,7 +16,7 @@ from users.models import User
 from users.utils import get_actual_reservations, get_user_ip
 
 class LoginView(FormView):
-    template_name='users/login.html'
+    template_name='users/test_login.html'
     form_class=UserLoginForm
     success_url=reverse_lazy('coffeehouses:index')
 
