@@ -2,42 +2,50 @@ header {
     border-bottom: #a79883 solid 0.5px;
 }
 
-
 .base-container {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.form-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    max-width: 1240px;
+    max-height: 750px;
+    height: 100%;
     width: 100%;
-    max-width: 400px; /* Ограничиваем ширину формы */
-    padding: 24px; /* Отступы внутри формы */
-    box-sizing: border-box; /* Учитываем отступы в ширине */
-    border-radius: 10px;
     background-color: rgb(23, 23, 23);
     border: 0.1px solid rgb(255, 255, 255, 0.05);
     border-top: 0.2px solid rgb(255, 255, 255, 0.1);
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out; /* Плавный переход */
+    margin: 0 auto;
+    margin-top: 40px;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    justify-content: space-between;
 }
 
-
-/* Стили для формы */
-form {
-    width: 100%;
-    height: 100%;
+/* Стили для блока с формой*/
+.form-container {
     display: flex;
-    flex-direction: column;
+    width: 52%;
+    justify-content: center;
+    align-items: center;
+    padding-right: 30px;
+    padding-left: 30px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    transition: opacity 0.5s ease-in-out; /* Плавный переход */
+    opacity: 0; /* Начальная прозрачность */
 }
 
-form h3{
+#registration-form {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#registration-form h3 {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     color: #a79883;
     font-size: calc(var(--index) * 1);
@@ -79,13 +87,9 @@ form h3{
     color: #f5f5f5;
 }
 
-.form-label {
-    margin: 0; /* Отступ снизу */
-}
-
-form input {
+#registration-form input {
     display: flex;
-    width: 100%;
+    width: 65%;
     height: 36px;
     margin-bottom: 20px; /* Отступ снизу */
     padding: 10px; /* Отступы внутри поля ввода */
@@ -97,16 +101,76 @@ form input {
     background-color: rgb(39, 39, 39);
     color: #a79883; /* Цвет текста */
     transition: box-shadow 0.3s ease, border 0.3s ease; /* Плавный переход */
+    overflow: hidden;
+    z-index: 1;
 }
 
-form input:focus {
+#registration-form input:focus {
     outline: none; /* Убираем обводку при фокусе */
     border: 1px solid #a79883; /* Цвет рамки при фокусе */
     box-shadow: 0px 3px 5px #a79883; /* Тень для поля ввода при фокусе */
 }
 
-form button{
+.or {
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.line {
+    display: flex;
+    position: absolute;
+    top: 50%; /* Центрируем линию по вертикали */
+    width: 100%;
+    flex-grow: 1; /* Занимает оставшееся пространство */
+    height: 0.5px; /* Высота линии */
+    background-color: #35322c; /* Цвет линии */
+}
+
+#or {
+    display: flex;
+    text-align: center; /* Центрируем текст */
+    margin: 30px 0; /* Отступы сверху и снизу */
+    color: #585248;
+    background-color: rgb(23, 23, 23);
+    font-size: calc(var(--index) * 0.6);
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    padding: 0 10px; /* Отступы слева и справа */
+    z-index: 1; /* Поверх линии */
+}
+
+.google-login {
+    display: flex;
+    position: relative;
+    width: 65%;
+    height: 36px;
+    border-radius: 5px;
+    border: none; /* Убираем рамку */
+    background-color: rgb(39, 39, 39); /* Цвет фона кнопки */
+    transition: background-color 0.6s ease; /* Плавный переход */
+    border: 0.1px solid rgb(0, 0, 0, 0.05);
+}
+
+.google-login:hover {
+    background-color:  #585248;/* Цвет фона при наведении */
+}
+
+.google-login img{
+    position: absolute;
+    height: 26px;
+    width: 26px;
+    top: 50%; /* Центрируем изображение по вертикали */
+    left: 50%;
+    transform: translate(-50%, -50%); /* Центрируем изображение по горизонтали */
+}
+
+form button{
+    width: 65%;
     height: 36px;
     padding: 10px; /* Отступы внутри кнопки */
     border-radius: 5px;
@@ -131,67 +195,34 @@ form button:hover {
     
 }
 
-.or {
-    width: 100%;
+
+/* Стили для блока с картинкой */
+.image-container {
     display: flex;
-    align-items: center;
     justify-content: center;
-    position: relative;
+    align-items: center;
+    width: 48%;
+    height: 100%;
+    background-repeat: no-repeat;
+    object-fit: cover;
+    padding-left: 50px;
+    box-sizing: border-box;
 }
 
-.line {
-    position: absolute;
-    top: 50%; /* Центрируем линию по вертикали */
-    width: 100%;
-    flex-grow: 1; /* Занимает оставшееся пространство */
-    height: 0.5px; /* Высота линии */
-    background-color: #35322c; /* Цвет линии */
-}
-
-#or {
-    text-align: center; /* Центрируем текст */
-    margin: 30px 0; /* Отступы сверху и снизу */
-    color: #585248;
-    background-color: rgb(23, 23, 23);
-    font-size: calc(var(--index) * 0.6);
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 800;
-    line-height: normal;
-    padding: 0 10px; /* Отступы слева и справа */
-    z-index: 1; /* Поверх линии */
-}
-
-.google-login {
+.image {
     display: flex;
-    position: relative;
     width: 100%;
-    height: 36px;
-    border-radius: 5px;
-    border: none; /* Убираем рамку */
-    background-color: rgb(39, 39, 39); /* Цвет фона кнопки */
-    transition: background-color 0.6s ease; /* Плавный переход */
-    border: 0.1px solid rgb(0, 0, 0, 0.05);
+    height: 100%;
+    border-radius: 10px;
+    object-fit: cover; /* Изображение будет обрезано, чтобы заполнить контейнер */
 }
 
-.google-login:hover {
-    background-color:  #585248;/* Цвет фона при наведении */
-}
-
-.google-login img{
-    position: absolute;
-    height: 26px;
-    width: 26px;
-    top: 50%; /* Центрируем изображение по вертикали */
-    left: 50%;
-    transform: translate(-50%, -50%); /* Центрируем изображение по горизонтали */
-}
 
 /* Стили для ошибок */
 .error-popup {
     display: flex;
     position: absolute;
-    left: 50%;
+    left: 70%;
     top: 10%;
     max-width: 400px;
     padding: 16px;
@@ -219,12 +250,11 @@ form button:hover {
     }
 }
 
-
-
 /* Стиль для автозаполненных полей */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
+    -webkit-background-clip: text; /* Убирает стандартный фон */
     font-size: 18px !important; /* Задаем одинаковый размер шрифта для всех состояний */
     -webkit-text-fill-color: #a79883 !important; /* Цвет текста */
     -webkit-box-shadow: 0 0 0 1000px rgb(39, 39, 39) inset !important; /* Цвет фона */
@@ -232,8 +262,62 @@ input:-webkit-autofill:focus {
     transition: background-color 5000s ease-in-out 0s; /* Сохраняем цвет фона при автозаполнении */
 }
 
-@media (max-width: 650px) {
-    form h3{
+
+/* Адаптивность */
+@media (max-width: 1000px) {
+    #registration-form h3{
+        font-size: calc(var(--index) * 1.4);
+    }
+
+    .second-title {
+        font-size: calc(var(--index) * 0.9);
+    }
+
+    .signuplink {
+        font-size: calc(var(--index) * 0.9);
+    }
+
+    #registration-form input {
+        font-size: calc(var(--index) * 0.9);
+    }
+
+    form button {
+        font-size: calc(var(--index) * 0.9);
+    }
+
+
+    form button {
+        width: 85%;
+    }
+
+    .google-login {
+        width: 85%;
+    }
+
+    #registration-form input {
+        width: 85%;
+    }
+}
+
+
+
+@media (max-width: 750px) {
+    form button {
+        width: 95%;
+    }
+
+    .google-login {
+        width: 95%;
+    }
+
+    #registration-form input {
+        width: 95%;
+    }
+}
+
+
+@media (max-width: 600px) {
+    #registration-form h3{
         font-size: calc(var(--index) * 1.7);
     }
 
@@ -245,11 +329,38 @@ input:-webkit-autofill:focus {
         font-size: calc(var(--index) * 1.2);
     }
 
-    form input {
+    #registration-form input {
         font-size: calc(var(--index) * 1.2);
     }
 
     form button {
         font-size: calc(var(--index) * 1.2);
+    }
+
+    .error-popup {
+        left: 50%;
+        max-width: 500px;
+    }
+
+    .image-container {
+        display: none; /* Скрываем блок с изображением */
+    }
+
+    .form-container {
+        width: 100%; /* Увеличиваем ширину блока с формой */
+        padding-right: 0; /* Убираем отступ справа */
+        padding-left: 0; /* Убираем отступ слева */
+    }
+
+    form button {
+        width: 75%;
+    }
+
+    .google-login {
+        width: 75%;
+    }
+
+    #registration-form input {
+        width: 75%;
     }
 }

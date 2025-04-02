@@ -40,7 +40,7 @@ class LoginView(FormView):
 
 
 class RegistrationView(FormView):
-    template_name='users/registration.html'
+    template_name='users/test_registration.html'
     form_class=UserRegistrationForm
     success_url=reverse_lazy('coffeehouses:index')
 
@@ -68,7 +68,8 @@ class RegistrationView(FormView):
         return redirect(self.get_success_url())
     
     def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form))
+        print(form.errors)
+        return super().form_invalid(form)
     
 
 

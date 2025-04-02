@@ -168,7 +168,7 @@ footer {
 .burger span {
     width: 25px;
     height: 1.5px;
-    background-color: white;
+    background-color: #a79883;
     transition: transform 0.3s;
 }
 
@@ -205,7 +205,7 @@ footer {
 }
 
 .sidebar ul li a:hover {
-    color: black
+    color: #f5f5f5
 }
 
 /* Скрытие обычных ссылок на мобильных устройствах */

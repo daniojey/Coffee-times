@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static "css/test_registration.css" %}">
+
+<div class="base-container">
+
+        <div class="form-container">
+            <form action="" id='registration-form' method="post">{% csrf_token %}
+                <h3>Sign Up</h3>
+                <p class="second-title">Do you have an account? <a href="{% url "users:login" %}" class="signuplink">Login</a></p>
+                {% for field in form %}
+                    {{ field }}
+                {% endfor %}
+                
+                <button type="submit">create account</button>
+
+                <div class="or">
+                    <div class="line"></div>
+                    <p id="or">OR</p>
+                </div>
+
+                <a href="{% url "users:google_login" %}" class='google-login'>
+                    <img src="{% static "icons/google_icon.svg" %}">
+                </a>
+            </form>
+        </div>
+        
+
+        <div class="image-container">
+            <img src="{% static "images/caffee_bar.jpg" %}" alt="coffeehouse" class="image">
+        </div>
+
+
+    {% if form.errors %}
+        <!-- Преобразуем ошибки в JSON и сохраняем в скрытом теге -->
+        {{ form.errors|json_script:"form-errors" }}
+    {% endif %}
+</div>
+
+
+
+<script src="{% static "js/opacity_form.js" %}"></script>
+<script src="{% static "js/show_registration_errors.js" %}"></script>
+{% endblock %}
