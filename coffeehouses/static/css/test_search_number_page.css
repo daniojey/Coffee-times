@@ -1,0 +1,250 @@
+header {
+    border-bottom: 0.5px solid #a79883;
+}
+
+:root {
+    --index: calc(1vh + 1vw);
+}
+
+.base-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: hidden;
+}
+
+
+/* Стили для поля ввода и чекбоксов */
+.search-base-container {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 40px;
+    margin: 0 auto;
+    background-color: rgb(23, 23, 23);
+    border: 0.1px solid rgb(255, 255, 255, 0.05);
+    border-top: 0.2px solid rgb(255, 255, 255, 0.1);
+    border-radius: 10px;
+    transition: height 0.6s ease, opacity 0.5s ease;
+    padding: 20px;
+    margin-top: 20px;
+    overflow-y: auto;
+    opacity: 0;
+}
+
+.search-block {
+    position: relative;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkbox-block {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    position: absolute;
+    width: 115px;
+    left: 0;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.checkbox-label {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    gap: auto;
+    color: #a79883; 
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+
+input[type="checkbox"] {
+    /* Add if not using autoprefixer */
+    -webkit-appearance: none;
+    /* Remove most all native input styles */
+    appearance: none;
+    /* For iOS < 15 */
+    background-color: var(--form-background);
+    /* Not removed via appearance */
+    margin: 0;
+  
+    font: inherit;
+    color: currentColor;
+    width: 1.15em;
+    height: 1.15em;
+    border: 0.15em solid currentColor;
+    border-radius: 0.15em;
+    transform: translateY(-0.075em);
+  
+    display: grid;
+    place-content: center;
+  }
+  
+input[type="checkbox"]::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    transform: scale(0);
+    transform-origin: bottom;
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em #a79883;
+    /* Windows High Contrast Mode */
+    background-color: CanvasText;
+}
+  
+input[type="checkbox"]:checked::before {
+    transform: scale(1);
+}
+  
+  
+
+form {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+#phone {
+    display: flex;
+    width: 30%;
+    height: 36px;
+    padding: 10px; /* Отступы внутри поля ввода */
+    border-radius: 5px;
+    border: 1px solid #272319; /* Цвет рамки */
+    font-size: calc(var(--index) * 0.7); /* Размер шрифта */
+    box-sizing: border-box; /* Учитываем отступы в ширине */
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3); /* Тень для поля ввода */
+    background-color: rgb(39, 39, 39);
+    color: #a79883; /* Цвет текста */
+    transition: box-shadow 0.3s ease, border 0.3s ease; /* Плавный переход */
+    overflow: hidden;
+    z-index: 1;
+}
+
+
+#phone:focus {
+    outline: none; /* Убираем обводку при фокусе */
+    border: 1px solid #a79883; /* Цвет рамки при фокусе */
+    box-shadow: 0px 3px 5px #a79883; /* Тень для поля ввода при фокусе */
+}
+
+.search-button {
+    width: 10%;
+    height: 36px;
+    padding: 10px; /* Отступы внутри кнопки */
+    border-radius: 5px;
+    border: none; /* Убираем рамку */
+    background-color: #a79883; /* Цвет фона кнопки */
+    color: rgb(15, 15, 15); /* Цвет текста кнопки */
+    font-size: calc(var(--index) * 0.8); /* Размер шрифта */
+    cursor: pointer; /* Курсор при наведении */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    transition: background-color 0.6s ease, color 0.6s ease; /* Плавный переход */
+    margin-left: 10px;
+}
+
+.search-button:hover {
+    background-color:  #585248;/* Цвет фона при наведении */
+    color:  #f5f5f5;/* Цвет текста при наведении */
+        
+}
+
+
+/* Стили для блока с резервациями*/
+.reservation-block {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, max-content)); /* Колонки адаптируются к ширине контейнера */
+    gap: 40px 15px; /* Минимальный gap между элементами */
+    justify-content: space-between; /* Равномерное распределение */
+    align-items: center;
+}
+
+.reservation-item {
+    max-width: 400px;
+    min-width: 200px;
+    width: 100%;
+    background-color: rgb(39, 39, 39);
+    border-radius: 12px;
+    font-size: 18px;
+    padding: 10px;
+    display: flex;
+    box-sizing: border-box;
+    animation: enterIn 0.5s ease-in-out; /* Анимация появления */
+    animation-fill-mode: forwards;
+    border: 0.5px solid rgb(255, 255, 255, 0.05);
+}
+
+.reservation-item p{
+    color: #a79883; 
+}
+
+@keyframes enterIn {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+/* Стиль для автозаполненных полей */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-background-clip: text; /* Убирает стандартный фон */
+    font-size: 18px !important; /* Задаем одинаковый размер шрифта для всех состояний */
+    -webkit-text-fill-color: #a79883 !important; /* Цвет текста */
+    -webkit-box-shadow: 0 0 0 1000px rgb(39, 39, 39) inset !important; /* Цвет фона */
+    caret-color: #ffffff !important; /* Цвет курсора */
+    transition: background-color 5000s ease-in-out 0s; /* Сохраняем цвет фона при автозаполнении */
+}
+
+
+
+@media (max-width: 670px) {
+    .search-base-container {
+        height: 70px;
+    }
+
+    .search-block {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .checkbox-block {
+        position: relative;
+        min-width: 115px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #phone {
+        width: 70%;
+    }
+
+    .search-button {
+        width: 20%;
+    }
+
+    .reservation-block {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+}

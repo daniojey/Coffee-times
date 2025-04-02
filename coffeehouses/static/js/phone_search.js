@@ -19,13 +19,16 @@ function formatTime(timeString) {
   });
   
   // Обработчик кнопки "Поиск"
-  document.getElementById('check-booking').addEventListener('click', function () {
+  const button = document.getElementById('search-button')
+  button.addEventListener('click', function () {
     submitForm();  // Вызов функции отправки формы
   });
   
   // Функция для отправки данных
-  function submitForm() {
+function submitForm() {
     const phone = document.getElementById('phone').value;
+    const actual = document.getElementById('checkbox').checked;  // Получаем состояние чекбокса (true или false)
+    console.log(actual)  // Получаем значение поля "actual"
   
     // Проверим, что номер телефона введён
     if (!phone) {
@@ -40,17 +43,26 @@ function formatTime(timeString) {
         'Content-Type': 'application/json',
         'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value  // CSRF токен для защиты от CSRF атак
       },
-      body: JSON.stringify({ phone: phone })  // Отправляем данные в формате JSON
+      body: JSON.stringify({ phone: phone, actual: actual})  // Отправляем данные в формате JSON
     })
     .then(response => response.json())  // Получаем ответ в формате JSON
     .then(data => {
-      const container = document.getElementById('bookings-container');
+      const container = document.getElementById('reservation-block');
       container.innerHTML = '';  // Очистка контейнера перед добавлением новых данных
   
       if (data.reservations && data.reservations.length > 0) {
+        const baseElement = document.querySelector('.search-base-container');
+        baseElement.style.height = '89%';
+
+        const searchBlock = document.querySelector('.search-block');
+        searchBlock.style.marginBottom = '30px';
+
+        let delay = 0;  // Начальная задержка
+
         data.reservations.forEach(reservation => {
-          const bookingElement = document.createElement('div');
-          bookingElement.classList.add('booking-item');
+          setTimeout(() => {
+            const bookingElement = document.createElement('div');
+          bookingElement.classList.add('reservation-item');
           
           // Преобразуем время и длительность
           const formattedReservationTime = formatTime(reservation.time);  // Время бронирования
@@ -62,10 +74,13 @@ function formatTime(timeString) {
                 <p>Номер столика: ${reservation.table_number}</p>
                 <p>Кількість місць: ${reservation.seats}</p>
                 <p>Час бронювання: ${formattedReservationTime}</p>
-                <p>Продовжуваність бронювання: ${formattedDuration}</p>
+                <p>Продовжуваність: ${formattedDuration}</p>
             </div>
           `;
           container.appendChild(bookingElement);
+          }, delay)
+          
+          delay += 100;  // Увеличиваем задержку на 1 секунду для каждого элемента
         });
       } else {
         container.innerHTML = '<p>Бронирования не найдены.</p>';

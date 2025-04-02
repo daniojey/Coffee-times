@@ -10,6 +10,7 @@ from django.contrib.postgres.search import SearchVector
 
 from coffeehouses.models import Category, CoffeeHouse, Product
 from orders.models import Reservation
+from users.utils import get_actual_reservations
 
 # Create your views here.
 class HomePageView(TemplateView):
@@ -113,16 +114,20 @@ class ProductView(View):
     
     
 class ReservationSearchView(View):
-    template_name = 'coffeehouses/search_number_page.html'
+    template_name = 'coffeehouses/test_search_number_page.html'
     
     def get(self, request, *args, **kwargs):
         # Просто отображаем страницу поиска, если запрос GET
         return render(request, self.template_name, {'active_tab': 'reservation-link'})
     
     def post(self, request, *args, **kwargs):
-        # Обрабатываем запрос POST, получаем номер телефона
-        data = json.loads(request.body)
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+           return JsonResponse({'reservations': []})
+        
         phone = data.get('phone')
+        actual = data.get('actual')
 
         if not phone:
             return JsonResponse({'error': 'По цьому номеру телефону немає бронювань'}, status=400)
@@ -134,16 +139,31 @@ class ReservationSearchView(View):
             if not re.match(pattern, phone):
                 return JsonResponse({'error': 'Невірний формат номеру телефону, перевірте  формат введеного номеру'}, status=400)
 
-        # Ищем бронирования по номеру телефона
-        reservations = Reservation.objects.filter(customer_phone=phone).select_related('coffeehouse', 'table').order_by('-reservation_date')
+        if actual:
+            reservations = get_actual_reservations(phone)
 
-        # Преобразуем данные бронирований в нужный формат
-        reservations_data = [{
-            'table_number': item.table.table_number,
-            'seats': item.table.seats,
-            'date': item.reservation_date,
-            'time': str(item.reservation_time),
-            'times': str(item.booking_duration).replace("P0DT", "").replace("H", " ч. ").replace("M", " хв.").replace("S", ""),
-        } for item in reservations]
+            # Преобразуем данные бронирований в нужный формат
+            reservations_data = [{
+                'table_number': item.table.table_number,
+                'seats': item.table.seats,
+                'date': item.reservation_date,
+                'time': str(item.reservation_time),
+                'times': str(item.booking_duration).replace("P0DT", "").replace("H", " ч. ").replace("M", " хв.").replace("S", ""),
+            } for item in reservations]
 
-        return JsonResponse({'reservations': reservations_data})
+            return JsonResponse({'reservations': reservations_data})
+
+        else:
+            # Ищем бронирования по номеру телефона
+            reservations = Reservation.objects.filter(customer_phone=phone).select_related('coffeehouse', 'table').order_by('-reservation_date')[:20]
+
+            # Преобразуем данные бронирований в нужный формат
+            reservations_data = [{
+                'table_number': item.table.table_number,
+                'seats': item.table.seats,
+                'date': item.reservation_date,
+                'time': str(item.reservation_time),
+                'times': str(item.booking_duration).replace("P0DT", "").replace("H", " ч. ").replace("M", " хв.").replace("S", ""),
+            } for item in reservations]
+
+            return JsonResponse({'reservations': reservations_data})

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static "css/test_search_number_page.css" %}">
+
+<div class="base-container">
+
+    <div class="search-base-container">
+
+        <div class="search-block">
+            <div class="checkbox-block">
+                <div class="checkbox-label">
+                    <label>Актуальные</label>
+                    <input type="checkbox" id="checkbox">
+                </div>
+
+            </div>
+
+            <form id="phone-search-form" method="POST">
+                {% csrf_token %}
+                <input type="text" id="phone" placeholder="Enter number.." class="search-input">
+                <button id="search-button" class="search-button" type="button">Search</button>
+            </form>
+        </div>
+            
+
+        <div class="reservation-block" id="reservation-block"></div>
+    </div>
+
+    
+</div>
+
+<script src="{% static "js/opacity_search_container.js" %}"></script>
+<script src="{% static "js/phone_search.js" %}"></script>
+{% endblock %}
