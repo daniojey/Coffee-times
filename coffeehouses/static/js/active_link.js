@@ -1,4 +1,12 @@
-const baseLinkData = document.getElementById('base-links').dataset;
+document.addEventListener('DOMContentLoaded', function () {
+    const baseLinkData = document.getElementById('base-links').dataset;
+    console.log(baseLinkData)
+    console.log(baseLinkData.activelink)
+    
+    const link = document.getElementById(baseLinkData.activelink);
+    console.log(link)
 
-const link = document.getElementById(baseLinkData.activelink);
-link.classList.add('active-link');
+    setTimeout(() => {
+        link.classList.add('active-link');
+    }, 50)
+});

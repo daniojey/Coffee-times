@@ -37,7 +37,13 @@ class LoginView(FormView):
         else:
             form.add_error(None, "Невірний логин або номер телефону або пароль")
             return self.form_invalid(form)
-
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'active_tab': 'login-link',
+        })
+        return context
 
 class RegistrationView(FormView):
     template_name='users/test_registration.html'
@@ -71,7 +77,12 @@ class RegistrationView(FormView):
         print(form.errors)
         return super().form_invalid(form)
     
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'active_tab': 'registration-link',
+        })
+        return context
 
 class ProfileView(LoginRequiredMixin,TemplateView):
     template_name = 'users/profile.html'

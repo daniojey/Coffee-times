@@ -31,7 +31,8 @@
                             <li><a href="{% url "users:profile" %}" id="profile-link">Профіль</a></li>
                             {% else %}
                             <li><a href="{% url "coffeehouses:search_number_page" %}" id="reservation-link">Мої бронювання</a></li>
-                            <li><a href="{% url "users:login" %}">Увійти</a> | <a href="{% url "users:registration" %}">Зарееструватися</a></li>
+                            <li><a href="{% url "users:login" %}" id="login-link">Увійти</a></li>
+                            <li><a href="{% url "users:registration" %}" id="registration-link">Зарееструватися</a></li>
                             {% endif %}
                         </ul>
                     </div>
@@ -66,7 +67,8 @@
                 <li><a href="{% url "users:profile" %}">Профіль</a></li>
                 {% else %}
                 <li><a href="{% url "coffeehouses:search_number_page" %}">Мої бронювання</a></li>
-                <li><a href="{% url "users:login" %}">Увійти</a> | <a href="{% url "users:registration" %}">Зарееструватися</a></li>
+                <li><a href="{% url "users:login" %}">Увійти</a></li>
+                <li><a href="{% url "users:registration" %}">Зарееструватися</a></li>
                 {% endif %}
             </ul>
         </div>

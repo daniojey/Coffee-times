@@ -117,7 +117,7 @@ class ReservationSearchView(View):
     
     def get(self, request, *args, **kwargs):
         # Просто отображаем страницу поиска, если запрос GET
-        return render(request, self.template_name)
+        return render(request, self.template_name, {'active_tab': 'reservation-link'})
     
     def post(self, request, *args, **kwargs):
         # Обрабатываем запрос POST, получаем номер телефона

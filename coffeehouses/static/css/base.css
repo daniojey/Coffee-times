@@ -209,7 +209,7 @@ footer {
 }
 
 /* Скрытие обычных ссылок на мобильных устройствах */
-@media (max-width: 768px) {
+@media (max-width: 820px) {
     .base-links {
         display: none;
     }
