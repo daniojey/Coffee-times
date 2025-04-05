@@ -52,7 +52,9 @@ function submitForm() {
   
       if (data.reservations && data.reservations.length > 0) {
         const baseElement = document.querySelector('.search-base-container');
-        baseElement.style.height = '89%';
+        baseElement.style.height = '88%';
+        baseElement.style.boxSizing = 'border-box';
+        baseElement.style.width = '92%';
 
         const searchBlock = document.querySelector('.search-block');
         searchBlock.style.marginBottom = '30px';
@@ -83,7 +85,15 @@ function submitForm() {
           delay += 100;  // Увеличиваем задержку на 1 секунду для каждого элемента
         });
       } else {
-        container.innerHTML = '<p>Бронирования не найдены.</p>';
+        const baseElement = document.querySelector('.search-base-container');
+        baseElement.style.height = '88%';
+        baseElement.style.boxSizing = 'border-box';
+        baseElement.style.width = '92%';
+        container.innerHTML = `
+        <div class="no-results-container">
+          <p>Бронювання не знайдені.</p>
+        </div>
+        `;
       }
     })
     .catch(error => {

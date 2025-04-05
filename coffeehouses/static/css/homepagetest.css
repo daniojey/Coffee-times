@@ -135,6 +135,7 @@ footer {
     background-color: #b8a890;
     margin: 0;
     padding: 14px 30px;
+    font-size: calc(var(--index) * 0.8);
     font-family: Roboto;
     font-style: normal;
     font-weight: 500;
@@ -236,6 +237,13 @@ footer {
     .slide-item {
         height: calc(var(--index) * 14);
         width: calc(var(--index) * 18);
+    }
+}
+
+@media (max-width: 500px) {
+    .slide-item {
+        height: calc(var(--index) * 10);
+        width: calc(var(--index) * 14);
     }
 }
 

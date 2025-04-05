@@ -19,7 +19,7 @@ header {
     display: flex;
     flex-direction: column;
     width: 80%;
-    height: 40px;
+    height: 120px;
     margin: 0 auto;
     background-color: rgb(23, 23, 23);
     border: 0.1px solid rgb(255, 255, 255, 0.05);
@@ -161,6 +161,22 @@ form {
     background-color:  #585248;/* Цвет фона при наведении */
     color:  #f5f5f5;/* Цвет текста при наведении */
         
+}
+
+/* Стили для блока в случае если результатов поиска нет*/
+.no-results-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 400px;
+    min-width: 200px;
+    width: 100%;
+    background-color: rgb(23, 23, 23);
+    color: #a79883;
+    border-radius: 10px;
+    padding: 40px 10px;
+    box-sizing: border-box;
 }
 
 
