@@ -225,3 +225,16 @@ footer {
         display: flex;
     }
 }
+
+
+/* Стиль для автозаполненных полей */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-background-clip: text; /* Убирает стандартный фон */
+    font-size: 18px !important; /* Задаем одинаковый размер шрифта для всех состояний */
+    -webkit-text-fill-color: #a79883 !important; /* Цвет текста */
+    -webkit-box-shadow: 0 0 0 1000px rgb(39, 39, 39) inset !important; /* Цвет фона */
+    caret-color: #ffffff !important; /* Цвет курсора */
+    transition: background-color 5000s ease-in-out 0s; /* Сохраняем цвет фона при автозаполнении */
+}

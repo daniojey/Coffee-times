@@ -1,4 +1,7 @@
+from django.core.files import File
 from django.db import models
+from PIL import Image
+from io import BytesIO
 
 class Category(models.Model):
     name = models.CharField(max_length=155, unique=True, verbose_name='Категорія')
@@ -34,6 +37,7 @@ class Product(models.Model):
 
 # Create your models here.
 class CoffeeHouse(models.Model):
+    image = models.ImageField(upload_to='coffeehouses_images', blank=True, null=True, verbose_name='Зображення')
     name = models.CharField(max_length=155, verbose_name="Назва кав'ярні")
     description = models.CharField(max_length=300, verbose_name='Опис')
     address = models.CharField(max_length=170, verbose_name='Адресса')
@@ -46,6 +50,22 @@ class CoffeeHouse(models.Model):
     
     def houseinfo(self):
         return f"{self.name} - {self.address} - {self.opening_time} - {self.closing_time}"
+    
+    def save(self, *args, **kwargs):
+        if self.image:
+            img = Image.open(self.image)
+            
+            max_size = (700, 500)
+            
+            img.thumbnail(max_size, Image.Resampling.LANCZOS)
+            
+            output = BytesIO()
+            img.save(output, format='JPEG', quality=75)
+            output.seek(0)
+
+            self.image = File(output, name=self.image.name)
+            
+        super().save(*args, **kwargs)
     
 
 

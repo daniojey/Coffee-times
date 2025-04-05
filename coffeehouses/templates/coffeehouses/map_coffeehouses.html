@@ -17,43 +17,52 @@
     </style> {% endcomment %}
 </head>
 <body>
-    <div class='base-container'>
-        <div class='information-container'>
-            <h2>Мапа кав'ярень</h2>
-            <p>1. Знайди найближчу кав'ярню до тебе на мапі</p>
-            <p>2. Тицни по маркеру та обери Забронировать</p>
+<div style='display: none;' data-coffeeshops="{{ coffee_shops }}" id="datahouse"></div>
+
+<div class="base-container">
+
+    <div class="base-block">
+        <div class="search-container">
+            <h3>Пошук Кав'ярні</h3>
+            <form id="search-form">
+                <input type="text" name="address-coffeehouse" id="search-coffeehouse" placeholder="Введіть адрессу кав'ярні">
+                <button id="search-button" type="submit">Пошук</button>
+            </form>
         </div>
-        <div id="map"></div>
-        <script>
-            // Инициализация карты
-            const map = L.map('map').setView([50.4501, 30.5234], 12); // Киев
-            
-            // Добавляем слой карты (OpenStreetMap)
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-            
-            // Данные кофеен из Django
-            const coffeeShops = JSON.parse('{{ coffee_shops|safe }}');
-            
-            // Добавление точек на карту
-            coffeeShops.forEach(shop => {
-                const marker = L.marker([shop.location.lat, shop.location.lng]).addTo(map);
-                
-                // Создание всплывающего окна с кнопкой
-                const popupContent = `
-                <div class='mark-content'>
-                    <h3>${shop.name}</h3>
-                    <p>${shop.address}</p>
-                    <a href="{% url 'orders:reservation'%}?coffeehouse=${shop.id}" class="btn-primary">
-                        Забронировать место
-                        </a>
-                        </div>
-                        `;
-                        
-                        marker.bindPopup(popupContent);
-                    });
-                </script>
+
+        <div class="search-coffeehouses">
+
+        </div>
+
+        <div class="recomend-coffeehouses">
+            <h3>Рекомендації для вас:</h3>
+            {% for item in coffeehouses %}
+            <div class="recomend-item" data-id="{{ item.id }}">
+                <div class="recomend-item__img">
+                    {% if item.image %}
+                        <img src="{{ item.image.url }}" alt="Кав'ярня {{ item.name }}" id='coffeehouse-image'>
+                    {% endif %}
+                </div>
+                <div class="recomend-item__info">
+                    <div class="recomend-item__info__address">
+                        <p>Адресса:</p>
+                        <p>{{ item.address }}</p>
+                    </div>
+                    
+                    <p>Графік роботи:  {{ item.opening_time }} - {{ item.closing_time }}</p>
+                    <p>Вихідні: Суббота|Неділя</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
+
+    <div class='map-container'>
+        <div id="map"></div>
+    </div>
+    
+</div>
+
+<script src="{% static "js/coffeehouse_map.js" %}"></script>
 </body>
 {% endblock %}

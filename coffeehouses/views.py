@@ -39,17 +39,19 @@ class MapCoffeehousesView(TemplateView):
         coffee_shops_data = [
             {
                 'id': shop.id,
+                'image': shop.image.url if shop.image else None,
                 'name': shop.name,
                 'location': shop.location,
                 'address': shop.address,
                 'opening_time': shop.opening_time,
-                'closed_time': shop.closing_time,
+                'closing_time': shop.closing_time,
             }
             for shop in coffee_shops
         ]
 
         context.update({
             'coffee_shops': json.dumps(coffee_shops_data, cls=DjangoJSONEncoder),
+            'coffeehouses': coffee_shops,
             'active_tab': 'map-link',
         })
 
