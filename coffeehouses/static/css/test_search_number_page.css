@@ -19,7 +19,7 @@ header {
     display: flex;
     flex-direction: column;
     width: 80%;
-    height: 120px;
+    height: 50px;
     margin: 0 auto;
     background-color: rgb(23, 23, 23);
     border: 0.1px solid rgb(255, 255, 255, 0.05);
@@ -167,15 +167,16 @@ form {
 .no-results-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: start;
+    align-items: start;
+    text-align: start;
     max-width: 400px;
     min-width: 200px;
     width: 100%;
     background-color: rgb(23, 23, 23);
     color: #a79883;
     border-radius: 10px;
-    padding: 40px 10px;
+    padding: 40px 0px;
     box-sizing: border-box;
 }
 
@@ -233,6 +234,13 @@ input:-webkit-autofill:focus {
 
 
 @media (max-width: 670px) {
+    .no-results-container {
+        padding: 40px 10px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
     .search-base-container {
         height: 70px;
     }
