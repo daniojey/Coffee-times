@@ -58,7 +58,7 @@ class MapCoffeehousesView(TemplateView):
         return context
     
 class MenuPageView(ListView):
-    template_name = 'coffeehouses/menu_page.html'
+    template_name = 'coffeehouses/test_menu_page.html'
     context_object_name = 'products'
     paginate_by = 4
 

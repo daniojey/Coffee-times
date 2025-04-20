@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% comment %} <link rel="stylesheet" href="{% static "css/menu_page.css" %}"> {% endcomment %}
+<link rel="stylesheet" href="{% static "css/test_menu_page.css" %}">
+
+<div class="base-container">
+
+    <div class='filter-content'>
+        <form method="get" class='form-content'>
+            <div class='filter-main-body'>
+                <div class='form-section'>
+                    <label for="search">Пошук по меню:</label>
+                    <input type="text" id="search" name="search" placeholder="Пошук по назві" value="{{ request.GET.search }}">
+                </div>
+                
+                <div class='form-section'>
+                    <label for="category">Категорія:</label>
+                    <select id="category" name="category">
+                        <option value="">Усі</option>
+                        <option value="Кава" {% if request.GET.category == 'Кава' %}selected{% endif %}>Кава</option>
+                        <option value="Десерти" {% if request.GET.category == 'Десерти' %}selected{% endif %}>Десерты</option>
+                        <option value="Снеки" {% if request.GET.category == 'Снеки' %}selected{% endif %}>Закуски</option>
+                        <option value="Блюда" {% if request.GET.category == 'Блюда' %}selected{% endif %}>Основні страви</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button type="submit" class='filter-btn'>Пошук</button>
+        </form>
+    </div>
+
+    {% if products %}
+        <div class='products-base-container'>
+            {% for product in products %}
+                <a href="{% url "coffeehouses:product" pk=product.pk %}" class='product-link'>
+                    <div class='product'>
+                        {% if product.image %}
+                            <div class='product-image'>
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                            </div>
+                        {% endif %}
+                        <div class='product-context'>
+                            <p>{{ product.name }}</p>
+                            <p>{{ product.description|truncatechars:68 }}</p>
+                            <p>{{ product.price }} грн</p>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h2 class='menu-none-header'>Відсутнє меню</h2>
+    {% endif %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+            <div class='page-text-links'>
+                <a href="?page=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class='text-link'>Первая</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class='text-link-preview'>Назад</a>
+            </div>
+            {% endif %}
+    
+            <div class='page-number-container'>
+                {% for page in page_obj.paginator.page_range %}
+                {% if page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                    <a href="?page={{ page }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" {% if page == page_obj.number %} class="page-number active" {% else %} class='page-number'{% endif %}>{{ page }}</a>
+                {% endif %}
+                {% endfor %}
+            </div>
+    
+            {% if page_obj.has_next %}
+            <div class='page-text-links'>
+                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class='text-link-next'>Вперёд</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class='text-link'>Последняя</a>
+            </div>
+            {% endif %}
+        </span>
+    </div>
+</div>
+
+<script src="{% static "js/animation_products.js" %}"></script>
+<script src="{% static "js/scale_product.js" %}"></script>
+{% endblock %}
