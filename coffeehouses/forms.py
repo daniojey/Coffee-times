@@ -46,7 +46,10 @@ class CreateReservationForm(forms.ModelForm):
             'table',
             "created_ip",
         ]
+        
         labels = {
+            'customer_name': "І'мя",
+            'customer_phone': 'Номер телефону',
             'coffeehouse': "Кав'ярня",
             'customer_phone': 'Номер телефону',
             'reservation_time': 'Час бронювання',

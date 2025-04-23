@@ -6,18 +6,21 @@
 <div class='base-container'>
 
     {% if form.errors %}
-    <div class='error-content'>
+        <div class='error-content'>
             {% for field in form %}
                 {% for error in field.errors %}
                     <p> -  {{ error }}</p>
                 {% endfor %}
             {% endfor %}
-    </div>
+        </div>
     {% endif %}
 
     <div class='form-content'>
+        <h2 class='form-title'>Створення бронювання</h2>
+
         <form method='post' id='reservation-form' class='form-body'>{% csrf_token %}
             {% for field in form %}
+
                 {% if field.name == "table" %}
                     <div id="available-tables-container" class="hidden">
                         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
@@ -28,23 +31,25 @@
                         Немає доступных столиків, оберіть інший час або дату.
                     </div>
                 {% elif field.is_hidden %}
-                {{ field }}
+                    {{ field }}
                 {% elif field.name == 'reservation_date' %}
-                    <div class='date-wrapper'>
-                        <label>{{ field.label }}:</label>
-                        {{ field }}
+                    <div class='form-field'>
+                        <label>{{ field.label }}</label>  {{ field }}
                     </div>
                 {% elif field.name == "reservation_time" %}
-                    <div class='reservation-time-container'>
-                        <p class='reservation-time-field'>{{ field.label }}: {{ field }}</p>
-                        
-                        <div id="no-available-times-message" class="hidden">
-                            Нет доступного времени для выбранной даты и кофейни.
+                        <div class="form-field">
+                            <label>{{ field.label }}</label> {{ field }}
+
+                            <div id="no-available-times-message" class="hidden">
+                                Відсутній доступний час,оберіть іншу дату.
+                            </div>
                         </div>
-                    </div>
                 {% else %}
-                <p>{{ field.label }}: {{ field }}</p>
+                    <div class="form-field">
+                        <label>{{ field.label }}</label> {{ field }}
+                    </div>
                 {% endif %}
+
             {% endfor %}
             <div class='button-container'>
                 <button type='submit' class='submit-btn'>Зберегти</button>
@@ -53,6 +58,9 @@
     </div>
         
 </div>
+
+<script src="{% static "js/date-input-fix.js" %}"></script>
 <script src="{% static "js/get_available_times.js" %}"></script>
 <script src="{% static "js/get_available_tables.js" %}"></script>
+<script src="{% static "js/reservation_form_opacity.js" %}"></script>
 {% endblock %}
