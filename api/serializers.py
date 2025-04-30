@@ -1,16 +1,19 @@
 from datetime import datetime, timedelta
 import re
+from urllib import request
 from django.db.models import F, Q, ExpressionWrapper, TimeField
 from rest_framework import serializers
-from coffeehouses.models import CoffeeHouse, Product, Table
+from coffeehouses.models import Category, CoffeeHouse, Product, Table
 from orders.models import Reservation
 
 class ProductSerializer(serializers.ModelSerializer):
     adds_by = serializers.SerializerMethodField()
+    image_url = serializers.SerializerMethodField()
+    category_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = ['name', 'description','category', 'price', 'discount', 'adds_by']
+        fields = ['id','name', 'description','category_name', 'price', 'discount', 'adds_by', 'image_url']
         
         extra_kwargs = {
             'name': {'required': True},
@@ -20,6 +23,42 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_adds_by(self, obj):
         request = self.context.get('request')
         return request.user.username if request else None
+    
+    def get_image_url(self, obj):
+        request = self.context.get('request')
+        
+        if obj.image:
+            return request.build_absolute_uri(obj.image.url)
+        else:
+            return 0
+        
+    def get_category_name(self, obj):
+        category_id = obj.category.id
+        category_name = Category.objects.get(id=category_id).name
+        return category_name
+    
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'slug']
+    
+
+class ProductCreateSerializer(serializers.ModelSerializer):
+    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), required=True)
+
+    class Meta:
+        model = Product
+        fields = ['name', 'description', 'category', 'price', 'discount', 'image']
+
+    def validate(self, data):
+        name = data.get('name')
+        if Product.objects.filter(name=name).exists():
+            raise serializers.ValidationError("Продукт с таким именем уже существует.")
+        return data
+    
+    def create(self, validated_data):
+        return super().create(validated_data)
     
 
 class ReservationSerializer(serializers.ModelSerializer):
@@ -59,9 +98,6 @@ class ReservationSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         validated_data['created_ip'] = request.META.get('REMOTE_ADDR', '127.0.0.1')
         return super().create(validated_data) 
-    
-
-
 
 
 class ReservationProfileSericalizer(serializers.ModelSerializer):
@@ -71,7 +107,7 @@ class ReservationProfileSericalizer(serializers.ModelSerializer):
     class Meta:
         model = Reservation
         fields = [
-            "coffeehouse_name", 'reservation_date', 'reservation_time', 'status_res'
+            "id", "coffeehouse_name", 'reservation_date', 'reservation_time', 'status_res'
         ]
 
     def get_status_res(self, obj):

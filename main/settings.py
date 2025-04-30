@@ -346,6 +346,15 @@ SIMPLE_JWT = {
 }
 
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
+]
+
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5500",  # Разрешить запросы с этого домена
+    "http://localhost:3000",  # URL твоего React-приложения
 ]
+
+CORS_ALLOW_CREDENTIALS = True  # Разрешить передачу кук
+SESSION_COOKIE_SAMESITE = 'Lax'  # Настройки кук

@@ -5,6 +5,7 @@ charset-normalizer==3.4.1
 dj-database-url==2.3.0
 Django==5.0.8
 django-bleach==3.1.0
+django-cors-headers==4.7.0
 django-debug-toolbar==5.0.1
 django-livereload-server==0.5.1
 django-unfold==0.44.0
@@ -29,4 +30,3 @@ tzdata==2024.2
 urllib3==2.3.0
 webencodings==0.5.1
 whitenoise==6.8.2
-requests==2.32.3
