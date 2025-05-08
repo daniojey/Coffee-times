@@ -27,11 +27,15 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_image_url(self, obj):
         request = self.context.get('request')
         
-        if obj.image:
-            return request.build_absolute_uri(obj.image.url)
-        else:
+        try:
+            if obj.image:
+                return request.build_absolute_uri(obj.image.url)
+            else:
+                return 0
+        except Exception as e:
+            print("Ошибка построения URL", e)
             return 0
-        
+
     def get_category_name(self, obj):
         category_id = obj.category.id
         category_name = Category.objects.get(id=category_id).name

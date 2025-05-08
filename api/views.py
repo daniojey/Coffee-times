@@ -16,6 +16,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from django.views.decorators.http import require_GET
 from orders.models import Reservation
 from coffeehouses.models import Category, Product
+from users.models import User
 
 @require_GET
 def get_csrf_token(request):
@@ -34,7 +35,42 @@ class LoginViewApi(APIView):
             return Response({'Status': 'success'})
         else:
             return Response({'message': 'Неверный логин либо парроль'}, status=status.HTTP_403_FORBIDDEN)
+        
 
+class RegistrationViewApi(APIView):
+    def post(self, request, *args, **kwargs):
+        username = request.data.get('username')
+        phone = request.data.get('phone')
+        password1 = request.data.get('password1')
+        password2 = request.data.get('password2')
+
+        if not username or not phone or not password1 or not password2:
+            return Response({'error': 'Не заповнені усі поля'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if password1 != password2:
+            return Response({'error': 'Пароли не співпадають'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if len(phone) < 10 or len(phone) > 15:
+            return Response({'error': 'Невірний номер телефона'}, status=status.HTTP_400_BAD_REQUEST)
+
+        pattern = r'^(?:380|0)\d{9}$'
+        if re.match(pattern, phone):
+            if phone[0] == '0':
+                phone = '38' + phone
+            
+            if User.objects.filter(Q(username=username) | Q(phone=phone)).exists():
+                return Response({'error': 'Користувач з таким логіном або номером телефону вже існує'}, status=status.HTTP_400_BAD_REQUEST)
+            
+        else:
+            return Response({"error": "Невірний формат номеру телефону"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        User.objects.create_user(username=username, phone=phone, password=password1)
+
+        user = authenticate(request, username=username, password=password1)
+        if user:
+            login(request, user)
+        return Response({'status': 'Аккаунт створено!'}, status=status.HTTP_201_CREATED)
+    
 
 class CheckAuthUserViewApi(APIView):
     def get(self, request, *args, **kwargs):
@@ -69,6 +105,35 @@ class ProductViewSets(viewsets.ModelViewSet):
 
         return Response({'results': serializer.data})
     
+class ProductHomePageApiView(APIView):
+    def get(self, request, *args, **kwargs):
+        queryset = Product.objects.all()[:5]
+        serializer = serializers.ProductSerializer(queryset, many=True, context={'request': request})
+        return Response({'products': serializer.data}, status=status.HTTP_200_OK)
+
+
+class ProductMenuPageAPI(APIView):
+    def get(self, request, *args, **kwargs):
+        search = request.GET.get('search');
+        category = request.GET.get('category');
+
+        products = Product.objects.all().select_related('category')
+
+        if search:
+            products = products.filter(name__icontains=search)
+
+        if category:
+            products = products.filter(category__name=category)
+
+        paginator = CustomHistoryPagination()
+        result_page = paginator.paginate_queryset(products, request)
+
+        if result_page is not None:
+            serializer = serializers.ProductSerializer(result_page, many=True, context={'request': request})
+            return paginator.get_paginated_response(serializer.data)
+        
+        return Response({'products': []}, status=status.HTTP_200_OK)
+
 
 class ProductCategoryAPI(APIView):
     permission_classes = (IsAdminUser,)
@@ -135,7 +200,13 @@ class ProfileInfoAPI(APIView):
 
         serializer_actual_res = serializers.ReservationProfileSericalizer(actual_res_queryset, many=True)
         serializer_reservations = serializers.ReservationProfileSericalizer(reservations, many=True)
-        return Response({'reservations': serializer_reservations.data, 'actual_reservations': serializer_actual_res.data}, status=status.HTTP_200_OK)
+
+        user_data = {
+            'username': user.username,
+            'phone': user.phone if user.phone else None,
+        }
+
+        return Response({'reservations': serializer_reservations.data, 'actual_reservations': serializer_actual_res.data, 'user_data': user_data}, status=status.HTTP_200_OK)
         
 
 
