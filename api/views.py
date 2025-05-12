@@ -18,11 +18,14 @@ from django.views.decorators.http import require_GET
 from orders.models import Reservation
 from coffeehouses.models import Category, CoffeeHouse, Product, Table
 from users.models import User
+from django.middleware.csrf import get_token
 
 @require_GET
 def get_csrf_token(request):
-    return JsonResponse({"csrfToken": request.META.get('CSRF_COOKIE')})
-
+    response = JsonResponse({"detail": "CSRF cookie set"})
+    response["X-CSRFToken"] = get_token(request)
+    print(response)
+    return response
 
 class LoginViewApi(APIView):
     def post(self, request, *args, **kwargs):
