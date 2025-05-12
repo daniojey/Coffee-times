@@ -279,6 +279,7 @@ header {
     overflow: hidden;
 }
 
+
 .leaflet-popup-content-wrapper {
     display: flex;
     color: #a79883 !important;
@@ -290,11 +291,13 @@ header {
     line-height: normal !important;
 }
 
+
 .leaflet-popup-close-button span{
     color: #a79883 !important;
     display: flex;
     margin-top: 5px;
 }
+
 
 .popup-link {
     color: #585248 !important;
@@ -312,10 +315,12 @@ header {
     transition: color 0.5s ease, transform 0.3s ease; /* Плавный переход */
 }
 
+
 .popup-link:hover {
     color: #a79883 !important;
     transform: scale(1.05); /* Увеличение при наведении */
 }
+
 
 /* Анимации */
 @keyframes fadeIn {

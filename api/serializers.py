@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import re
-from urllib import request
 from django.db.models import F, Q, ExpressionWrapper, TimeField
+from requests import Response
 from rest_framework import serializers
 from coffeehouses.models import Category, CoffeeHouse, Product, Table
 from orders.models import Reservation
@@ -63,7 +63,36 @@ class ProductCreateSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         return super().create(validated_data)
-    
+
+
+class CoffeehouseFormSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CoffeeHouse
+        fields = ['id', 'name']
+
+
+class CoffeehousesMapSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+
+
+    class Meta:
+        model = CoffeeHouse
+        fields = ['id', 'image_url', 'name', 'address', 'location', 'opening_time', 'closing_time']
+
+    def get_image_url(self, obj):
+        request = self.context.get('request')
+
+        try:
+            if obj.image:
+                url = request.build_absolute_uri(obj.image.url)
+                return url
+            else:    
+                return 0
+        except Exception as e:
+            print('Ошибка при создании url', e)
+            return 0
+
+
 
 class ReservationSerializer(serializers.ModelSerializer):
     coffeehouse_name = serializers.CharField(source='coffeehouse.name', read_only=True)
@@ -132,12 +161,23 @@ class ReservationCreateSerializer(serializers.ModelSerializer):
 
     def validate_customer_phone(self, value):
         """Валидация номера телефона"""
-        if not re.match(r"^\+?380\d{9}$", value):
-            raise serializers.ValidationError("Номер телефона должен быть формата 380 либо +380")
+        request = self.context.get('request')
+
+        if not request.user.is_authenticated:
+            if not re.match(r"^\+?380\d{9}$", value):
+                raise serializers.ValidationError("Номер телефона должен быть формата 380 либо +380")
+            return value
+        
         return value
     
     def validate(self, data):
         """Проверка занятости столика в указанное время"""
+        request = self.context.get('request')
+
+        if not request.user.is_authenticated:
+            if not data['customer_name'] and not data['customer_phone']:
+                raise serializers.ValidationError("Поле телефону або ім'я не заповненно ")
+
         coffeehouse = data["coffeehouse"]
         table = data["table"]
         reservation_date = data["reservation_date"]

@@ -165,7 +165,7 @@ def get_available_tables(request):
             return JsonResponse({'error': 'Invalid JSON data'}, status=400)
 
     else:
-        return JsonResponse({'tables': 'Нет доступных столиков, выберете пожалуйста другой вариант'}, status=405)
+        return JsonResponse({'tables': 'Нет доступных столиков, выберете пожалуйста другой вариант'}, status=200)
     
 
 

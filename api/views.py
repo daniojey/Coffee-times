@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
 import re
 from django.contrib.auth import authenticate, login, logout
-from django.db.models import F, Q, ExpressionWrapper
+from django.db.models import F, Q, ExpressionWrapper, TimeField
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
 from api.paginators import CustomHistoryPagination
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -15,7 +16,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from django.views.decorators.http import require_GET
 from orders.models import Reservation
-from coffeehouses.models import Category, Product
+from coffeehouses.models import Category, CoffeeHouse, Product, Table
 from users.models import User
 
 @require_GET
@@ -153,6 +154,14 @@ class ProductCreateViewAPI(APIView):
             return Response({'message': 'Продукт успешно создан', 'product': serializer.data}, status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class CoffeehousesMapAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        queryset = CoffeeHouse.objects.all()
+        serializer = serializers.CoffeehousesMapSerializer(queryset, many=True, context={"request": request})
+
+        return Response({'results': serializer.data})
 
 
 class ReservationSearchAPI(APIView):
@@ -160,6 +169,11 @@ class ReservationSearchAPI(APIView):
     """АPI для поиска резервации по номеру телефона"""
     def post(self, request, *args, **kwargs):
         phone = request.data.get('phone')
+        actual = request.data.get('actual')
+
+        print(phone)
+        print(actual)
+        print(request.data)
 
         if not phone:
             return Response({'error': 'По цьому номеру немає резервацій'}, status=status.HTTP_400_BAD_REQUEST)
@@ -172,7 +186,10 @@ class ReservationSearchAPI(APIView):
         if not re.match(pattern, phone):
             return Response({"error": "Невірний номер телефону, перевірте будь ласка правильність введеного номеру"}, status=status.HTTP_400_BAD_REQUEST)
         
-        reservations = Reservation.objects.filter(customer_phone=phone).select_related('coffeehouse', 'table').order_by('-reservation_date')
+        if actual:
+            reservations = get_actual_reservations(phone=phone)
+        else:
+            reservations = Reservation.objects.filter(customer_phone=phone).select_related('coffeehouse', 'table').order_by('-reservation_date')
 
         serializer = serializers.ReservationSerializer(reservations, many=True)
         return Response({'reservations': serializer.data}, status=status.HTTP_200_OK)
@@ -216,6 +233,10 @@ class ProfileHitoryAPI(APIView):
         s_active = request.GET.get("is_active", '')
         s_coffeehouse = request.GET.get('is_cafe', '')
         s_sort_by = request.GET.get("sort_by", '')
+
+        print(s_active)
+        print(s_coffeehouse)
+        print(s_sort_by)
         
         user = request.user
 
@@ -247,8 +268,115 @@ class ProfileHitoryAPI(APIView):
             return paginator.get_paginated_response(serializer.data)
 
         return Response({'reservations': []}, status=status.HTTP_200_OK)
-    
 
+
+class GetBookingDuration(APIView):
+    def post(self, request, *args, **kwargs):
+        try:
+            data = request.data
+
+            coffeehouse_id = data.get('coffeehouse')
+            reservation_time = data.get('reservation_time')
+
+            coffeehouse = get_object_or_404(CoffeeHouse, id=coffeehouse_id)
+
+            # Преобразуем время закрытия и время бронирования в datetime
+            closing_time = datetime.strptime(coffeehouse.closing_time.strftime("%H:%M"), "%H:%M")
+            reservation_time = datetime.strptime(reservation_time, "%H:%M")
+
+            # Вычисляем разницу между временем закрытия и временем бронирования
+            difference = closing_time - reservation_time
+
+            if difference.total_seconds() <= 0:
+                # Если разница отрицательная или равна 0, бронирование невозможно
+                return JsonResponse({'data': ["00:00"]})
+
+            # Получаем оставшиеся часы и минуты
+            remaining_hours, remainder = divmod(difference.seconds, 3600)
+            remaining_minutes = remainder // 60
+
+            durations = []
+
+            # Генерация доступных интервалов времени
+            if remaining_hours <= 3:
+                for hour in range(remaining_hours + 1):
+                    for minute in range(0, 60, 15):  # Интервалы по 15 минут
+                        if hour == remaining_hours and minute > remaining_minutes:
+                            break  # Прерываем, если минуты выходят за пределы оставшегося времени
+                        elif hour > 4 and minute > remaining_minutes:
+                            break
+
+                        durations.append(f"{hour:02}:{minute:02}")
+            else:
+                for hour in range(4):
+                    for minute in range(0, 60, 15):  # Интервалы по 15 минут
+                        if hour == 3 and minute > 0:
+                            break
+                        durations.append(f"{hour:02}:{minute:02}")
+
+            if len(durations) == 0:
+                durations.append("00:00")
+
+            return Response({'data': durations}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print("Ошибка", e)
+            return Response({'error': f'Ошибка логики {e}'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetTablesReservation(APIView):
+    def post(self, request, *args, **kwargs):
+        try:
+            # Парсим данные из тела запроса
+            data = request.data
+            coffeehouse_id = data.get('coffeehouse')
+            reservation_date = data.get('reservation_date')
+            reservation_time = data.get('reservation_time')
+            booking_duration = data.get('booking_duration')
+
+            reservations_today = Reservation.objects.filter(coffeehouse_id=coffeehouse_id ,reservation_date=reservation_date).select_related('table')
+            for item in reservations_today:
+                print(item.table)
+
+            annotations_reservation = reservations_today.annotate(
+                end_time=ExpressionWrapper(
+                    F('reservation_time') + F('booking_duration'),
+                    output_field=TimeField()
+                )
+            )
+ 
+            for reservation in annotations_reservation:
+                print(reservation.end_time)
+
+
+            # Преобразуем reservation_time в объект времени
+            reservation_time_obj = datetime.strptime(reservation_time, "%H:%M").time()
+
+            # Преобразуем booking_duration в timedelta
+            hours, minutes = map(int, booking_duration.split(":"))
+            booking_duration_td = timedelta(hours=hours, minutes=minutes)
+
+            # Объединяем reservation_date и reservation_time для получения datetime
+            reservation_datetime = datetime.combine(datetime.strptime(reservation_date, "%Y-%m-%d"), reservation_time_obj)
+
+            # Добавляем продолжительность
+            end_datetime = reservation_datetime + booking_duration_td
+
+            # Извлекаем только время окончания
+            end_time = end_datetime.time()
+
+             # Фильтруем пересекающиеся брони
+            overlapping_reservations = annotations_reservation.filter(end_time__gt=reservation_time).filter(reservation_time__lt=end_time).values_list('table_id', flat=True)
+
+
+            # Формируем данные для ответа
+            tables_data = [{"id": table.id, 'name': table.table_number} for table in Table.objects.filter(coffeehouse_id=coffeehouse_id).exclude(id__in=overlapping_reservations)]
+            request.session['coffeehouse'] = coffeehouse_id
+            return Response({'tables': tables_data}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print('ОШИБКА', e)
+            return Response({'error': f'Invalid JSON data {e}'}, status=status.HTTP_400_BAD_REQUEST)
+        
 
 class CreateReservationAPI(APIView):
     def post(self, request, *args, **kwargs):
@@ -264,3 +392,14 @@ class CreateReservationAPI(APIView):
             return Response({'message': 'Бронирование успешно созданно', 'reservation': serializer.data}, status=status.HTTP_201_CREATED)
             
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class CoffeehouseFormApiView(APIView):
+    def get(self, request, *args, **kwargs):
+        queryset = CoffeeHouse.objects.all()
+        serializer = serializers.CoffeehouseFormSerializer(queryset, many=True)
+
+        if serializer:
+            return Response({ 'coffeehouses': serializer.data }, status=status.HTTP_200_OK)
+        
+        return Response({'coffeehouses': []}, status=status.HTTP_200_OK)
