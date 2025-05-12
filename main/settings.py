@@ -363,4 +363,18 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True  # Разрешить передачу кук
-SESSION_COOKIE_SAMESITE = 'Lax'  # Настройки кук
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']  # Добавлено
+
+
+# Для поддержки старых браузеров
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
