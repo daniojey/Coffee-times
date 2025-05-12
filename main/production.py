@@ -16,3 +16,8 @@ CSRF_COOKIE_SAMESITE = 'None'     # Добавлено
 SECURE_HSTS_SECONDS = 3600  # 1 час
 SECURE_HSTS_INCLUDE_SUBDOMAINS = False
 SECURE_HSTS_PRELOAD = False
+
+CSRF_COOKIE_HTTPONLY = False  # Разрешить доступ к куке из JS
+CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'  # Совпадает с фронтендом
+CSRF_COOKIE_NAME = 'csrftoken'
+SESSION_COOKIE_NAME = 'sessionid'
