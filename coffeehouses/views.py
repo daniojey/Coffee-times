@@ -19,7 +19,7 @@ class HomePageView(TemplateView):
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
 
-        products = Product.objects.all()[:4]
+        products = Product.objects.only('name', 'description', 'image', 'price')[:4]
 
         context.update({
             'active_tab': 'main-link',
