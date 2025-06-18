@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView, View, TemplateView
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.postgres.search import SearchVector
 
 from coffeehouses.models import Category, CoffeeHouse, Product
@@ -29,8 +30,11 @@ class HomePageView(TemplateView):
         return context
 
 
-class MapCoffeehousesView(TemplateView):
+class MapCoffeehousesView(PermissionRequiredMixin, TemplateView):
     template_name = 'coffeehouses/map_coffeehouses.html'
+    permission_required = ()
+    # permission_required = ("coffeehouses.view_coffeehouse")
+    # permission_denied_message = 'Отсуцвиет разрешение на просмотр'
 
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)

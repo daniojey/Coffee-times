@@ -20,6 +20,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'description': {'required': False},
         }
 
+
     def get_adds_by(self, obj):
         request = self.context.get('request')
         return request.user.username if request else None
@@ -37,9 +38,21 @@ class ProductSerializer(serializers.ModelSerializer):
             return 0
 
     def get_category_name(self, obj):
-        category_id = obj.category.id
-        category_name = Category.objects.get(id=category_id).name
-        return category_name
+        if obj:
+            category_id = obj.category.id
+            category_name = Category.objects.get(id=category_id).name
+            return category_name
+        else:
+            return "None-name"
+    
+    def validate(self, data):
+        requeired_fields = ['id','name', 'description','category_name', 'price', 'discount', 'adds_by', 'image_url']
+
+        if not all(item in requeired_fields for item in data):
+            return Response({"error": "Fields"})
+
+
+        return data
     
 
 class CategorySerializer(serializers.ModelSerializer):

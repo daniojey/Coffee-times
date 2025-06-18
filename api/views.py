@@ -9,6 +9,7 @@ from api.paginators import CustomHistoryPagination
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from api.permission import IsAdminOrReadOnly, IsUserOrReadOnly
+from api.utils import TrottleProducts
 from users.utils import get_actual_reservations, get_user_ip
 from . import serializers
 from rest_framework.views import APIView
@@ -19,6 +20,7 @@ from orders.models import Reservation
 from coffeehouses.models import Category, CoffeeHouse, Product, Table
 from users.models import User
 from django.middleware.csrf import get_token
+from rest_framework.versioning import URLPathVersioning
 
 @require_GET
 def get_csrf_token(request):
@@ -95,19 +97,50 @@ class UserLogoutViewApi(APIView):
 
 
 class ProductViewSets(viewsets.ModelViewSet):
+    throttle_classes = [TrottleProducts]
     queryset =  Product.objects.all()
     serializer_class = serializers.ProductSerializer
-    permission_classes = (IsAdminUser,)
+    versioning_class = URLPathVersioning
+    # permission_classes = (IsAdminUser,)
 
     def get_serializer_context(self):
         """Передаем текущего пользователя в сериализатор"""
         return {'request': self.request}
+    
+    def create(self, request, *args, **kwargs):
+        print(request.data)
+        print(self.request.version)
+
+
+        requeired_fields = ['id','name', 'description','category_name', 'price', 'discount', 'adds_by', 'image_url']
+
+        if not all(item in requeired_fields for item in request.data):
+            return Response({"error": "Fields"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            serializer = self.get_serializer(data=request.data)
+            print(serializer.is_valid())
+            product = True
+        except Exception as e:
+            product = None
+            print(e)
+
+        if product:
+            return super().create(request, *args, **kwargs) 
+        else:
+            return Response({'error': 'ValueError', 'message': 'Не все поля заполнены'})
+
+        # return super().create(request, *args, **kwargs)
     
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(queryset, many=True)
 
         return Response({'results': serializer.data})
+    
+    def get_serializer_class(self):
+        print("Действие",self.action)
+        return super().get_serializer_class()
     
 class ProductHomePageApiView(APIView):
     def get(self, request, *args, **kwargs):
@@ -127,7 +160,7 @@ class ProductMenuPageAPI(APIView):
             products = products.filter(name__icontains=search)
 
         if category:
-            products = products.filter(category__name=category)
+            products = products.select_related('category').filter(category__name=category)
 
         paginator = CustomHistoryPagination()
         result_page = paginator.paginate_queryset(products, request)
@@ -237,10 +270,6 @@ class ProfileHitoryAPI(APIView):
         s_coffeehouse = request.GET.get('is_cafe', '')
         s_sort_by = request.GET.get("sort_by", '')
 
-        print(s_active)
-        print(s_coffeehouse)
-        print(s_sort_by)
-        
         user = request.user
 
         if user.phone:

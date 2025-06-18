@@ -36,7 +36,7 @@ urlpatterns = [
     path('', include('coffeehouses.urls',namespace='coffeehouses')),
     path('orders/', include('orders.urls', namespace='orders')),
     path('user/', include('users.urls', namespace='users')),
-    path('api/', include(router.urls)),
+    path('api/<str:version>/', include(router.urls)),
     path('api/v1/', include('api.urls', namespace='api')),
     path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
