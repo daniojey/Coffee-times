@@ -20,7 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from debug_toolbar.toolbar import debug_toolbar_urls
 from rest_framework.routers import DefaultRouter
-from api.views import ProductViewSets, ProfileHitoryAPI, ProfileInfoAPI, ReservationSearchAPI
+from api.views import CustomTokenVerifyView,CustomTokenRefreshView, CustomTokenObtainPairView, ProductViewSets, ProfileHitoryAPI, ProfileInfoAPI, ReservationSearchAPI
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -38,9 +38,9 @@ urlpatterns = [
     path('user/', include('users.urls', namespace='users')),
     path('api/<str:version>/', include(router.urls)),
     path('api/v1/', include('api.urls', namespace='api')),
-    path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/v1/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path('api/v1/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/v1/token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),
+    path('api/v1/token/verify/', CustomTokenVerifyView.as_view(), name='token_verify'),
     
 ]  +  debug_toolbar_urls()
 

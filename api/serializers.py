@@ -5,6 +5,8 @@ from requests import Response
 from rest_framework import serializers
 from coffeehouses.models import Category, CoffeeHouse, Product, Table
 from orders.models import Reservation
+from users.models import User
+from django.contrib.auth import get_user_model
 
 class ProductSerializer(serializers.ModelSerializer):
     adds_by = serializers.SerializerMethodField()
@@ -254,3 +256,12 @@ class ReservationCreateSerializer(serializers.ModelSerializer):
 
         validated_data['created_ip'] = ip
         return super().create(validated_data)
+    
+
+User = get_user_model()
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model=User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name']
