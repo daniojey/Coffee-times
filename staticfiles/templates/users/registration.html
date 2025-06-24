@@ -6,7 +6,7 @@
 <div class='base-container'>
     <div class='form-container'>
         <form action="" method='post'>{% csrf_token %}
-            <p><input type="text" id='username' name='username' placeholder='Логін' class='form-input'></p>
+            <p><input value="{% if form.username.value %}{{ form.username.value }}{% endif %}" type="text" id='username' name='username' placeholder='Логін' class='form-input'></p>
             <p><input type="text" id='phone' name='phone' placeholder='Номер телефону' class='form-input'></p>
             <p><input type="password" id='password1' name='password1' placeholder='Пароль' class='form-input'></p>
             <p><input type="password" id='password2' name='password2'placeholder='Повторіть пароль' class='form-input'></p>

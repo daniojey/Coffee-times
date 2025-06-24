@@ -1,21 +1,26 @@
 html, body {
-    height: 100%;
+    height: 100vh;
     margin: 0;
 }
 
 body {
     display: flex;
     flex-direction: column;
-    background-color: #ffffff;
-    min-height: 100%;
+    background-color: rgba(15, 15, 15);
+    min-height: 100vh;
 }
 
 header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: black;
+    background-color: rgba(15, 15, 15);
+    z-index: 5;
     min-height: 56px;
+}
+
+:root {
+    --index: calc(1vh + 1vw);
 }
 
 .base-links-container {
@@ -33,9 +38,14 @@ header {
 }
 
 .home-page-container a {
-    color: #FFFFFF;
+    color: #a79883;
+    font-family: Roboto;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
     text-decoration: none;
-    transition: color 0.6s ease;
+    transition: color 0.6s ease, background-color 0.9s ease;
 }
 
 .home-page-container a:hover {
@@ -53,14 +63,32 @@ header {
     list-style: none;
 }
 
+.active-link {
+    background-color: #B8A890;
+    color: #4D4631 !important;
+    border-radius: 50%;
+    padding: 6px 12px;
+    transition: color 0.4s ease, background-color 0.5s ease;
+}
+
+.active-link:hover {
+    background-color: #998c79;
+    color: #f5f5f5 !important;
+}
+
 .base-links a {
-    color: #FFFFFF;
+    color: #B8A890;
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
     text-decoration: none;
-    transition: color 0.6s ease;
+    transition: color 0.6s ease, background-color 0.9s ease;
 }
 
 .base-links a:hover {
-    color: #ffffff;
+    color: #f5f5f5;
 }
 
 .hidden {
@@ -69,9 +97,15 @@ header {
 
 /* Стили для footer */
 footer {
-    background-color: #000000; /* Цвет фона */
-    color: #fff; /* Цвет текста */
-    padding: 10px 10px;
+    border-top: #a79883 solid 0.5px; /* Граница сверху */
+    background-color: rgba(15, 15, 15); /* Цвет фона */
+    color: #a79883; /* Цвет текста */
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    padding: 5px 5px;
     box-sizing: border-box;
     text-align: center;
     margin-top: auto; /* Это гарантирует, что футер всегда будет внизу */
@@ -101,7 +135,7 @@ footer {
 }
 
 .footer-content-container a {
-    color: #fff; /* Цвет ссылок */
+    color: #4D4631; /* Цвет ссылок */
     text-decoration: none; /* Убираем подчеркивание */
 }
 
@@ -134,7 +168,7 @@ footer {
 .burger span {
     width: 25px;
     height: 1.5px;
-    background-color: white;
+    background-color: #a79883;
     transition: transform 0.3s;
 }
 
@@ -145,12 +179,12 @@ footer {
     left: -3000px; /* Скрыта за пределами экрана */
     width: 200px;
     height: 100%;
-    background-color: #333;
-    color: white;
+    background-color: rgb(15, 15, 15);
+    color: #B8A890;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
     transition: left 0.3s ease;
-    z-index: 1000;
+    z-index: 9999 !important;
 }
 
 .sidebar ul {
@@ -164,18 +198,18 @@ footer {
 }
 
 .sidebar ul li a {
-    color: white;
+    color: #B8A890;
     text-decoration: none;
     font-size: 18px;
     transition: color 0.3s;
 }
 
 .sidebar ul li a:hover {
-    color: #ffcc00;
+    color: #f5f5f5
 }
 
 /* Скрытие обычных ссылок на мобильных устройствах */
-@media (max-width: 768px) {
+@media (max-width: 820px) {
     .base-links {
         display: none;
     }
@@ -183,11 +217,24 @@ footer {
     /* Показ боковой панели на мобильных устройствах */
     .sidebar.active {
         left: 0; /* Показываем панель */
-        z-index: 9999;
+        z-index: 9999 !important;
     }
 
     /* Для бургер-меню */
     .burger {
         display: flex;
     }
+}
+
+
+/* Стиль для автозаполненных полей */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-background-clip: text; /* Убирает стандартный фон */
+    font-size: 18px !important; /* Задаем одинаковый размер шрифта для всех состояний */
+    -webkit-text-fill-color: #a79883 !important; /* Цвет текста */
+    -webkit-box-shadow: 0 0 0 1000px rgb(39, 39, 39) inset !important; /* Цвет фона */
+    caret-color: #ffffff !important; /* Цвет курсора */
+    transition: background-color 5000s ease-in-out 0s; /* Сохраняем цвет фона при автозаполнении */
 }

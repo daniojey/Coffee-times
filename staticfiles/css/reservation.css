@@ -1,71 +1,155 @@
-.form-content {
-    display: flex;
-    background-color: black;
-    color: #FFFF;
-    max-width: 900px;
-    width: 100%;
-    margin: 60px auto;
-    padding: 24px;
-    border-radius: 15px;
-    box-sizing: border-box;
+header {
+    border-bottom: #a79883 solid 0.5px;
 }
 
+
+.error-content {
+    display: flex;
+    background-color: black;
+    color: #f85d5d;
+    max-width: 900px;
+    width: 100%;
+    margin: 20px auto;
+    margin-bottom: 0px;
+    padding: 20px;
+    border-radius: 15px;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* Стили бозового контейнера */
+.form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: rgb(23, 23, 23);
+    border-radius: 10px;
+    border: 0.1px solid rgb(255, 255, 255, 0.05);
+    border-top: 0.2px solid rgb(255, 255, 255, 0.1);
+    max-width: 700px;
+    width: 100%;
+    margin: 40px auto;
+    padding: 24px 40px;
+    box-sizing: border-box;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+}
+
+
+.form-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #a79883;
+    font-size: calc(var(--index) * 1.2);
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+
+}
+
+
+/* Стили формы и его полей */
 .form-body{
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
-p {
-    font-size: 16px;
-    margin: 10px 0;
+
+label {
+    color: #a79883;
+    font-size: calc(var(--index) * 0.9);
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
 }
 
-.custom-select{
-    width: 30%;
-    padding: 10px;
-    font-size: 16px;
-    background: #000000;
-    color: #fff;
-    border: 1px solid #FFF;
-    border-radius: 12px;
-    appearance: none; /* Убираем стандартную стрелочку */
-    background-image: url('/static/icons/arrow_down.svg'); /* Добавляем свою стрелку */
-    background-repeat: no-repeat;
-    background-position: right 10px center; /* Положение стрелки */
-    background-size: 20px; /* Размер стрелки */
-}
 
-.custom-table {
-    max-width: 100px;
+/* Поле в котором содержатся все label + input за исключением поля выбора времени бронирования */
+.form-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
+    margin-bottom: 30px;
+}
+
+
+/* Стиль для каждого текстового Input поля */
+.custom-input {
+    display: flex;
+    width: 35%;
     padding: 10px;
     font-size: 16px;
-    background: #000000;
-    color: #fff;
-    border: 1px solid #FFF;
-    border-radius: 12px;
+    background-color: rgb(39, 39, 39);
+    color: #a79883; /* Цвет текста */
+    border: 1px solid #272319; /* Цвет рамки */
+    border-radius: 5px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+
+
+/* Кастомные фокус параметры для создания теней на всех видах полей что используются */
+input:focus {
+    outline: none; /* Убираем обводку при фокусе */
+    border: 1px solid #a79883; /* Цвет рамки при фокусе */
+    box-shadow: 0px 3px 5px #a79883; /* Тень для поля ввода при фокусе */
+}
+
+
+select:focus{
+    outline: none; /* Убираем обводку при фокусе */
+    border: 1px solid #a79883; /* Цвет рамки при фокусе */
+    box-shadow: 0px 3px 5px #a79883; /* Тень для поля ввода при фокусе */
+}
+
+
+/* Стили для виджетов type=Select */
+.custom-select{
+    display: flex;
+    width: 39%; 
+    padding: 10px;
+    font-size: 16px;
+    background-color: rgb(39, 39, 39);
+    color: #a79883; /* Цвет текста */
+    border: 1px solid #272319; /* Цвет рамки */
+    border-radius: 5px;
     appearance: none; /* Убираем стандартную стрелочку */
     background-image: url('/static/icons/arrow_down.svg'); /* Добавляем свою стрелку */
     background-repeat: no-repeat;
     background-position: right 10px center; /* Положение стрелки */
     background-size: 20px; /* Размер стрелки */
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
 }
 
-.date-wrapper {
-    margin: 10px 0;
-}
 
-
+/* Стиль для инпута Даты*/
 .date-input {
-    background-color: #000000;
-    color: #FFFF;
-    border: 1px solid #FFFF;
-    border-radius: 12px;
+    display: flex;
+    max-width: 110px;
+    background-color: rgb(39, 39, 39) !important;
+    color: #a79883; /* Цвет текста */
+    border: 1px solid #a79883; /* Цвет рамки */
+    border-radius: 5px;
     padding: 10px;
     outline: none;
     flex: 1;
     font-size: 16px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
     background-color: transparent;
     appearance: none !important; /* Убираем стандартную иконку */
     -webkit-appearance: none; /* Для Safari/Chrome */
@@ -74,22 +158,29 @@ p {
     background-repeat: no-repeat;
     background-position: right 10px center; /* Положение иконки */
     background-size: 20px; /* Размер иконки */
-
 }
 
-.reservation-time-container {
-    display: flex;
-    align-items: center;
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
 }
 
+
+/* Стили для инпута времени */
 .time-input {
-    color: #FFFF;
-    background-color: #000000;
-    border: 1px solid #FFFF;
-    border-radius: 12px;
+    background-color: rgb(39, 39, 39);
+    color: #a79883; /* Цвет текста */
+    border: 1px solid #a79883; /* Цвет рамки */
+    border-radius: 5px;
     padding: 10px;
     padding-right: 45px;
     font-size: 16px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
     appearance: none !important; /* Убираем стандартный стиль браузера */
     -webkit-appearance: none !important; /* Для Safari/Chrome */
     -moz-appearance: none !important; /* Для Firefox */
@@ -99,43 +190,73 @@ p {
     background-size: 22px; /* Размер иконки */
 }
 
-/* Скрываем стандартную иконку, но оставляем функциональность */
-.time-input::-webkit-calendar-picker-indicator {
-    opacity: 0; /* Делаем прозрачной */
-    z-index: 1; /* Возвращаем на передний план для клика */
-    width: 20px; /* Увеличиваем область клика */
-    cursor: pointer;
-}
 
+/* Стили связанные с отображением столиков */
 #no-available-times-message {
-    color: #FFFF;
-    background-color: #000000;
-    border: 1px solid #FFFF;
+    max-width: 200px;
+    background-color: rgb(39, 39, 39);
+    color: #a79883; /* Цвет текста */
+    border: 1px solid #a79883; /* Цвет рамки */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     padding: 10px;
     font-size: 16px;
-    border-radius: 12px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    border-radius: 5px;
 }
+
 
 #no-available-tibles-message {
-    color: #FFFF;
-    background-color: #000000;
-    border: 1px solid #FFFF;
+    background-color: rgb(39, 39, 39);
+    color: #a79883; /* Цвет текста */
+    border: 1px solid #a79883; /* Цвет рамки */
     padding: 10px;
     font-size: 16px;
-    border-radius: 12px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    border-radius: 5px;
+    animation: scaleIn 0.4s ease-in-out;
+    animation-fill-mode: forwards;
 }
 
 
-.custom-input {
+.custom-table {
+    display: flex;
+    max-width: 95px;
+    width: 100%;
     padding: 10px;
     font-size: 16px;
-    background-color: #000000;
-    color: #FFFF;
-    border: 1px solid #FFFF;
-    border-radius: 12px;
+    background-color: rgb(39, 39, 39);
+    color: #a79883; /* Цвет текста */
+    border: 1px solid #a79883; /* Цвет рамки */
+    border-radius: 5px;
+    appearance: none; /* Убираем стандартную стрелочку */
+    background-image: url('/static/icons/arrow_down.svg'); /* Добавляем свою стрелку */
+    background-repeat: no-repeat;
+    background-position: right 10px center; /* Положение стрелки */
+    background-size: 20px; /* Размер стрелки */
 }
 
 
+.flex-style-tables{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    transform: scale(0);
+    animation: scaleIn 0.4s ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+
+/* Стили для кнопки формы */
 .button-container {
     display: flex;
     width: 100%;
@@ -143,47 +264,81 @@ p {
     align-items: center;
 }
 
+
 .submit-btn {
     display: flex;
     text-align: center;
     align-items: center;
     justify-content: center;
     padding: 5px 7px;
-    font-size: 20px;
-    color: black;
-    background-color: #FFFF;
+    font-size: 18px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    background-color: #a79883; /* Цвет фона кнопки */
+    color: rgb(15, 15, 15); /* Цвет текста кнопки */
     border: none;
-    margin: 10px 0px;
+    margin: 0px;
+    margin-top: 40px;
     border-radius: 5px;
-    max-width: 150px;
+    max-width: 200px;
     width: 100%;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, background-color 0.6s ease, color 0.6s ease;
 }
+
 
 .submit-btn:hover {
     transform: scale(1.10);
+    background-color:  #585248;/* Цвет фона при наведении */
+    color:  #f5f5f5;/* Цвет текста при наведении */
 }
 
 
-/* Стиль для автозаполненных полей */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus {
-    font-size: 16px !important; /* Задаем одинаковый размер шрифта для всех состояний */
-    -webkit-text-fill-color: #ffffff !important; /* Цвет текста */
-    -webkit-box-shadow: 0 0 0 1000px #000000 inset !important; /* Цвет фона */
-    caret-color: #ffffff !important; /* Цвет курсора */
-    transition: background-color 5000s ease-in-out 0s; /* Сохраняем цвет фона при автозаполнении */
-}
-
+/* Адаптивность */
 @media (max-width: 600px) {
+    .form-content {
+        padding: 24px;
+    }
+
+    .form-title {
+        font-size: calc(var(--index) * 1.6);
+    }
+
+    label {
+        font-size: calc(var(--index) * 1.4);
+    }
+
+    #no-available-times-message  {
+        max-width: 140px;
+        font-size: 14px;
+    }
+
     .custom-select {
-        width: 70%;
+        width: 43%;
     }
 }
 
 @media (max-height: 610px) {
     .form-content {
         margin: 15px auto;
+    }
+}
+
+@media (max-width: 450px) {
+    #no-available-times-message  {
+        max-width: 105px;
+        font-size: 12px;
+    }
+}
+
+/* Анимации */
+@keyframes scaleIn{
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
     }
 }

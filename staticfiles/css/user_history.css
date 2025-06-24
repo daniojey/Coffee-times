@@ -28,8 +28,8 @@
     flex-direction: column;
     max-width: 314px;
     width: 100%;
-    background-color: black;
-    color: white;
+    background-color: #CDBDA3;
+    color: #4D4631;
     font-size: 16px;
     margin: 10px 0px;
     border-radius: 15px;
@@ -56,9 +56,9 @@
     flex-direction: column;
     gap: 5px;
     margin-top: 10px;
-    color: white;
-    background-color: black;
-    border: 1.5px solid white;
+    color: #4D4631;
+    background-color: #CDBDA3;
+    border: 1.5px solid #4D4631;
     border-radius: 12px;
     padding: 20px;
 }
@@ -71,13 +71,61 @@
 
 .filter-button {
     padding: 8px 10px;
-    background-color: black;
-    color:  white;
+    background-color: #4D4631;
+    color:  #f5f5f5;
     font-size: 16px;
-    border: 1px solid white;
+    border: 1px solid #4D4631;
     border-radius: 12px;
     margin-top: 5px;
+    transition: color 0.5s ease, background-color 0.5s ease;
 }
+
+.filter-button:hover {
+    color: #4D4631;
+    background-color: #CDBDA3;
+}
+
+label{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+input[type="checkbox"] {
+    height: 15px;
+    width: 15px;
+
+    /* Меняем цвет фона */
+    background-color: #4D4631;
+
+    /* Меняем цвет бортика */
+    border: 2px solid #4D4631;
+
+    /* Скругляем углы */
+    border-radius: 4px;
+
+    /* Убираем стандартный стиль браузера */
+    appearance: none;
+    -webkit-appearance: none;
+
+    /* Позиционируем галочку */
+    position: relative;
+
+    margin-right: 10px;
+}
+
+/* Стилизация галочки */
+input[type="checkbox"]:checked::before {
+    content: "✔"; /* Используем символ галочки */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    color: #CDBDA3; /* Цвет галочки */
+}
+
+
 
 /* Стили пагинации */
 .pagination {
@@ -97,12 +145,12 @@
 
 .text-link {
     display: flex;
-    color: rgb(0, 0, 0);
-    background-color: white;
+    color: #4D4631;
+    background-color: #CDBDA3;
     font-size: 18px;
     text-decoration: none;
     height: 38px;
-    border: 1px solid black;
+    border: 1px solid #4D4631;
     align-items: center;
     text-align: center;
     padding: 0px 4px;
@@ -111,14 +159,14 @@
 }
 
 .text-link:hover {
-    color: white;
-    background-color: black;
+    color: #f5f5f5;
+    background-color: #4D4631;
 }
 
 .text-link-next, .text-link-preview {
     display: flex;
-    color: rgb(0, 0, 0);
-    background-color: white;
+    color: #CDBDA3;
+    background-color: #4D4631;
     font-size: 18px;
     text-decoration: none;
     height: 38px;
@@ -132,8 +180,8 @@
 
 
 .text-link-next:hover, .text-link-preview:hover {
-    color: white;
-    background-color: black;
+    color: #4D4631;
+    background-color: #CDBDA3;
 }
 
 
@@ -159,7 +207,7 @@
 }
 
 .page-item.active{
-    background-color: rgb(0, 0, 0) !important;
+    background-color: #4D4631 !important;
 }
 
 .page-item:hover {
@@ -178,11 +226,11 @@
 
 .page-number:hover{
     color: white;
-    background-color: black;
+    background-color: #4D4631;
 }
 
 .page-number.active {
-    background-color: black;
+    background-color: #4D4631;
     color: white !important;
 }
 

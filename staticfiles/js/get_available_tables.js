@@ -107,9 +107,11 @@ function getAvailableTables() {
         // Показываем блок с доступными столиками, если есть данные
         if (data.tables.length > 0) {
             tableSelections.classList.remove('hidden');
+            tableSelections.classList.add('flex-style-tables')
             noTablesMessage.classList.add('hidden');  // Скрыть сообщение, если есть столики
         } else {
             tableSelections.classList.add('hidden');  // Скрыть контейнер с таблицами
+            tableSelections.classList.remove('flex-style-tables')
             noTablesMessage.classList.remove('hidden');  // Показать сообщение, если столики отсутствуют
         }
     })

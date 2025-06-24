@@ -15,7 +15,7 @@ __pycache__
 # Игнорировать миграции базы данных
 # **/migrations/*
 
-
+staticfiles/
 
 # Игнорировать файлы IDE
 .vscode/

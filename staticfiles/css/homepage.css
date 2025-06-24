@@ -1,9 +1,149 @@
 .base-container {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.content-container {
+:root {
+    --index: calc(1vh + 1vw);
+}
+
+.reservation-content {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    border-radius: 12px;
+    padding: 15px 0px;
+    max-width: 1250px;
+    max-height: 710px;
+    overflow: hidden; /* Чтобы контент не выходил за границы */
+    width: 98%; /* Адаптивная ширина */
+}
+
+
+.reservation-content img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.reservation-link {
+    position: absolute;
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.7); /* Полупрозрачный фон */
+    border: 1px solid white;
+    color: white;
+    font-size: calc(var(--index) * 0.9);
+    flex-direction: column;
+    max-width: 500px;
+    padding: 15px;
+    border-radius: 8px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Центрирование */
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Добавляем тень */
+    transition: max-width 0.3 ease;
+}
+
+.reservation-link a{
+    width: 200px;
+    margin: 5px auto;
+    box-sizing: border-box;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    padding: 8px 16px;
+    background-color: #000000;
+    color: #FFFF;
+    text-decoration: none;
+    border: 1.5px solid #ffffff;
+    font-size: 16px;
+    border-radius: 15px;
+    transition: color 1s ease;
+}
+
+.coffeemap-content {
+    box-sizing: border-box;
+    display: flex;
+    border-radius: 12px;
+    padding: 15px;
+    max-width: 1250px;
+    max-height: 710px;
+    width: 98%; /* Адаптивная ширина */
+    background-color: #CDBDA3;
+    color: #4D4631;
+    align-items: center;
+    justify-content: center;
+    margin: 0px auto;
+    margin-bottom: 15px;
+}
+
+.coffeemap-content a{
+    margin-left: 5px;
+    color: #4D4631;
+    text-decoration: none;
+    font-size: 22px;
+    transition: color 0.5 ease;
+}
+
+.coffeemap-content a:hover{
+    color: #4D4631;
+}
+
+
+.menu-content {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    padding: 15px;
+    max-width: 1250px;
+    max-height: 710px;
+    width: 98%; /* Адаптивная ширина */
+    background-color: #CDBDA3;
+    color: #4D4631;
+    align-items: center;
+    justify-content: center;
+    margin: 0px auto;
+    margin-bottom: 15px;
+}
+
+.menu-content a{
+    text-decoration: none;
+    color: #f5f5f5;
+    background-color: #4D4631;
+    padding: 5px 11px;
+    border-radius: 12px;
+    border: 1.5px solid white;
+    transition: color 0.3s ease, background-color 0.4s ease;
+}
+
+.menu-content a:hover{
+    color: #4D4631;
+    background-color: white;
+}
+
+@media (max-width: 500px) {
+    .reservation-link {
+        width: 75%;
+        font-size: calc(var(--index) * 1.2);
+    }
+
+    .reservation-link a {
+        font-size: 14px;
+    }
+
+    .coffeemap-content  {
+        font-size: 15px;
+    }
+}
+
+
+
+/* .content-container {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -38,4 +178,4 @@
     background-color: #FFFF;
     border-color: #000000;
 
-}
+} */

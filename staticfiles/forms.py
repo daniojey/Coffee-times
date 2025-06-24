@@ -18,6 +18,7 @@ class UserRegistrationForm(UserCreationForm):
             'password2',
         )
 
-        username = forms.CharField(max_length=100)
-        password1 = forms.CharField()
-        password2 = forms.CharField()
+    username = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Логін', "id": "username"}))
+    phone = forms.CharField(max_length=20, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Номер телефону', "id": "phone"}))
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Пароль', "id": "password1"}))
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Повторіть пароль', "id": "password2"}))     
