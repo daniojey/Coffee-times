@@ -1,5 +1,6 @@
 import json
 import re
+from django.core import paginator
 from django.core.paginator import Paginator
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Q
@@ -98,6 +99,7 @@ class MenuPageView(ListView):
         context = super().get_context_data(**kwargs)
         
         context['page_obj'] = pagination.get_page(page)
+        context['count_products'] = pagination.count
         context.update({
             'active_tab': 'menu-link',
         })
@@ -130,7 +132,7 @@ class ReservationSearchView(View):
         try:
             data = json.loads(request.body)
         except json.JSONDecodeError:
-           return JsonResponse({'reservations': []})
+           return JsonResponse({'error': 'DecodeError'})
         
         phone = data.get('phone')
         actual = data.get('actual')

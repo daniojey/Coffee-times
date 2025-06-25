@@ -42,8 +42,9 @@ urlpatterns = [
     path('api/v1/token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),
     path('api/v1/token/verify/', CustomTokenVerifyView.as_view(), name='token_verify'),
     
-]  +  debug_toolbar_urls()
+]  
 
+# +  debug_toolbar_urls()
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
