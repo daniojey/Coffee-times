@@ -39,9 +39,9 @@ def product_fabric():
 
             products.append(product)
 
-        Product.objects.bulk_create(products)
+        created = Product.objects.bulk_create(products)
 
-        return {'category': category, 'products_count': Product.objects.all().count(), 'products': Product.objects.all()}
+        return {'category': category, 'products_count': len(created), 'products': created}
     return _product_fabric
 
 
@@ -64,9 +64,9 @@ def coffeehouse_fabric():
 
             coffeehouses.append(coffee_house)
 
-        CoffeeHouse.objects.bulk_create(coffeehouses)
+        created = CoffeeHouse.objects.bulk_create(coffeehouses)
 
-        return {"coffeehouses": CoffeeHouse.objects.all()}
+        return {"coffeehouses": created}
     
     return _coffeehouse_fabric
 
@@ -107,7 +107,7 @@ def reservation_fabric():
 
             reservations.append(res)
         
-        Reservation.objects.bulk_create(reservations)
+        created = Reservation.objects.bulk_create(reservations)
 
-        return {'reservations': Reservation.objects.all()}
+        return {'reservations': created}
     return _reservation_fabric
